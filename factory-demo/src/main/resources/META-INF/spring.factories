@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.example.factory.config.InitAutoConfig
+com.example.factory.project.ChildGenerationConfiguration=com.example.factory.config.ChildAutoConfig,\
+  com.example.factory.config.ChildCustomConfig
+org.springframework.cloud.bootstrap.BootstrapConfiguration=com.cjz.gateway.config.CustomPropertySourceLocator

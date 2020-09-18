@@ -12,22 +12,49 @@
     <artifactId>cloud</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>cloud</name>
-    <description>微服务</description>
+    <description>微服务演示</description>
     <packaging>pom</packaging>
     <modules>
         <module>nacos-config</module>
+        <module>gateway</module>
+        <module>factory-demo</module>
     </modules>
+
+    <!--自动部署-->
+    <scm>
+        <url>git@github.com:Ccccx/cloud.git</url>
+        <connection>scm:git@github.com:Ccccx/cloud.git</connection>
+        <developerConnection>scm:git@github.com:Ccccx/cloud.git</developerConnection>
+    </scm>
 
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
+        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
     </properties>
+
+    <!-- 所有的子项目默认依赖 -->
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
                 <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -64,6 +91,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.3.2.RELEASE</version>
+                <configuration>
+                    <!--打包将拆分成不同的层 以便 docker 构建镜像时使用 https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-container-images-->
+                    <layers>
+                        <enabled>true</enabled>
+                    </layers>
+                </configuration>
             </plugin>
         </plugins>
     </build>

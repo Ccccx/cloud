@@ -1,0 +1,11 @@
+
+### 路径路由
+GET http://localhost:8080/get
+
+### 根据主机路由
+GET  http://localhost:8080/
+Host: www.myhost.org
+
+### 根据主机重新请求路径
+GET  http://localhost:8080/foo/get
+Host: www.rewrite.org

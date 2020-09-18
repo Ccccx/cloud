@@ -1,0 +1,4 @@
+# 忽略所有文件
+*
+# 排除指定文件
+!target/factory-demo-0.0.1-SNAPSHOT.jar
