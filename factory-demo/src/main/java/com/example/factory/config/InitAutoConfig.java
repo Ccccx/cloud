@@ -1,6 +1,7 @@
 package com.example.factory.config;
 
 import com.example.factory.contoiller.DemoController;
+import com.example.factory.contoiller.UploadController;
 import com.example.factory.project.ChildGenerationInvoker;
 import com.example.factory.runner.Runner;
 import com.example.factory.support.ChildFinishListener;
