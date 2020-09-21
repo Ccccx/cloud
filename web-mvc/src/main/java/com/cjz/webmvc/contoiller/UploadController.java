@@ -27,4 +27,5 @@ public class UploadController {
 		component.upload(request);
 		return "SUCCESS";
 	}
+
 }
