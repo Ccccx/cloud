@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/cache")
 public class CacheController {
 
-	private CacheComponent cacheComponent;
+	private final CacheComponent cacheComponent;
 
 	public CacheController(CacheComponent cacheComponent) {
 		this.cacheComponent = cacheComponent;
@@ -23,5 +23,10 @@ public class CacheController {
 	@GetMapping("/t1")
 	public String t1() {
 		return cacheComponent.t1();
+	}
+
+	@GetMapping("/t2")
+	public String t2() {
+		return cacheComponent.t2();
 	}
 }
