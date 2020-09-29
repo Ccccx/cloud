@@ -10,6 +10,7 @@ import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Configuration
-//@Profile({"!default"})
+@Profile({"!default"})
 @EnableCaching(proxyTargetClass = true)
 public class CacheConfig {
 

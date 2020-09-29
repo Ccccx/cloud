@@ -1,0 +1,14 @@
+management.metrics.export.influx2:
+  bucket: demo # 指定写入的目标存储桶
+  org: tiamaes # 指定组织写入的目标。
+  token: 3EmkEs3kL5pwmV3TK-n-E3Ysok92GR9_N6zxUl5qrSfYYLoecojSaBi-xi6A5vAtC7_04WZu4qEZkZqAo9eW4w== # Authenticate requests with this token.
+  uri: http://localhost:8086/api/v2 # The URI for the Influx backend. (Default: http://localhost:8086/api/v2)
+  compressed: true # 是否对发布到inflix的度量批启用GZIP压缩。（默认值：true）
+  autoCreateBucket: true #  在尝试向其发布度量之前，是否创建不存在的流入桶。（默认值：true）
+  everySeconds: 3600 # 数据将在创建的存储桶中保留多长时间的持续时间（秒）。
+  enabled: true # 是否已启用将指标导出到此后端。（默认值：true）
+  step: 1m # 要使用的步长（即报告频率）。（默认值：1m）
+  connect-timeout: 1s # 此后端请求的连接超时。（默认值：1s）
+  read-timeout: 10s # 对此后端的请求的读取超时。（默认值：10秒）
+  num-threads: 2 # 要与度量发布计划程序一起使用的线程数。（默认值：2）
+  batch-size: 10000 # 每个请求用于此后端的测量数。如果找到更多的测量值，那么将发出多个请求。（默认值：10000）

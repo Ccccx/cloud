@@ -1,7 +1,7 @@
 HELP.md
 target/
 
- upload
+ upload-dir/**
 
 ### STS ###
 .apt_generated
