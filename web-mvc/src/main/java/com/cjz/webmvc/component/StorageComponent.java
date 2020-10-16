@@ -81,7 +81,7 @@ public class StorageComponent {
 				if (pContentLength == -1) {
 					log.info("正在处理第{}个文件， 已经读取了{}个字节", pItems, pBytesRead);
 				} else {
-					final BigDecimal process = new BigDecimal(pBytesRead).divide(new BigDecimal(pContentLength)).setScale(4, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
+					BigDecimal process = new BigDecimal(pBytesRead).divide(new BigDecimal(pContentLength), 4, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
 					log.info("正在处理第{}个文件，已经读取了{}个字节，正在读取{}个字节, 当前进度 {}%", pItems, pBytesRead, pContentLength, process);
 				}
 			}

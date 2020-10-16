@@ -1,0 +1,22 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="ChengJinzhou" id="m1-cloud-2.2.2.0-202009081006">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="ONL_FORM_CHANGELOG"/>
+            </not>
+        </preConditions>
+        <createTable tableName="ONL_FORM_CHANGELOG">
+            <column name="TABLE_NAME" remarks="表名" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="STATUS" remarks="状态 1 正常 0 删除" type="INT(1)" defaultValueNumeric="1"/>
+            <column name="CHANGELOG" remarks="版本文件" type="MEDIUMTEXT"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="ONL_FORM_CHANGELOG"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

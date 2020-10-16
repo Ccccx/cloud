@@ -17,4 +17,5 @@ public class URLTest {
 		//null
 		System.out.println(uri.getHost());
 	}
+
 }

@@ -3,12 +3,11 @@ package com.example.factorydemo.beaninit;
 import com.example.factorydemo.bean.Bar;
 import com.example.factorydemo.bean.Foo;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 
 /**
  * @author chengjz
@@ -16,13 +15,12 @@ import javax.annotation.Resource;
  * @since 2020-08-14 13:41
  */
 @Data
-@Configuration
 public class BeanInitDemo {
 
-	@Resource
+	@Autowired
 	private Bar bar;
 
-	@Resource
+	@Autowired
 	private Foo foo;
 
 	public static void main(String[] args) {

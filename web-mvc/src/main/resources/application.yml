@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mysql://cx:13306/cloud?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: meiyoumima.0
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 50
+  liquibase:
+    change-log: classpath:/db/changelog/m1-onlineform-changelog.xml  # 默认设置 db.changelog-master.yaml

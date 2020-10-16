@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 /**
@@ -31,6 +30,7 @@ public class BusInfoTemperature {
 	@Column(timestamp = true, name = "time")
 	private Instant siteTime;
 	@ApiModelProperty("温度")
-	@Column(name = "value")
-	private BigDecimal temperature;
+	private Double temperature;
+	@ApiModelProperty("湿度")
+	private Double humidity;
 }

@@ -6,7 +6,7 @@ import org.apache.commons.crypto.cipher.CryptoCipher;
 import org.apache.commons.crypto.random.CryptoRandom;
 import org.apache.commons.crypto.random.CryptoRandomFactory;
 import org.apache.commons.crypto.utils.Utils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import javax.crypto.Cipher;

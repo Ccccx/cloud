@@ -7,7 +7,6 @@ import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.DefaultApplicationArguments;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -30,7 +29,11 @@ public class AppRunner implements ApplicationRunner {
 
 
 	public static void main(String[] args) throws Exception {
-		new AppRunner().run(new DefaultApplicationArguments());
+		//new AppRunner().run(new DefaultApplicationArguments());
+		LocalDateTime localDateTime = LocalDateTime.of(2020, 9, 16, 4, 0);
+		final Gson gson = new Gson();
+		final BusInfo busInfo = new AppRunner().randomBusInfo(1, localDateTime, gson);
+		System.out.println(gson.toJson(busInfo));
 	}
 
 	@Override
@@ -49,7 +52,7 @@ public class AppRunner implements ApplicationRunner {
 		}
 	}
 
-	public BusInfo randomBusInfo(int index, LocalDateTime localDateTime, Gson gson) {
+	public static BusInfo randomBusInfo(int index, LocalDateTime localDateTime, Gson gson) {
 		final BusInfo busInfo = new BusInfo();
 		busInfo.setMachineNo("M1111");
 		busInfo.setCarNo("C6666");

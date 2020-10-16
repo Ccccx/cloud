@@ -18,7 +18,7 @@ import javax.annotation.PreDestroy;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Foo {
-	private String name;
+	public String name;
 	private boolean flag;
 	private Integer age;
 

@@ -17,4 +17,10 @@ public class NumberTest {
 		System.out.println(bigDecimal.toString());
 		System.out.println(Double.valueOf(bigDecimal.toString()));
 	}
+
+	@Test
+	public void t2() {
+		System.out.println(-1 >>> 1);
+		System.out.println(-1 >> 1);
+	}
 }

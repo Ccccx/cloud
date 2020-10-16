@@ -2,7 +2,6 @@ package com.example.influxdb.task;
 
 import com.example.influxdb.service.InfluxDbComponent;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -22,7 +21,7 @@ public class DemoTask {
 
 	private final Random random = new Random(Integer.MAX_VALUE);
 
-	@Scheduled(cron = "*/3 * * * * ?")
+	//@Scheduled(cron = "*/3 * * * * ?")
 	public void t1() {
 		dbComponent.save(random.nextDouble());
 	}
