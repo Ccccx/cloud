@@ -1,6 +1,8 @@
 package com.cjz.webmvc.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author chengjz
@@ -8,7 +10,10 @@ import lombok.Data;
  * @since 2020-10-13 18:21
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MessageBody {
+	private String userName;
 	/**
 	 * 消息内容
 	 */

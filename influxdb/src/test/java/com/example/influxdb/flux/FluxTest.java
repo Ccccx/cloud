@@ -8,11 +8,7 @@ import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.InfluxDBClientOptions;
 import com.influxdb.client.domain.DeletePredicateRequest;
 import com.influxdb.client.domain.WritePrecision;
-import com.influxdb.client.flux.FluxClient;
-import com.influxdb.client.flux.FluxClientFactory;
-import com.influxdb.client.flux.FluxConnectionOptions;
 import com.influxdb.client.write.Point;
-import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
@@ -87,8 +83,8 @@ public class FluxTest {
 			Date date = DateUtils.parseDate(data[0], "yyyy/MM/dd HH:mm");
 			final Calendar instance = Calendar.getInstance();
 			instance.setTime(date);
-			instance.add(Calendar.MONTH, +1);
-			instance.set(Calendar.DAY_OF_MONTH, 20);
+			instance.set(Calendar.MONTH, Calendar.OCTOBER);
+			instance.set(Calendar.DAY_OF_MONTH, 1);
 			date = instance.getTime();
 			final Point point = Point.measurement("replays")
 					.addTag("id", "1310115752375099393")
@@ -96,9 +92,10 @@ public class FluxTest {
 			point.addField("lon", Double.valueOf(data[1]));
 			point.addField("lat", Double.valueOf(data[2]));
 			point.addField("speed", RandomUtils.nextLong(10, 100));
+			point.addField("direction", RandomUtils.nextInt(1, 360));
 			client.getWriteApi().writePoint("history", ORG, point);
 			System.out.println(date + "\t" + data[1] + "\t" + data[2]);
-			Thread.sleep(20);
+			Thread.sleep(5);
 		}
 		//close
 		inputStream.close();
@@ -110,9 +107,10 @@ public class FluxTest {
 	public void delete() {
 		InfluxDBClient client = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, "history");
 		DeletePredicateRequest request = new DeletePredicateRequest();
-		request.setPredicate("id=1602221568424");
-		request.setStart(OffsetDateTime.of(LocalDateTime.of(2020, 10, 1, 0, 0), ZoneOffset.UTC));
-		request.setStop(OffsetDateTime.of(LocalDateTime.of(2020, 10, 31, 23, 59), ZoneOffset.UTC));
+		request.setPredicate("_measurement=replays");
+		request.setPredicate("id=1310115752375099393");
+		request.setStart(OffsetDateTime.of(LocalDateTime.of(2020, 10, 19, 0, 0), ZoneOffset.UTC));
+		request.setStop(OffsetDateTime.of(LocalDateTime.of(2020, 10, 21, 0, 0), ZoneOffset.UTC));
 		client.getDeleteApi().delete(request, "history", ORG);
 		Thread.sleep(5 * 1000);
 	}
@@ -183,58 +181,6 @@ public class FluxTest {
 			}
 		});
 		influxDBClientCloud.getWriteApi().writePoint(BUCKET, ORG, point);
-	}
-
-	@Test
-	public void t999() {
-		FluxConnectionOptions options = FluxConnectionOptions.builder()
-				.url(URL)
-				.okHttpClient(new OkHttpClient.Builder().authenticator(((route, response) -> response.request().newBuilder()
-						.header("Authorization", TOKEN)
-						.build())))
-				.build();
-		final FluxClient fluxClient = FluxClientFactory.create(options);
-		String flux = "from(bucket: \"demo\")" +
-				"  |> range(start: -30d)" +
-				"  |> filter(fn: (r) => r._measurement == \"busInfoV2\")" +
-				"  |> filter(fn: (r) => r._field == \"temperature\")" +
-				"  |> filter(fn: (r) => r.carNo == \"C6666\")" +
-				"  |> filter(fn: (r) => r.carNumber == \"豫A00000\")" +
-				"  |> filter(fn: (r) => r.machineNo == \"M1111\")" +
-				"  |> limit(n:10)";
-
-		//
-		// Synchronous query
-		//
-		List<FluxTable> tables = fluxClient.query(flux);
-
-		for (FluxTable fluxTable : tables) {
-			List<FluxRecord> records = fluxTable.getRecords();
-			for (FluxRecord fluxRecord : records) {
-				System.out.println(fluxRecord.getTime() + ": " + fluxRecord.getValueByKey("_value"));
-			}
-		}
-
-		//
-		// Asynchronous query
-		//
-		fluxClient.query(flux, (cancellable, record) -> {
-
-			// process the flux query result record
-			System.out.println(record.getTime() + ": " + record.getValue());
-
-		}, error -> {
-
-			// error handling while processing result
-			System.out.println("Error occurred: " + error.getMessage());
-
-		}, () -> {
-
-			// on complete
-			System.out.println("Query completed");
-		});
-
-		fluxClient.close();
 	}
 
 

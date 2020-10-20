@@ -29,4 +29,15 @@ public class CacheController {
 	public String t2() {
 		return cacheComponent.t2();
 	}
+
+	/**
+	 * 通过AppConfig手动注入MVC请求
+	 *
+	 * @return 结果
+	 */
+	public String t3() {
+		return cacheComponent.t2();
+	}
+
+
 }

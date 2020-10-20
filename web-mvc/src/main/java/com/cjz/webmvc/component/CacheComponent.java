@@ -33,6 +33,7 @@ public class CacheComponent {
 		return "休眠5秒结束!";
 	}
 
+
 	/**
 	 * 手动使用缓存方式
 	 *
@@ -56,5 +57,6 @@ public class CacheComponent {
 		}
 		return result;
 	}
+
 
 }
