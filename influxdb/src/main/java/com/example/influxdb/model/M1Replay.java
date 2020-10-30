@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.Date;
 
 /**
  * @author Chen
@@ -38,5 +39,9 @@ public class M1Replay {
 	Integer direction;
 	@ApiModelProperty(required = true, value = "定位时间")
 	@Column(timestamp = true)
-	Instant time;
+	Instant instant;
+
+	public Date getTime() {
+		return new Date(instant.toEpochMilli());
+	}
 }

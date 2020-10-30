@@ -1,4 +1,4 @@
-package com.cjz.webmvc.component;
+package com.cjz.webmvc.base.component;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.fileupload.util.Streams;

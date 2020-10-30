@@ -1,6 +1,6 @@
-package com.cjz.webmvc.component;
+package com.cjz.webmvc.user.service;
 
-import com.cjz.webmvc.model.User;
+import com.cjz.webmvc.base.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;

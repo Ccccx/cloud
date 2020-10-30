@@ -1,7 +1,6 @@
-package com.cjz.webmvc.contoiller;
+package com.cjz.webmvc.base.contoiller;
 
-import com.cjz.webmvc.component.StorageComponent;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
+import com.cjz.webmvc.base.component.StorageComponent;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/upload")
 public class UploadController {
-	private StorageComponent component;
+	private final StorageComponent component;
 
 	public UploadController(StorageComponent component) {
 		this.component = component;

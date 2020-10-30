@@ -1,14 +1,18 @@
 package com.cjz.webmvc.config;
 
-import com.cjz.webmvc.contoiller.CacheController;
+import com.cjz.webmvc.base.contoiller.CacheController;
+import com.cjz.webmvc.base.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.lang.reflect.Method;
+import java.util.UUID;
 
 /**
  * @author chengjz
@@ -32,6 +36,12 @@ public class AppConfig {
 		RequestMappingInfo info = RequestMappingInfo.paths("/t3").methods(RequestMethod.GET).build();
 		Method method = CacheController.class.getMethod("t3");
 		mapping.registerMapping(info, handler, method);
+	}
+
+	@Bean
+	@RequestScope
+	public User user() {
+		return new User(UUID.randomUUID().toString());
 	}
 
 }

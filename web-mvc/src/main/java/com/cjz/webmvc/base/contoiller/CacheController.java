@@ -1,6 +1,6 @@
-package com.cjz.webmvc.contoiller;
+package com.cjz.webmvc.base.contoiller;
 
-import com.cjz.webmvc.component.CacheComponent;
+import com.cjz.webmvc.base.component.CacheComponent;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

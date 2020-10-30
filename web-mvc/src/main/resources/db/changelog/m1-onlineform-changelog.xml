@@ -19,4 +19,28 @@
             <dropTable tableName="ONL_FORM_CHANGELOG"/>
         </rollback>
     </changeSet>
+    <changeSet author="ChengJinZhou" id="m1-cloud-2.2.2.0-202010201730">
+        <createTable tableName="T_USERS" remarks="用户信息表">
+            <column name="USERNAME" type="varchar(32)" remarks="用户帐号">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="PASSWORD" type="varchar(128)" remarks="用户密码">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NICKNAME" type="varchar(32)" remarks="用户昵称">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MOBILE" type="varchar(32)" remarks="手机号码">
+                <constraints nullable="true"/>
+            </column>
+            <column name="EMAIL" type="varchar(280)" remarks="电子邮箱">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CREATE_DATE" type="datetime" remarks="创建日期"
+                    defaultValueDate="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED" type="int" remarks="是否可用"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

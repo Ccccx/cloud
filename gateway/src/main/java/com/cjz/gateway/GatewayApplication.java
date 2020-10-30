@@ -3,30 +3,42 @@ package com.cjz.gateway;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.RouterFunctions;
+import org.springframework.web.reactive.function.server.ServerResponse;
 
 /**
  * @author chengjz
  */
-@RestController
+@Controller
 @SpringBootApplication
 public class GatewayApplication implements Runnable {
 
-	@Value("${property.from.sample.custom.source}")
+	@Value("${property.from.sample.custom.source:default}")
 	public String source;
 
 	public static void main(String[] args) {
 		SpringApplication.run(GatewayApplication.class, args);
 	}
 
-	@RequestMapping("/hystrixfallback")
-	public String hystrixfallback() {
-		return "This is a fallback";
+	@GetMapping("/")
+	public String index() {
+		System.out.println("index ...");
+		return "index";
+	}
+
+	/**
+	 * 配置静态资源
+	 */
+	@Bean
+	public RouterFunction<ServerResponse> staticResourceLocator() {
+		return RouterFunctions.resources("/static/**", new ClassPathResource("/static/"));
 	}
 
 	@Bean

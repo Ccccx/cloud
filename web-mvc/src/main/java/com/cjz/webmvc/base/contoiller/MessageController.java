@@ -1,6 +1,6 @@
-package com.cjz.webmvc.contoiller;
+package com.cjz.webmvc.base.contoiller;
 
-import com.cjz.webmvc.model.MessageBody;
+import com.cjz.webmvc.base.model.MessageBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;

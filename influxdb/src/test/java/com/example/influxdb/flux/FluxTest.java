@@ -1,47 +1,56 @@
 package com.example.influxdb.flux;
 
 import com.example.influxdb.model.BusInfo;
+import com.example.influxdb.model.M1Replay;
 import com.example.influxdb.runner.AppRunner;
+import com.example.influxdb.utils.InfluxMapper;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.influxdb.client.DeleteApi;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
-import com.influxdb.client.InfluxDBClientOptions;
+import com.influxdb.client.WriteApi;
 import com.influxdb.client.domain.DeletePredicateRequest;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
+import com.influxdb.client.write.events.WriteSuccessEvent;
 import com.influxdb.query.FluxTable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.SneakyThrows;
-import okhttp3.OkHttpClient;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.cglib.beans.BeanMap;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.FileCopyUtils;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * @author chengjz
  * @version 1.0
  * @since 2020-09-30 10:19
  */
+@Slf4j
 public class FluxTest {
 	private static final String BUCKET = "demo";
 
 	private static final String URL = "http://192.168.240.185:9999";
 	private static final String ORG = "tiamaes";
-	private static final String TOKEN = "3EmkEs3kL5pwmV3TK-n-E3Ysok92GR9_N6zxUl5qrSfYYLoecojSaBi-xi6A5vAtC7_04WZu4qEZkZqAo9eW4w==";
+	private static final String TOKEN = "A9MB6VdHOnLpoGSEznsZHBPLhK00ZEbcbA4UlUHevPn2OtOTBUocVCxgCYXl9R69MhdG6IP7tDAuFxBpTAsl5Q==";
 
 	private static final String CLOUD_URL = "https://us-central1-1.gcp.cloud2.influxdata.com";
 	private static final String CLOUD_ORG = "Ccx";
@@ -53,21 +62,21 @@ public class FluxTest {
 	public void before() throws Exception {
 		influxDBClient = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, BUCKET);
 
-		InfluxDBClientOptions options = InfluxDBClientOptions.builder()
-				.url(CLOUD_URL)
-				.authenticateToken(CLOUD_TOKEN.toCharArray())
-				.org(CLOUD_ORG)
-				.bucket(BUCKET)
-				.okHttpClient(new OkHttpClient.Builder().proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 58591))))
-				.build();
-
-		influxDBClientCloud = InfluxDBClientFactory.create(options);
+//		InfluxDBClientOptions options = InfluxDBClientOptions.builder()
+//				.url(CLOUD_URL)
+//				.authenticateToken(CLOUD_TOKEN.toCharArray())
+//				.org(CLOUD_ORG)
+//				.bucket(BUCKET)
+//				.okHttpClient(new OkHttpClient.Builder().proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 58591))))
+//				.build();
+//
+//		influxDBClientCloud = InfluxDBClientFactory.create(options);
 	}
 
 	@After
 	public void after() {
 		influxDBClient.close();
-		influxDBClientCloud.close();
+		//influxDBClientCloud.close();
 	}
 
 	@Test
@@ -102,17 +111,134 @@ public class FluxTest {
 		bufferedReader.close();
 	}
 
+
+	@Test
+	@SneakyThrows
+	public void saveLinesBus() {
+		final InfluxDBClient client = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, "demo");
+		final WriteApi writeApi = client.getWriteApi();
+
+		writeApi.listenEvents(WriteSuccessEvent.class, value -> {
+			log.info("he data was successfully written to InfluxDB.");
+		});
+
+		final ClassPathResource resource = new ClassPathResource("com/example/influxdb/flux/lines-bus.json");
+		final String lineStr = FileCopyUtils.copyToString(new InputStreamReader(resource.getInputStream()));
+		final Gson gson = new Gson();
+		Type typeOfT = new TypeToken<List<List<Integer>>>() {
+		}.getType();
+		List<List<Integer>> lineList = gson.fromJson(lineStr, typeOfT);
+		int count = 0;
+		for (List<Integer> list : lineList) {
+			count += list.size();
+		}
+
+		Map<String, ArrayList<LinePoint>> map = new LinkedHashMap<>();
+		Date date = Date.from(LocalDateTime.of(2020, 10, 29, 8, 0).toInstant(ZoneOffset.of("+8")));
+		lineList.forEach(points -> {
+			ArrayList<LinePoint> linePoints = new ArrayList<>();
+			map.put(UUID.randomUUID().toString().replace("-", ""), linePoints);
+			LinePoint tmpPoint = null;
+			for (int i = 0; i < points.size(); i += 2) {
+				if (i == 0) {
+					tmpPoint = new LinePoint(date, points.get(i), points.get(i + 1));
+				} else {
+					final Calendar instance = Calendar.getInstance();
+					instance.setTime(tmpPoint.getDate());
+					instance.add(Calendar.SECOND, +15);
+					tmpPoint = new LinePoint(instance.getTime(), tmpPoint.lng + points.get(i), tmpPoint.lat + points.get(i + 1));
+				}
+				linePoints.add(tmpPoint);
+			}
+		});
+
+		AtomicInteger pCounter = new AtomicInteger(0);
+		map.forEach((k, v) -> {
+			pCounter.addAndGet(v.size());
+		});
+		log.info("总计 {} 条, 折算点数: {}  ", count, pCounter.get());
+		if (true) {
+			return;
+		}
+		int index = 1;
+
+		for (Map.Entry<String, ArrayList<LinePoint>> entry : map.entrySet()) {
+			final String k = entry.getKey();
+			final ArrayList<LinePoint> v = entry.getValue();
+			log.info("{} : {}", index, k);
+			for (LinePoint p : v) {
+				Point point = Point.measurement("lineBus").addTag("id", k);
+				point.time(p.getDate().getTime(), WritePrecision.MS);
+				point.addField("lon", p.getLng());
+				point.addField("lat", p.getLat());
+				// writeApi.writePoint("demo", ORG, point);
+			}
+			writeApi.flush();
+			index++;
+		}
+		Thread.sleep(20 * 1000L);
+		client.close();
+	}
+
+	@Test
+	@SneakyThrows
+	public void queryLinePoints() {
+		String query = "from(bucket: \"demo\")\n" +
+				"  |> range(start:2020-10-28T16:00:00.000Z, stop: 2020-10-31T15:00:00.000Z)" +
+				"  |> filter(fn: (r) => r._measurement == \"lineBus\")\n";
+		final InfluxDBClient client = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, "demo");
+		List<FluxTable> tables = client.getQueryApi().query(query);
+		final List<M1Replay> m1Replays = InfluxMapper.toPojo(tables, M1Replay.class);
+
+		final List<List<Integer>> result = m1Replays.parallelStream().collect(Collectors.groupingBy(M1Replay::getId)).entrySet().parallelStream().map(Map.Entry::getValue).map(v -> {
+			List<Integer> list = new ArrayList<>();
+			for (int i = 0; i < v.size(); i++) {
+				final M1Replay point = v.get(i);
+				if (list.size() == 0) {
+					list.add((int) (point.getLng() * 10000));
+					list.add((int) (point.getLat() * 10000));
+				} else {
+					final M1Replay prePoint = v.get(i - 1);
+					list.add(((int) (point.getLng() * 10000)) - ((int) (prePoint.getLng() * 10000)));
+					list.add(((int) (point.getLat() * 10000)) - ((int) (prePoint.getLat() * 10000)));
+				}
+			}
+			return list;
+		}).collect(Collectors.toList());
+		log.info("end ...{}", m1Replays.size());
+	}
+
+
+	@Data
+	@AllArgsConstructor
+	public static class LinePoint {
+		Date date;
+		Integer lng;
+		Integer lat;
+
+		public Double getLng() {
+			return lng / 10000.0;
+		}
+
+		public Double getLat() {
+			return lat / 10000.0;
+		}
+	}
+
 	@Test
 	@SneakyThrows
 	public void delete() {
-		InfluxDBClient client = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, "history");
+		InfluxDBClient client = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, "demo");
 		DeletePredicateRequest request = new DeletePredicateRequest();
-		request.setPredicate("_measurement=replays");
-		request.setPredicate("id=1310115752375099393");
-		request.setStart(OffsetDateTime.of(LocalDateTime.of(2020, 10, 19, 0, 0), ZoneOffset.UTC));
-		request.setStop(OffsetDateTime.of(LocalDateTime.of(2020, 10, 21, 0, 0), ZoneOffset.UTC));
-		client.getDeleteApi().delete(request, "history", ORG);
+		request.setPredicate("_measurement=lineBus");
+		// request.setPredicate("id=1310115752375099393");
+		request.setStart(OffsetDateTime.of(LocalDateTime.of(2020, 10, 27, 0, 0), ZoneOffset.UTC));
+		request.setStop(OffsetDateTime.of(LocalDateTime.of(2020, 10, 31, 0, 0), ZoneOffset.UTC));
+		final DeleteApi deleteApi = client.getDeleteApi();
+		deleteApi.delete(request, "demo", ORG);
 		Thread.sleep(5 * 1000);
+
+
 	}
 
 	@Test

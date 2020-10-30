@@ -16,6 +16,8 @@ public class NumberTest {
 		final Object bigDecimal = BigDecimal.valueOf(113.0 + RandomUtils.nextDouble(0.1, 0.9));
 		System.out.println(bigDecimal.toString());
 		System.out.println(Double.valueOf(bigDecimal.toString()));
+		final Integer integer = new Integer(1164383);
+		System.out.println(Double.valueOf(integer / 10000.0));
 	}
 
 	@Test

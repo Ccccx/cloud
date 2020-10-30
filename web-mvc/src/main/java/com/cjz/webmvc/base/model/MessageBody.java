@@ -1,4 +1,4 @@
-package com.cjz.webmvc.model;
+package com.cjz.webmvc.base.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.cjz.webmvc.component;
+package com.cjz.webmvc.base.component;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;

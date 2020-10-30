@@ -39,7 +39,7 @@
         <knife4j.version>2.0.3</knife4j.version>
         <springfox.version>2.9.2</springfox.version>
         <dynamic-datasource.version>2.5.6</dynamic-datasource.version>
-        <mybatis-plus.version>3.3.1</mybatis-plus.version>
+        <mybatis-plus.version>3.3.2</mybatis-plus.version>
     </properties>
 
     <!-- 所有的子项目默认依赖 -->
@@ -201,6 +201,18 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
                 <version>${dynamic-datasource.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>3.3.2</version>
+                <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>mybatis-plus-extension</artifactId>
+                        <groupId>com.baomidou</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.freemarker</groupId>

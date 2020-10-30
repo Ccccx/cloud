@@ -1,6 +1,6 @@
 package com.cjz.webmvc.config;
 
-import com.cjz.webmvc.component.UserComponent;
+import com.cjz.webmvc.user.service.UserComponent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
