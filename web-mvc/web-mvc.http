@@ -1,0 +1,17 @@
+### 获取所有指标
+GET http://localhost:8080/actuator
+
+### 获取健康状况
+GET http://localhost:8080/actuator/health
+
+### 获取指标
+GET http://192.168.32.87:8080/actuator/metrics
+
+### 获取指标值
+GET http://192.168.32.87:8080/actuator/metrics/cache.eviction.weight
+
+### 获取prometheus指标
+http://192.168.32.87:8080/actuator/prometheus
+
+### 获取prometheus具体指标
+http://192.168.32.87:8080/actuator/prometheus

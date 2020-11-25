@@ -87,12 +87,13 @@ public class FluxTest {
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 		String str = null;
 		final InfluxDBClient client = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, "history");
+		final WriteApi writeApi = client.getWriteApi();
 		while ((str = bufferedReader.readLine()) != null) {
 			final String[] data = str.split(",");
 			Date date = DateUtils.parseDate(data[0], "yyyy/MM/dd HH:mm");
 			final Calendar instance = Calendar.getInstance();
 			instance.setTime(date);
-			instance.set(Calendar.MONTH, Calendar.OCTOBER);
+			instance.set(Calendar.MONTH, Calendar.NOVEMBER);
 			instance.set(Calendar.DAY_OF_MONTH, 1);
 			date = instance.getTime();
 			final Point point = Point.measurement("replays")
@@ -102,9 +103,9 @@ public class FluxTest {
 			point.addField("lat", Double.valueOf(data[2]));
 			point.addField("speed", RandomUtils.nextLong(10, 100));
 			point.addField("direction", RandomUtils.nextInt(1, 360));
-			client.getWriteApi().writePoint("history", ORG, point);
+			writeApi.writePoint("history", ORG, point);
 			System.out.println(date + "\t" + data[1] + "\t" + data[2]);
-			Thread.sleep(5);
+			writeApi.flush();
 		}
 		//close
 		inputStream.close();

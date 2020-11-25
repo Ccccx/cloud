@@ -37,10 +37,18 @@ public class PathTest {
 		}
 	}
 
+
 	@ParameterizedTest
 	@CsvFileSource(resources = "/坐标点.csv")
 	public void t2(String lng, String lat) {
 		log.info("lng : {} lat: {}", lng, lat);
+	}
+
+	@Test
+	public void t3() {
+		final Path rootPath = Paths.get("123");
+		final Path subPath = rootPath.resolve("456");
+		log.info("fullPath: {}", subPath.toUri());
 	}
 
 }
