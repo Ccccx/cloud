@@ -10,10 +10,7 @@ import org.springframework.util.FileCopyUtils;
 
 import java.io.InputStreamReader;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -47,6 +44,21 @@ public class MapTest {
 			return list;
 		}).collect(Collectors.toList());
 		log.info("end ...");
+	}
+
+	@Test
+	public void t2() {
+		final BitSet bitSet = new BitSet(8);
+		bitSet.set(0, false);
+		bitSet.set(1, false);
+		bitSet.set(2, true);
+		bitSet.set(3, false);
+		bitSet.set(4, true);
+		bitSet.set(5, false);
+		bitSet.set(6, true);
+		bitSet.set(7, true);
+		System.out.println(bitSet);
+		bitSet.stream().asLongStream().forEach(System.out::println);
 	}
 
 	@Data
