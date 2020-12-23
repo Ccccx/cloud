@@ -1,10 +1,12 @@
 package com.example.factorydemo.jsonformat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import lombok.Data;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.util.Date;
@@ -14,13 +16,16 @@ import java.util.Date;
  * @version 1.0
  * @since 2020-06-06 15:57
  */
-public class JsonDemo {
+@Slf4j
+class JsonDemo {
 
-	public static void main(String[] args) throws JsonProcessingException {
+	@Test
+	@SneakyThrows
+	void t1() {
 		final ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
 		final TypeFactory typeFactory = objectMapper.getTypeFactory();
 		typeFactory.constructType(DateTest.class);
-		System.out.println(objectMapper.readValue("{\"date\":\"2020-06-06  00:00:00\",\"date2\":\"2020-06-06  00:00:00\"}", DateTest.class));
+		log.info("{}", objectMapper.readValue("{\"date\":\"2020-06-06  00:00:00\",\"date2\":\"2020-06-06  00:00:00\"}", DateTest.class));
 	}
 
 	@Data

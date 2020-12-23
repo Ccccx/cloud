@@ -1,6 +1,7 @@
 package com.cjz.webmvc.config;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.Scheduler;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
@@ -13,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.util.ArrayList;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -64,8 +67,17 @@ public class CacheConfig {
 	}
 
 	private CaffeineCache buildCaffeineCache(String cacheName) {
+		ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1, r -> {
+			Thread t = new Thread(r);
+			t.setName("cache-schedule");
+			t.setDaemon(true);
+			return t;
+		});
 		return new CaffeineCache(cacheName,
-				Caffeine.newBuilder().recordStats()
+				Caffeine.newBuilder()
+						.scheduler(Scheduler.forScheduledExecutorService(executorService))
+						.removalListener((key, value, cause) -> log.debug("{} : {}", key, cause))
+						.recordStats()
 						.expireAfterWrite(1, TimeUnit.MINUTES)
 						.maximumSize(1000)
 						.build());

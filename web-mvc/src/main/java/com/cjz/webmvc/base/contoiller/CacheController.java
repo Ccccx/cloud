@@ -25,6 +25,12 @@ public class CacheController {
 		return cacheComponent.t1();
 	}
 
+	@GetMapping("/clear")
+	public String clear() {
+		return cacheComponent.clear();
+	}
+
+
 	@GetMapping("/t2")
 	public String t2() {
 		return cacheComponent.t2();

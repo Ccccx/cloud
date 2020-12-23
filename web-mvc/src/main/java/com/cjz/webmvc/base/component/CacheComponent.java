@@ -4,8 +4,10 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -31,6 +33,17 @@ public class CacheComponent {
 			e.printStackTrace();
 		}
 		return "休眠5秒结束!";
+	}
+
+	public String clear() {
+		Cache cache = cacheManager.getCache("web-mvc");
+		if (Objects.nonNull(cache)) {
+			if (cache instanceof CaffeineCache) {
+				final CaffeineCache caffeineCache = (CaffeineCache) cache;
+				caffeineCache.clear();
+			}
+		}
+		return "清空数据成功!";
 	}
 
 

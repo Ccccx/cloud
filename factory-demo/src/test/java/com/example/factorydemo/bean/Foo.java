@@ -31,4 +31,8 @@ public class Foo {
 	public void destroy() {
 		log.info("销毁方法调用 ...");
 	}
+
+	public void say(String str) {
+		System.out.println("Say: " + str);
+	}
 }

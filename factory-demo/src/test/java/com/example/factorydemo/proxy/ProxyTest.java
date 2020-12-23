@@ -1,13 +1,17 @@
 package com.example.factorydemo.proxy;
 
+import com.example.factorydemo.bean.Foo;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.aop.framework.AopProxy;
 import org.springframework.aop.framework.DefaultAopProxyFactory;
+import org.springframework.aop.support.DefaultIntroductionAdvisor;
+import org.springframework.aop.support.DelegatingIntroductionInterceptor;
 
 import java.lang.reflect.Proxy;
 
@@ -66,5 +70,60 @@ public class ProxyTest {
 		final AopProxy aopProxy = proxyFactory.createAopProxy(sp);
 		final IPeople people = (IPeople) aopProxy.getProxy();
 		System.out.println(people.say("Hello"));
+	}
+
+	@Test
+	public void test2() {
+		final Foo foo = new Foo("cx", false, 10);
+		final AdvisedSupport sp = new AdvisedSupport(Lockable.class);
+		sp.addAdvisor(new LockMixinAdvisor());
+		sp.setTarget(foo);
+		final DefaultAopProxyFactory proxyFactory = new DefaultAopProxyFactory();
+		final AopProxy aopProxy = proxyFactory.createAopProxy(sp);
+		final Lockable lockable = (Lockable) aopProxy.getProxy();
+		lockable.locked();
+		System.out.println(foo.name);
+		foo.setName("test");
+		System.out.println(foo.name);
+	}
+
+
+	public interface Lockable {
+		void lock();
+
+		void unlock();
+
+		boolean locked();
+	}
+
+
+	public static class LockMixin extends DelegatingIntroductionInterceptor implements Lockable {
+		private boolean locked;
+
+		public void lock() {
+			this.locked = true;
+		}
+
+		public void unlock() {
+			this.locked = false;
+		}
+
+		public boolean locked() {
+			return this.locked;
+		}
+
+		public Object invoke(MethodInvocation invocation) throws Throwable {
+			if (locked() && invocation.getMethod().getName().indexOf("set") == 0) {
+				throw new Exception("已被锁定,不允许操作set方法");
+			}
+			return super.invoke(invocation);
+		}
+	}
+
+	public static class LockMixinAdvisor extends DefaultIntroductionAdvisor {
+
+		public LockMixinAdvisor() {
+			super(new LockMixin(), Lockable.class);
+		}
 	}
 }

@@ -23,6 +23,7 @@ public class CacheTest {
 	 */
 	@Test
 	public void t1() throws ExecutionException {
+		String str = "{\"sites\":{\"site\":[{\"id\":\"1\",\"name\":\"菜鸟教程\",\"url\":\"www.runoob.com\"},{\"id\":\"2\",\"name\":\"菜鸟工具\",\"url\":\"c.runoob.com\"},{\"id\":\"3\",\"name\":\"Google\",\"url\":\"www.google.com\"}]}}";
 		final CacheLoader<String, String> load = new CacheLoader<String, String>() {
 			@Override
 			public String load(String key) throws Exception {

@@ -20,7 +20,6 @@ import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -90,10 +89,10 @@ public class FluxTest {
 		final WriteApi writeApi = client.getWriteApi();
 		while ((str = bufferedReader.readLine()) != null) {
 			final String[] data = str.split(",");
-			Date date = DateUtils.parseDate(data[0], "yyyy/MM/dd HH:mm");
+			Date date = new Date();
 			final Calendar instance = Calendar.getInstance();
 			instance.setTime(date);
-			instance.set(Calendar.MONTH, Calendar.NOVEMBER);
+			instance.set(Calendar.MONTH, Calendar.DECEMBER);
 			instance.set(Calendar.DAY_OF_MONTH, 1);
 			date = instance.getTime();
 			final Point point = Point.measurement("replays")
@@ -119,9 +118,7 @@ public class FluxTest {
 		final InfluxDBClient client = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, "demo");
 		final WriteApi writeApi = client.getWriteApi();
 
-		writeApi.listenEvents(WriteSuccessEvent.class, value -> {
-			log.info("he data was successfully written to InfluxDB.");
-		});
+		writeApi.listenEvents(WriteSuccessEvent.class, value -> log.info("he data was successfully written to InfluxDB."));
 
 		final ClassPathResource resource = new ClassPathResource("com/example/influxdb/flux/lines-bus.json");
 		final String lineStr = FileCopyUtils.copyToString(new InputStreamReader(resource.getInputStream()));
@@ -135,7 +132,7 @@ public class FluxTest {
 		}
 
 		Map<String, ArrayList<LinePoint>> map = new LinkedHashMap<>();
-		Date date = Date.from(LocalDateTime.of(2020, 10, 29, 8, 0).toInstant(ZoneOffset.of("+8")));
+		Date date = Date.from(LocalDateTime.of(2020, 12, 1, 8, 0).toInstant(ZoneOffset.of("+8")));
 		lineList.forEach(points -> {
 			ArrayList<LinePoint> linePoints = new ArrayList<>();
 			map.put(UUID.randomUUID().toString().replace("-", ""), linePoints);
@@ -158,9 +155,9 @@ public class FluxTest {
 			pCounter.addAndGet(v.size());
 		});
 		log.info("总计 {} 条, 折算点数: {}  ", count, pCounter.get());
-		if (true) {
-			return;
-		}
+//		if (true) {
+//			return;
+//		}
 		int index = 1;
 
 		for (Map.Entry<String, ArrayList<LinePoint>> entry : map.entrySet()) {

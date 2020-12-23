@@ -3,6 +3,11 @@ package com.example.factorydemo.beaninit;
 import com.example.factorydemo.bean.Bar;
 import com.example.factorydemo.bean.Foo;
 import lombok.Data;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -19,7 +24,7 @@ import javax.annotation.PostConstruct;
  */
 @Data
 @Configuration
-public class BeanInitDemo {
+class BeanInitDemo {
 
 	@Autowired
 	private Bar bar;
@@ -27,7 +32,8 @@ public class BeanInitDemo {
 	@Autowired
 	private Foo foo;
 
-	public static void main(String[] args) {
+	@Test
+	void t1() {
 		final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		context.register(BeanInitDemo.class);
 		// 测试通过代码方式手动注入
@@ -43,6 +49,16 @@ public class BeanInitDemo {
 		final Foo foo = context.getBean(Foo.class);
 		final Bar bar = context.getBean(Bar.class);
 		System.out.println("是否为相同引用 ?   " + (foo == bar.getFoo()));
+
+	}
+
+	@Test
+	void t2() {
+		BeanWrapper wrapper = new BeanWrapperImpl(new Foo());
+		wrapper.setPropertyValue("name", "cx");
+		wrapper.setPropertyValue(new PropertyValue("flag", true));
+		final Foo foo = (Foo) wrapper.getWrappedInstance();
+		Assertions.assertEquals("cx", foo.getName());
 	}
 
 	@PostConstruct

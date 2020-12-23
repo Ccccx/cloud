@@ -24,5 +24,9 @@ public class WebMvcApplicationTests {
 	@Autowired
 	protected MockMvc mockMvc;
 
+	public static void main(String[] args) {
+
+	}
+
 
 }

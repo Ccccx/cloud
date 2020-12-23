@@ -1,6 +1,5 @@
 package com.example.factory.config;
 
-import com.example.factory.project.ChildGenerationConfiguration;
 import com.example.factory.project.model.ChildConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +11,6 @@ import javax.annotation.PostConstruct;
  * @version 1.0
  * @date 2019-12-09 10:06
  */
-@ChildGenerationConfiguration
 @Slf4j
 public class ChildAutoConfig {
 

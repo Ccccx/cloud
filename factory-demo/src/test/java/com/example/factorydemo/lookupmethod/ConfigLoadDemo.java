@@ -28,10 +28,16 @@ public class ConfigLoadDemo {
 		context.register(ConfigLoadDemo.class);
 		context.refresh();
 		final ConfigLoadDemo bean = context.getBean(ConfigLoadDemo.class);
+		// 第一种方式
 		System.out.println(bean.getFoo());
 		System.out.println(bean.getFoo());
 //		System.out.println(bean.foo());
 //		System.out.println(bean.foo());
+
+		// 第二种方式
+		final Bar bar = context.getBean(Bar.class);
+		System.out.println(bar.createFoo());
+		System.out.println(bar.createFoo());
 	}
 
 	@Bean
@@ -46,5 +52,22 @@ public class ConfigLoadDemo {
 		return null;
 	}
 
+
+	public abstract static class Bar {
+		protected abstract Foo createFoo();
+	}
+
+	/**
+	 * 通过依赖的形式来获取原型bean
+	 */
+	@Bean
+	public Bar bar() {
+		return new Bar() {
+			@Override
+			protected Foo createFoo() {
+				return foo();
+			}
+		};
+	}
 
 }
