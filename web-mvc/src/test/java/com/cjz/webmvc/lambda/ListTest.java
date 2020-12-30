@@ -13,18 +13,18 @@ import java.util.Arrays;
 @Slf4j
 public class ListTest {
 
-	@Test
-	public void t1() {
-		String[] array = {"1", "2", "3", "4", "5"};
-		final String[] newArray = Arrays.copyOf(array, 10);
-		int index = 2;
-		String element = "4";
-		array[index] = element;
-		log.info("{}", Arrays.asList(newArray));
+    @Test
+    public void t1() {
+        String[] array = {"1", "2", "3", "4", "5"};
+        final String[] newArray = Arrays.copyOf(array, 10);
+        int index = 2;
+        String element = "4";
+        array[index] = element;
+        log.info("{}", Arrays.asList(newArray));
 
-		System.arraycopy(newArray, index, newArray, index + 1, array.length - index);
-		newArray[index] = element;
-		log.info("{}", Arrays.asList(newArray));
+        System.arraycopy(newArray, index, newArray, index + 1, array.length - index);
+        newArray[index] = element;
+        log.info("{}", Arrays.asList(newArray));
 
-	}
+    }
 }

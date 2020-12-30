@@ -13,12 +13,12 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class DefaultRequestToDescriptionConverter implements RequestToDescriptionConverter<BaseRequest> {
-	@Override
-	public ProjectDescription convert(BaseRequest request) {
-		log.debug("开始转换数据 ...");
-		final MutableProjectDescription description = new MutableProjectDescription();
-		description.setMsg(request.getMsg() == null ? "未定义消息" : request.getMsg());
-		description.setId(System.currentTimeMillis());
-		return description;
-	}
+    @Override
+    public ProjectDescription convert(BaseRequest request) {
+        log.debug("开始转换数据 ...");
+        final MutableProjectDescription description = new MutableProjectDescription();
+        description.setMsg(request.getMsg() == null ? "未定义消息" : request.getMsg());
+        description.setId(System.currentTimeMillis());
+        return description;
+    }
 }

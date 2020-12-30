@@ -16,15 +16,15 @@ import javax.annotation.PreDestroy;
 @AllArgsConstructor
 @Slf4j
 public class User {
-	private String userName;
+    private String userName;
 
-	@PostConstruct
-	public void init() {
-		log.info("PostConstruct ...");
-	}
+    @PostConstruct
+    public void init() {
+        log.info("PostConstruct ...");
+    }
 
-	@PreDestroy
-	public void destroy() {
-		log.info("PreDestroy ...");
-	}
+    @PreDestroy
+    public void destroy() {
+        log.info("PreDestroy ...");
+    }
 }

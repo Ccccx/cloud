@@ -8,3 +8,6 @@ spring:
       maximum-pool-size: 50
   liquibase:
     change-log: classpath:/db/changelog/m1-onlineform-changelog.xml  # 默认设置 db.changelog-master.yaml
+logging:
+  level:
+    "com.example.log4j2test.web.controller": debug

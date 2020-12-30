@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 public class AppIndicator implements HealthIndicator {
 
 
-	@Override
-	public Health health() {
-		return Health.up().withDetail("message", "可以").build();
-	}
+    @Override
+    public Health health() {
+        return Health.up().withDetail("message", "可以").build();
+    }
 }

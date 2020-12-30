@@ -12,9 +12,9 @@ import javax.annotation.PostConstruct;
 @Slf4j
 public class ChildCustomConfig {
 
-	@PostConstruct
-	public void init() {
-		log.debug("ChildCustomConfig init ...");
-	}
+    @PostConstruct
+    public void init() {
+        log.debug("ChildCustomConfig init ...");
+    }
 
 }

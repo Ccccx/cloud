@@ -13,19 +13,19 @@ import java.util.Date;
 @Indexed
 @Data
 public class TestBean {
-	private Long id;
-	private String userId;
-	private Long strategyId;
-	private String appCode;
-	private Long activityId;
-	private Byte voucherStatus;
-	private String voucherCode;
-	private Integer amount;
-	private Long produceOrderId;
-	private Long consumeOrderId;
-	private Date startTime;
-	private Date endTime;
-	private Byte deleted;
-	private Date createTime;
-	private Date updateTime;
+    private Long id;
+    private String userId;
+    private Long strategyId;
+    private String appCode;
+    private Long activityId;
+    private Byte voucherStatus;
+    private String voucherCode;
+    private Integer amount;
+    private Long produceOrderId;
+    private Long consumeOrderId;
+    private Date startTime;
+    private Date endTime;
+    private Byte deleted;
+    private Date createTime;
+    private Date updateTime;
 }

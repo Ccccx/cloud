@@ -37,115 +37,113 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 class SpelTest {
 
-	@Test
-	void t1() {
-		SpelExpressionParser parser = new SpelExpressionParser();
-		StandardEvaluationContext ctx = new StandardEvaluationContext();
+    public static String repeat(String s) {
+        return s + s;
+    }
 
-		final Foo foo = new Foo();
-		foo.name = "cxx";
-		foo.setAge(10);
-		foo.setFlag(true);
-		ctx.setRootObject(foo);
+    @Test
+    void t1() {
+        SpelExpressionParser parser = new SpelExpressionParser();
+        StandardEvaluationContext ctx = new StandardEvaluationContext();
 
-		// 取值
-		SpelExpression expr = parser.parseRaw("name");
-		Object value = expr.getValue(ctx);
-		assertThat(value).isEqualTo("cxx");
+        final Foo foo = new Foo();
+        foo.name = "cxx";
+        foo.setAge(10);
+        foo.setFlag(true);
+        ctx.setRootObject(foo);
 
-		// 赋值
-		expr = parser.parseRaw("age=4");
-		value = expr.getValue(ctx);
-		expr = parser.parseRaw("age");
-		value = expr.getValue(ctx);
-		assertThat(value).isEqualTo(4);
-	}
+        // 取值
+        SpelExpression expr = parser.parseRaw("name");
+        Object value = expr.getValue(ctx);
+        assertThat(value).isEqualTo("cxx");
 
-	@Test
-	void t2() {
-		try {
-			// Create a parser
-			SpelExpressionParser parser = new SpelExpressionParser();
-			// Use the standard evaluation context
-			StandardEvaluationContext ctx = new StandardEvaluationContext();
-			ctx.registerFunction("repeat", SpelTest.class.getDeclaredMethod("repeat", String.class));
+        // 赋值
+        expr = parser.parseRaw("age=4");
+        value = expr.getValue(ctx);
+        expr = parser.parseRaw("age");
+        value = expr.getValue(ctx);
+        assertThat(value).isEqualTo(4);
+    }
 
-			Expression expr = parser.parseRaw("#repeat('hello')");
-			Object value = expr.getValue(ctx);
-			assertThat(value).isEqualTo("hellohello");
-		} catch (EvaluationException | ParseException | NoSuchMethodException ex) {
-			throw new AssertionError(ex.getMessage(), ex);
-		}
-	}
+    @Test
+    void t2() {
+        try {
+            // Create a parser
+            SpelExpressionParser parser = new SpelExpressionParser();
+            // Use the standard evaluation context
+            StandardEvaluationContext ctx = new StandardEvaluationContext();
+            ctx.registerFunction("repeat", SpelTest.class.getDeclaredMethod("repeat", String.class));
 
-	@Test
-	void t3() {
-		try {
-			// Create a parser
-			SpelExpressionParser parser = new SpelExpressionParser();
-			// Use the standard evaluation context
-			StandardEvaluationContext ctx = new StandardEvaluationContext();
-			ctx.registerFunction("repeat", SpelTest.class.getDeclaredMethod("repeat", String.class));
+            Expression expr = parser.parseRaw("#repeat('hello')");
+            Object value = expr.getValue(ctx);
+            assertThat(value).isEqualTo("hellohello");
+        } catch (EvaluationException | ParseException | NoSuchMethodException ex) {
+            throw new AssertionError(ex.getMessage(), ex);
+        }
+    }
 
-
-			Expression expr = parser.parseRaw("#repeat('hello')");
-			Object value = expr.getValue(ctx);
-			assertThat(value).isEqualTo("hellohello");
-
-			List<String> list = new ArrayList<>();
-			list.add("str0");
-			list.add("str1");
-			list.add("str2");
-			ctx.setVariable("arg", list);
-
-			expr = parser.parseRaw("#arg[1]");
-			value = expr.getValue(ctx);
-			assertThat(value).isEqualTo("str1");
-		} catch (EvaluationException | ParseException | NoSuchMethodException ex) {
-			throw new AssertionError(ex.getMessage(), ex);
-		}
-	}
-
-	@Test
-	@SneakyThrows
-	void t4() {
-		final Foo root = new Foo();
-		String str = "Spel Method Test";
-		SpelExpressionParser parser = new SpelExpressionParser();
-		ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
-		MethodBasedEvaluationContext evaluationContext = new MethodBasedEvaluationContext(
-				root, root.getClass().getMethod("say", String.class), new Object[]{str}, parameterNameDiscoverer);
-		final Expression expression = parser.parseExpression("#str");
-		final Object value = expression.getValue(evaluationContext);
-		assertThat(value).isEqualTo(str);
-	}
+    @Test
+    void t3() {
+        try {
+            // Create a parser
+            SpelExpressionParser parser = new SpelExpressionParser();
+            // Use the standard evaluation context
+            StandardEvaluationContext ctx = new StandardEvaluationContext();
+            ctx.registerFunction("repeat", SpelTest.class.getDeclaredMethod("repeat", String.class));
 
 
-	@Test
-	@SneakyThrows
-	void t999() {
-		final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		context.register(Bar.class);
-		final MutablePropertySources propertySources = context.getEnvironment().getPropertySources();
-		final Properties properties = new Properties();
-		properties.setProperty("dir", "default");
-		final PropertiesPropertySource test = new PropertiesPropertySource("test", properties);
-		propertySources.addFirst(test);
-		context.refresh();
-		final Bar bar = context.getBean(Bar.class);
-		Assert.notNull(bar, "error");
-		log.info("{}", FileCopyUtils.copyToString(new FileReader(bar.file)));
-	}
+            Expression expr = parser.parseRaw("#repeat('hello')");
+            Object value = expr.getValue(ctx);
+            assertThat(value).isEqualTo("hellohello");
 
-	public static String repeat(String s) {
-		return s + s;
-	}
+            List<String> list = new ArrayList<>();
+            list.add("str0");
+            list.add("str1");
+            list.add("str2");
+            ctx.setVariable("arg", list);
 
+            expr = parser.parseRaw("#arg[1]");
+            value = expr.getValue(ctx);
+            assertThat(value).isEqualTo("str1");
+        } catch (EvaluationException | ParseException | NoSuchMethodException ex) {
+            throw new AssertionError(ex.getMessage(), ex);
+        }
+    }
 
-	@Configuration
-	public static class Bar {
-		@Value("${dir}/resource.txt")
-		private File file;
-	}
+    @Test
+    @SneakyThrows
+    void t4() {
+        final Foo root = new Foo();
+        String str = "Spel Method Test";
+        SpelExpressionParser parser = new SpelExpressionParser();
+        ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
+        MethodBasedEvaluationContext evaluationContext = new MethodBasedEvaluationContext(
+                root, root.getClass().getMethod("say", String.class), new Object[]{str}, parameterNameDiscoverer);
+        final Expression expression = parser.parseExpression("#str");
+        final Object value = expression.getValue(evaluationContext);
+        assertThat(value).isEqualTo(str);
+    }
+
+    @Test
+    @SneakyThrows
+    void t999() {
+        final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.register(Bar.class);
+        final MutablePropertySources propertySources = context.getEnvironment().getPropertySources();
+        final Properties properties = new Properties();
+        properties.setProperty("dir", "default");
+        final PropertiesPropertySource test = new PropertiesPropertySource("test", properties);
+        propertySources.addFirst(test);
+        context.refresh();
+        final Bar bar = context.getBean(Bar.class);
+        Assert.notNull(bar, "error");
+        log.info("{}", FileCopyUtils.copyToString(new FileReader(bar.file)));
+    }
+
+    @Configuration
+    public static class Bar {
+        @Value("${dir}/resource.txt")
+        private File file;
+    }
 
 }

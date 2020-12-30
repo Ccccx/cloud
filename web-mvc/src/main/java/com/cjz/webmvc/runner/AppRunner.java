@@ -23,23 +23,23 @@ import java.util.UUID;
 @Component
 public class AppRunner implements ApplicationRunner {
 
-	@Resource
-	private IUsersService usersService;
+    @Resource
+    private IUsersService usersService;
 
-	@Override
-	public void run(ApplicationArguments args) throws Exception {
-		final Users users = new Users();
-		users.setUsername(UUID.randomUUID().toString().replace("-", ""));
-		users.setCreateDate(new Date());
-		users.setPassword("123456");
-		users.setNickname(users.getUsername());
-		users.insert();
-		log.info("User insert : {}", users);
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        final Users users = new Users();
+        users.setUsername(UUID.randomUUID().toString().replace("-", ""));
+        users.setCreateDate(new Date());
+        users.setPassword("123456");
+        users.setNickname(users.getUsername());
+        users.insert();
+        log.info("User insert : {}", users);
 
-		final LambdaQueryWrapper<Users> queryWrapper = Wrappers.lambdaQuery(Users.class);
-		queryWrapper.eq(Users::getUsername, users.getUsername());
+        final LambdaQueryWrapper<Users> queryWrapper = Wrappers.lambdaQuery(Users.class);
+        queryWrapper.eq(Users::getUsername, users.getUsername());
 
-		final List<Users> list = usersService.list(queryWrapper);
-		list.forEach(System.out::println);
-	}
+        final List<Users> list = usersService.list(queryWrapper);
+        list.forEach(System.out::println);
+    }
 }

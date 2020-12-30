@@ -3,7 +3,7 @@
 <head>
     <title>Hello WebSocket</title>
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
@@ -11,7 +11,7 @@
     <script src="./js/request.js"></script>
 </head>
 <body onload="loadData()">
-<div id="main-content" class="container" style="margin-top: 10px;">
+<div class="container" id="main-content" style="margin-top: 10px;">
     </br>
     <div class="row">
         <div class="col-md-6">
@@ -60,17 +60,17 @@
         <div class="col-md-6" style="margin-left:0px">
             <label class="control-label">在线用户(点击用户发送消息) </label>
             <div class="list-group" id="user-list">
-                <button type="button" class="list-group-item user-list" onclick="selectUser('test')">Cras justo odio
+                <button class="list-group-item user-list" onclick="selectUser('test')" type="button">Cras justo odio
                 </button>
-                <button type="button" class="list-group-item user-list" onclick="selectUser('test')">Dapibus ac
+                <button class="list-group-item user-list" onclick="selectUser('test')" type="button">Dapibus ac
                     facilisis in
                 </button>
-                <button type="button" class="list-group-item user-list" onclick="selectUser('test')">Morbi leo risus
+                <button class="list-group-item user-list" onclick="selectUser('test')" type="button">Morbi leo risus
                 </button>
-                <button type="button" class="list-group-item user-list" onclick="selectUser('test')">Porta ac
+                <button class="list-group-item user-list" onclick="selectUser('test')" type="button">Porta ac
                     consectetur ac
                 </button>
-                <button type="button" class="list-group-item user-list" onclick="selectUser('test')">Vestibulum at
+                <button class="list-group-item user-list" onclick="selectUser('test')" type="button">Vestibulum at
                     eros
                 </button>
             </div>

@@ -23,29 +23,29 @@ import java.time.LocalDate;
 @Configuration
 public class SwaggerConfig {
 
-	@Bean
-	public Docket defaultDocket() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.apiInfo(apiInfo())
-				.select()
-				.paths(PathSelectors.any())
-				.build()
-				.ignoredParameterTypes(Principal.class, Authentication.class)
-				.pathMapping("/")
-				.directModelSubstitute(LocalDate.class, String.class).genericModelSubstitutes(ResponseEntity.class)
-				.useDefaultResponseMessages(true)
-				.enableUrlTemplating(false)
-				.enable(true);
-	}
+    @Bean
+    public Docket defaultDocket() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .select()
+                .paths(PathSelectors.any())
+                .build()
+                .ignoredParameterTypes(Principal.class, Authentication.class)
+                .pathMapping("/")
+                .directModelSubstitute(LocalDate.class, String.class).genericModelSubstitutes(ResponseEntity.class)
+                .useDefaultResponseMessages(true)
+                .enableUrlTemplating(false)
+                .enable(true);
+    }
 
 
-	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder()
-				.title("演示项目")
-				.description("这是一个演示项目")
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("演示项目")
+                .description("这是一个演示项目")
 //				.contact(new Contact(info.getContact().getName(), info.getContact().getUrl(),
 //						info.getContact().getEmail()))
-				.version("v1.0.0")
-				.build();
-	}
+                .version("v1.0.0")
+                .build();
+    }
 }

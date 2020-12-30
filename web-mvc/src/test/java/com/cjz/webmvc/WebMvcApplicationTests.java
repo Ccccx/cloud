@@ -15,18 +15,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 @AutoConfigureMockMvc
 public class WebMvcApplicationTests {
 
-	@Autowired
-	private WebClient webClient;
+    @Autowired
+    protected WebApplicationContext wac;
+    @Autowired
+    protected MockMvc mockMvc;
+    @Autowired
+    private WebClient webClient;
 
-	@Autowired
-	protected WebApplicationContext wac;
+    public static void main(String[] args) {
 
-	@Autowired
-	protected MockMvc mockMvc;
-
-	public static void main(String[] args) {
-
-	}
+    }
 
 
 }

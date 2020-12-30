@@ -10,8 +10,8 @@ import org.springframework.context.event.EventListener;
  */
 @Slf4j
 public class ChildFinishListener {
-	@EventListener
-	public void onApplicationEvent(ChildFinishEvent event) {
-		log.debug("收到推送消息: {}  {}", event.getRequest(), event.getMetadata());
-	}
+    @EventListener
+    public void onApplicationEvent(ChildFinishEvent event) {
+        log.debug("收到推送消息: {}  {}", event.getRequest(), event.getMetadata());
+    }
 }

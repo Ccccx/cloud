@@ -1,0 +1,2 @@
+# Auto Configure
+org.springframework.context.ApplicationListener=com.example.log4j2test.logger.LoggerEnvConfigListener

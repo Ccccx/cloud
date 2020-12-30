@@ -14,15 +14,15 @@ import javax.annotation.PostConstruct;
 @Slf4j
 public class ChildAutoConfig {
 
-	@PostConstruct
-	public void init() {
-		log.debug("ChildAutoConfig init ...");
-	}
+    @PostConstruct
+    public void init() {
+        log.debug("ChildAutoConfig init ...");
+    }
 
-	@Bean
-	public ChildConfig childConfig() {
-		log.debug("ChildConfig ...");
-		return new ChildConfig();
-	}
+    @Bean
+    public ChildConfig childConfig() {
+        log.debug("ChildConfig ...");
+        return new ChildConfig();
+    }
 
 }

@@ -6,5 +6,5 @@ package com.example.factorydemo.dyjava;
  * @since 2020-10-27 15:42
  */
 public interface IHelloService {
-	void sayHello(String name);
+    void sayHello(String name);
 }

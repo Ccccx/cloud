@@ -24,32 +24,32 @@ import java.security.Principal;
 @Component
 public class MyChannelInterceptor implements ChannelInterceptor {
 
-	@Autowired
-	@Lazy
-	private UserComponent userComponent;
+    @Autowired
+    @Lazy
+    private UserComponent userComponent;
 
-	/**
-	 * 从 Header 中获取 Token 进行验证，根据不同的 Token 区别用户
-	 *
-	 * @param message 消息对象
-	 * @param channel 通道对象
-	 * @return 验证后的用户信息
-	 */
-	@Override
-	public Message<?> preSend(Message<?> message, MessageChannel channel) {
-		log.info("preSend ...");
-		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-		if (accessor == null) {
-			return message;
-		}
-		final Principal user = accessor.getUser();
-		if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-			log.info(" {} -> 初次建立连接 ", user.getName());
-			userComponent.addUser(user);
-		} else if (StompCommand.DISCONNECT.equals(accessor.getCommand())) {
-			log.info("{} <- 断开连接", user.getName());
-			userComponent.removeUser(user);
-		}
-		return message;
-	}
+    /**
+     * 从 Header 中获取 Token 进行验证，根据不同的 Token 区别用户
+     *
+     * @param message 消息对象
+     * @param channel 通道对象
+     * @return 验证后的用户信息
+     */
+    @Override
+    public Message<?> preSend(Message<?> message, MessageChannel channel) {
+        log.info("preSend ...");
+        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+        if (accessor == null) {
+            return message;
+        }
+        final Principal user = accessor.getUser();
+        if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+            log.info(" {} -> 初次建立连接 ", user.getName());
+            userComponent.addUser(user);
+        } else if (StompCommand.DISCONNECT.equals(accessor.getCommand())) {
+            log.info("{} <- 断开连接", user.getName());
+            userComponent.removeUser(user);
+        }
+        return message;
+    }
 }

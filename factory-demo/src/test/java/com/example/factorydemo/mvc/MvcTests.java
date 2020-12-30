@@ -21,38 +21,38 @@ import org.springframework.web.util.UriComponents;
 @Slf4j
 public class MvcTests {
 
-	private final MockHttpServletRequest request = new MockHttpServletRequest();
+    private final MockHttpServletRequest request = new MockHttpServletRequest();
 
-	@BeforeEach
-	public void setup() {
-		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(this.request));
-	}
+    @BeforeEach
+    public void setup() {
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(this.request));
+    }
 
-	@AfterEach
-	public void reset() {
-		RequestContextHolder.resetRequestAttributes();
-	}
+    @AfterEach
+    public void reset() {
+        RequestContextHolder.resetRequestAttributes();
+    }
 
-	@Test
-	public void t1() {
-		this.request.setScheme("https");
-		this.request.addHeader("X-Forwarded-Host", "somethingDifferent");
-		final UriComponents uriComponents = MvcUriComponentsBuilder.fromController(PersonControllerImpl.class).buildAndExpand(1);
-		log.info(uriComponents.toUriString());
-
-
-	}
-
-	@RequestMapping("/people/{id}/addresses")
-	interface PersonController {
-	}
+    @Test
+    public void t1() {
+        this.request.setScheme("https");
+        this.request.addHeader("X-Forwarded-Host", "somethingDifferent");
+        final UriComponents uriComponents = MvcUriComponentsBuilder.fromController(PersonControllerImpl.class).buildAndExpand(1);
+        log.info(uriComponents.toUriString());
 
 
-	static class PersonControllerImpl implements PersonController {
+    }
 
-		@RequestMapping("/{country}")
-		HttpEntity<Void> getAddressesForCountry(@PathVariable String country) {
-			return null;
-		}
-	}
+    @RequestMapping("/people/{id}/addresses")
+    interface PersonController {
+    }
+
+
+    static class PersonControllerImpl implements PersonController {
+
+        @RequestMapping("/{country}")
+        HttpEntity<Void> getAddressesForCountry(@PathVariable String country) {
+            return null;
+        }
+    }
 }

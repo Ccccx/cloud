@@ -8,6 +8,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  * @date 2019-12-09 9:26
  */
 public class ChildApplicationContext extends AnnotationConfigApplicationContext {
-	public ChildApplicationContext() {
-	}
+    public ChildApplicationContext() {
+    }
 }

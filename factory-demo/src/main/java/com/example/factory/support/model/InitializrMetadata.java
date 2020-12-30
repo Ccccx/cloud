@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(prefix = "initializr")
 public class InitializrMetadata {
-	private String name = "parent";
-	private String desc = "This is a demo!";
+    private String name = "parent";
+    private String desc = "This is a demo!";
 
 }

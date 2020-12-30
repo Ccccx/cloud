@@ -11,15 +11,15 @@ import org.springframework.util.StopWatch;
  */
 @Slf4j
 public class stopwatch {
-	@Test
-	public void t1() {
-		final StopWatch watch = new StopWatch();
-		watch.setKeepTaskList(true);
-		watch.start("开始");
-		watch.stop();
-		watch.start("11111111 start");
-		watch.stop();
-		log.info(watch.prettyPrint());
+    @Test
+    public void t1() {
+        final StopWatch watch = new StopWatch();
+        watch.setKeepTaskList(true);
+        watch.start("开始");
+        watch.stop();
+        watch.start("11111111 start");
+        watch.stop();
+        log.info(watch.prettyPrint());
 
-	}
+    }
 }

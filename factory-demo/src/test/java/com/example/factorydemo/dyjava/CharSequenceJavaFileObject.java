@@ -15,58 +15,57 @@ import java.net.URISyntaxException;
  * @since 2020-10-27 15:50
  */
 public class CharSequenceJavaFileObject extends SimpleJavaFileObject {
-	public static final String CLASS_EXTENSION = ".class";
+    public static final String CLASS_EXTENSION = ".class";
 
-	public static final String JAVA_EXTENSION = ".java";
+    public static final String JAVA_EXTENSION = ".java";
+    private final CharSequence sourceCode;
+    private ByteArrayOutputStream byteCode;
 
-	private ByteArrayOutputStream byteCode;
-	private final CharSequence sourceCode;
-
-	private static URI fromClassName(String className) {
-		try {
-			return new URI(className);
-		} catch (URISyntaxException e) {
-			throw new IllegalArgumentException(className, e);
-		}
-	}
+    public CharSequenceJavaFileObject(String className, CharSequence sourceCode) {
+        super(fromClassName(className + JAVA_EXTENSION), Kind.SOURCE);
+        this.sourceCode = sourceCode;
+    }
 
 
-	public CharSequenceJavaFileObject(String className, CharSequence sourceCode) {
-		super(fromClassName(className + JAVA_EXTENSION), Kind.SOURCE);
-		this.sourceCode = sourceCode;
-	}
+    public CharSequenceJavaFileObject(String fullClassName, Kind kind) {
+        super(fromClassName(fullClassName), kind);
+        this.sourceCode = null;
+    }
 
-	public CharSequenceJavaFileObject(String fullClassName, Kind kind) {
-		super(fromClassName(fullClassName), kind);
-		this.sourceCode = null;
-	}
+    public CharSequenceJavaFileObject(URI uri, Kind kind) {
+        super(uri, kind);
+        this.sourceCode = null;
+    }
 
-	public CharSequenceJavaFileObject(URI uri, Kind kind) {
-		super(uri, kind);
-		this.sourceCode = null;
-	}
+    private static URI fromClassName(String className) {
+        try {
+            return new URI(className);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(className, e);
+        }
+    }
 
-	@Override
-	public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
-		return sourceCode;
-	}
+    @Override
+    public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
+        return sourceCode;
+    }
 
-	@Override
-	public InputStream openInputStream() {
-		return new ByteArrayInputStream(getByteCode());
-	}
+    @Override
+    public InputStream openInputStream() {
+        return new ByteArrayInputStream(getByteCode());
+    }
 
-	/**
-	 * 注意这个方法是编译结果回调的OutputStream，回调成功后就能通过下面的getByteCode()方法获取目标类编译后的字节码字节数组
-	 *
-	 * @return 结果流
-	 */
-	@Override
-	public OutputStream openOutputStream() {
-		return byteCode = new ByteArrayOutputStream();
-	}
+    /**
+     * 注意这个方法是编译结果回调的OutputStream，回调成功后就能通过下面的getByteCode()方法获取目标类编译后的字节码字节数组
+     *
+     * @return 结果流
+     */
+    @Override
+    public OutputStream openOutputStream() {
+        return byteCode = new ByteArrayOutputStream();
+    }
 
-	public byte[] getByteCode() {
-		return byteCode.toByteArray();
-	}
+    public byte[] getByteCode() {
+        return byteCode.toByteArray();
+    }
 }

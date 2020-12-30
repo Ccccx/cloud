@@ -23,25 +23,25 @@ import java.util.UUID;
 @EnableScheduling
 public class AppConfig {
 
-	/**
-	 * 手动方式注入WEB 请求
-	 *
-	 * @param mapping 映射器
-	 * @param handler 已注册的处理器
-	 * @throws NoSuchMethodException
-	 */
-	@Autowired
-	public void setHandlerMapping(RequestMappingHandlerMapping mapping, CacheController handler)
-			throws NoSuchMethodException {
-		RequestMappingInfo info = RequestMappingInfo.paths("/t3").methods(RequestMethod.GET).build();
-		Method method = CacheController.class.getMethod("t3");
-		mapping.registerMapping(info, handler, method);
-	}
+    /**
+     * 手动方式注入WEB 请求
+     *
+     * @param mapping 映射器
+     * @param handler 已注册的处理器
+     * @throws NoSuchMethodException
+     */
+    @Autowired
+    public void setHandlerMapping(RequestMappingHandlerMapping mapping, CacheController handler)
+            throws NoSuchMethodException {
+        RequestMappingInfo info = RequestMappingInfo.paths("/t3").methods(RequestMethod.GET).build();
+        Method method = CacheController.class.getMethod("t3");
+        mapping.registerMapping(info, handler, method);
+    }
 
-	@Bean
-	@RequestScope
-	public User user() {
-		return new User(UUID.randomUUID().toString());
-	}
+    @Bean
+    @RequestScope
+    public User user() {
+        return new User(UUID.randomUUID().toString());
+    }
 
 }

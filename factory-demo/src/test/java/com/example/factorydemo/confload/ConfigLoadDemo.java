@@ -19,28 +19,28 @@ import javax.annotation.PostConstruct;
 @Configuration
 public class ConfigLoadDemo {
 
-	@Autowired
-	private Foo foo;
+    @Autowired
+    private Foo foo;
 
-	public static void main(String[] args) {
-		final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		context.register(ConfigLoadDemo.class);
-		context.refresh();
-	}
+    public static void main(String[] args) {
+        final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.register(ConfigLoadDemo.class);
+        context.refresh();
+    }
 
-	@PostConstruct
-	public void init() {
-		log.info("foo: {}", foo);
-	}
+    @PostConstruct
+    public void init() {
+        log.info("foo: {}", foo);
+    }
 
-	@Configuration
-	@Slf4j
-	public static class FooConfig {
-		@Bean
-		@Scope("prototype")
-		public Foo foo() {
-			log.info("foo init ...");
-			return new Foo("cjz", true, 18);
-		}
-	}
+    @Configuration
+    @Slf4j
+    public static class FooConfig {
+        @Bean
+        @Scope("prototype")
+        public Foo foo() {
+            log.info("foo init ...");
+            return new Foo("cjz", true, 18);
+        }
+    }
 }

@@ -6,7 +6,7 @@ package com.example.factory.project;
  * @date 2019-12-09 11:03
  */
 public class ChildGenerationException extends RuntimeException {
-	public ChildGenerationException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public ChildGenerationException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

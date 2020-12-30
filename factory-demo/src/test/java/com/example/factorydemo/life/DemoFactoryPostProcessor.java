@@ -13,13 +13,13 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
  */
 @Slf4j
 public class DemoFactoryPostProcessor implements BeanDefinitionRegistryPostProcessor {
-	@Override
-	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-		log.info("BeanFactoryPostProcessor#postProcessBeanFactory");
-	}
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        log.info("BeanFactoryPostProcessor#postProcessBeanFactory");
+    }
 
-	@Override
-	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-		log.info("BeanFactoryPostProcessor#postProcessBeanDefinitionRegistry: {}", registry.getBeanDefinitionCount());
-	}
+    @Override
+    public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
+        log.info("BeanFactoryPostProcessor#postProcessBeanDefinitionRegistry: {}", registry.getBeanDefinitionCount());
+    }
 }

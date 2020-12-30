@@ -31,41 +31,41 @@ import org.springframework.context.annotation.Import;
 public class InitAutoConfig {
 
 
-	@Bean
-	@ConditionalOnMissingBean(InitializrMetadataProvider.class)
-	public InitializrMetadataProvider initializrMetadataProvider(InitializrMetadata initializrMetadata) {
-		return () -> initializrMetadata;
-	}
+    @Bean
+    @ConditionalOnMissingBean(InitializrMetadataProvider.class)
+    public InitializrMetadataProvider initializrMetadataProvider(InitializrMetadata initializrMetadata) {
+        return () -> initializrMetadata;
+    }
 
-	@Bean
-	public DemoController demoController(ApplicationContext context) {
-		log.debug("demoController ...");
-		ChildGenerationInvoker<BaseRequest> childGenerationInvoker = new ChildGenerationInvoker<>(context, new DefaultRequestToDescriptionConverter());
-		return new DemoController(childGenerationInvoker);
-	}
+    @Bean
+    public DemoController demoController(ApplicationContext context) {
+        log.debug("demoController ...");
+        ChildGenerationInvoker<BaseRequest> childGenerationInvoker = new ChildGenerationInvoker<>(context, new DefaultRequestToDescriptionConverter());
+        return new DemoController(childGenerationInvoker);
+    }
 
-	@Bean
-	public ContextInnerBean contextInnerBean() {
-		return new ContextInnerBean();
-	}
+    @Bean
+    public ContextInnerBean contextInnerBean() {
+        return new ContextInnerBean();
+    }
 
-	@Bean
-	public Runner runner() {
-		return new Runner();
-	}
+    @Bean
+    public Runner runner() {
+        return new Runner();
+    }
 
-	@Bean
-	public ChildFinishListener childFinishListener() {
-		log.debug("childFinishListener ...");
-		return new ChildFinishListener();
-	}
+    @Bean
+    public ChildFinishListener childFinishListener() {
+        log.debug("childFinishListener ...");
+        return new ChildFinishListener();
+    }
 
 
-	@Bean
-	public FactoryBean<ObjectFactory<Object>> factoryBean() {
-		final ObjectFactoryCreatingFactoryBean factoryBean = new ObjectFactoryCreatingFactoryBean();
-		factoryBean.setTargetBeanName("demoController");
-		return factoryBean;
-	}
+    @Bean
+    public FactoryBean<ObjectFactory<Object>> factoryBean() {
+        final ObjectFactoryCreatingFactoryBean factoryBean = new ObjectFactoryCreatingFactoryBean();
+        factoryBean.setTargetBeanName("demoController");
+        return factoryBean;
+    }
 
 }

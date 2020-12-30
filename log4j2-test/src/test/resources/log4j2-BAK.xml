@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="trace">
+    <Appenders>
+        <Socket name="Logstash" host="127.0.0.1" port="5044"
+                immediateFlush="true" protocol="TCP"
+                connectTimeoutMillis="300000" reconnectionDelayMillis="5000" bufferSize="8192">
+            <CustomJsonPatternLayout appName="$${ctx:app_name}" version="$${ctx:version}">
+                <KeyValuePair key="appName" value="$${ctx:app_name}"/>
+                <KeyValuePair key="method" value="$${ctx:method}"/>
+            </CustomJsonPatternLayout>
+        </Socket>
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--            <PatternLayout pattern=" %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
+            <CustomJsonPatternLayout appName="$${ctx:app_name}" version="$${ctx:version}"/>
+        </Console>
+        <Console name="Console_Json" target="SYSTEM_OUT">
+            <CustomJsonPatternLayout appName="$${ctx:app_name}" version="$${ctx:version}">
+                <KeyValuePair key="appName" value="$${ctx:app_name}"/>
+                <KeyValuePair key="method" value="$${ctx:method}"/>
+            </CustomJsonPatternLayout>
+        </Console>
+        <File name="LogFile" fileName="logs/app.log">
+            <JsonLayout properties="true" eventEol="true" includeTimeMillis="true" compact="true">
+                <KeyValuePair key="app_name" value="$${ctx:app_name}"/>
+            </JsonLayout>
+        </File>
+    </Appenders>
+    <Loggers>
+        <!--        <Logger name="com.example.log4j2test.test.Log4j2Test$Bar" level="TRACE" additivity="false">-->
+        <!--            <AppenderRef ref="Logstash"/>-->
+        <!--        </Logger>-->
+        <Root level="TRACE">
+            <AppenderRef ref="Console_Json"/>
+            <!--            <AppenderRef ref="Logstash"/>-->
+        </Root>
+    </Loggers>
+</Configuration>

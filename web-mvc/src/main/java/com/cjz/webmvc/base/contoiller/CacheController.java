@@ -14,36 +14,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/cache")
 public class CacheController {
 
-	private final CacheComponent cacheComponent;
+    private final CacheComponent cacheComponent;
 
-	public CacheController(CacheComponent cacheComponent) {
-		this.cacheComponent = cacheComponent;
-	}
+    public CacheController(CacheComponent cacheComponent) {
+        this.cacheComponent = cacheComponent;
+    }
 
-	@GetMapping("/t1")
-	public String t1() {
-		return cacheComponent.t1();
-	}
+    @GetMapping("/t1")
+    public String t1() {
+        return cacheComponent.t1();
+    }
 
-	@GetMapping("/clear")
-	public String clear() {
-		return cacheComponent.clear();
-	}
+    @GetMapping("/clear")
+    public String clear() {
+        return cacheComponent.clear();
+    }
 
 
-	@GetMapping("/t2")
-	public String t2() {
-		return cacheComponent.t2();
-	}
+    @GetMapping("/t2")
+    public String t2() {
+        return cacheComponent.t2();
+    }
 
-	/**
-	 * 通过AppConfig手动注入MVC请求
-	 *
-	 * @return 结果
-	 */
-	public String t3() {
-		return cacheComponent.t2();
-	}
+    /**
+     * 通过AppConfig手动注入MVC请求
+     *
+     * @return 结果
+     */
+    public String t3() {
+        return cacheComponent.t2();
+    }
 
 
 }

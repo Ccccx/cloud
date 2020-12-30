@@ -31,79 +31,80 @@ import java.nio.file.Paths;
 @Component
 public class StorageComponent {
 
-	private final ServletContext servletContext;
-	private static final Path ROOT = Paths.get("upload-dir");
-	private static final Path TMP = ROOT.resolve("upload-dir-tmp");
-	private static final DiskFileItemFactory FILE_FACTORY = new DiskFileItemFactory();
+    private static final Path ROOT = Paths.get("upload-dir");
+    private static final Path TMP = ROOT.resolve("upload-dir-tmp");
+    private static final DiskFileItemFactory FILE_FACTORY = new DiskFileItemFactory();
 
-	static {
-		try {
-			Files.createDirectories(TMP);
-		} catch (IOException e) {
-			log.warn("创建上传目录异常");
-		}
-		//为基于磁盘的文件项创建工厂
-		DiskFileItemFactory factory = new DiskFileItemFactory();
-		factory.setDefaultCharset(StandardCharsets.UTF_8.name());
-		factory.setSizeThreshold(10240);
-		//配置存储库（以确保使用安全的临时位置）
-		// File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
-		factory.setRepository(TMP.toFile());
+    static {
+        try {
+            Files.createDirectories(TMP);
+        } catch (IOException e) {
+            log.warn("创建上传目录异常");
+        }
+        //为基于磁盘的文件项创建工厂
+        DiskFileItemFactory factory = new DiskFileItemFactory();
+        factory.setDefaultCharset(StandardCharsets.UTF_8.name());
+        factory.setSizeThreshold(10240);
+        //配置存储库（以确保使用安全的临时位置）
+        // File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+        factory.setRepository(TMP.toFile());
 
-	}
+    }
 
-	public StorageComponent(ServletContext servletContext) {
-		this.servletContext = servletContext;
-	}
+    private final ServletContext servletContext;
 
-	public void upload(HttpServletRequest request) {
-		// 检查是否是上传文件请求
-		final boolean multipartContent = ServletFileUpload.isMultipartContent(request);
-		Assert.isTrue(multipartContent, "非法请求");
+    public StorageComponent(ServletContext servletContext) {
+        this.servletContext = servletContext;
+    }
 
-		/**
-		 * 创建一个新的文件上传处理程序
-		 */
-		ServletFileUpload upload = new ServletFileUpload();
-		/**
-		 * 进度监听器
-		 */
-		ProgressListener progressListener = new ProgressListener() {
-			private long megaBytes = -1;
+    public void upload(HttpServletRequest request) {
+        // 检查是否是上传文件请求
+        final boolean multipartContent = ServletFileUpload.isMultipartContent(request);
+        Assert.isTrue(multipartContent, "非法请求");
 
-			@Override
-			public void update(long pBytesRead, long pContentLength, int pItems) {
-				long mBytes = pBytesRead / 1000000;
-				if (megaBytes == mBytes) {
-					return;
-				}
-				megaBytes = mBytes;
-				if (pContentLength == -1) {
-					log.info("正在处理第{}个文件， 已经读取了{}个字节", pItems, pBytesRead);
-				} else {
-					BigDecimal process = new BigDecimal(pBytesRead).divide(new BigDecimal(pContentLength), 4, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
-					log.info("正在处理第{}个文件，已经读取了{}个字节，正在读取{}个字节, 当前进度 {}%", pItems, pBytesRead, pContentLength, process);
-				}
-			}
-		};
-		upload.setFileItemFactory(FILE_FACTORY);
-		upload.setProgressListener(progressListener);
-		try {
-			final FileItemIterator iter = upload.getItemIterator(request);
-			while (iter.hasNext()) {
-				FileItemStream item = iter.next();
-				String name = item.getFieldName();
-				InputStream stream = item.openStream();
-				if (item.isFormField()) {
-					log.info("Form field : {}  Value: {}", name, Streams.asString(stream));
-				} else {
-					log.info("Form field : {}  File Name: {}", name, item.getName());
-					IOUtils.copy(stream, new FileOutputStream(ROOT.resolve(item.getName()).toFile()));
-				}
-				stream.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+        /**
+         * 创建一个新的文件上传处理程序
+         */
+        ServletFileUpload upload = new ServletFileUpload();
+        /**
+         * 进度监听器
+         */
+        ProgressListener progressListener = new ProgressListener() {
+            private long megaBytes = -1;
+
+            @Override
+            public void update(long pBytesRead, long pContentLength, int pItems) {
+                long mBytes = pBytesRead / 1000000;
+                if (megaBytes == mBytes) {
+                    return;
+                }
+                megaBytes = mBytes;
+                if (pContentLength == -1) {
+                    log.info("正在处理第{}个文件， 已经读取了{}个字节", pItems, pBytesRead);
+                } else {
+                    BigDecimal process = new BigDecimal(pBytesRead).divide(new BigDecimal(pContentLength), 4, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
+                    log.info("正在处理第{}个文件，已经读取了{}个字节，正在读取{}个字节, 当前进度 {}%", pItems, pBytesRead, pContentLength, process);
+                }
+            }
+        };
+        upload.setFileItemFactory(FILE_FACTORY);
+        upload.setProgressListener(progressListener);
+        try {
+            final FileItemIterator iter = upload.getItemIterator(request);
+            while (iter.hasNext()) {
+                FileItemStream item = iter.next();
+                String name = item.getFieldName();
+                InputStream stream = item.openStream();
+                if (item.isFormField()) {
+                    log.info("Form field : {}  Value: {}", name, Streams.asString(stream));
+                } else {
+                    log.info("Form field : {}  File Name: {}", name, item.getName());
+                    IOUtils.copy(stream, new FileOutputStream(ROOT.resolve(item.getName()).toFile()));
+                }
+                stream.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

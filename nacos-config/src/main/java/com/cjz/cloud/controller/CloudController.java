@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RefreshScope
 public class CloudController {
 
-	@Value("${useLocalCache:false}")
-	private boolean useLocalCache;
+    @Value("${useLocalCache:false}")
+    private boolean useLocalCache;
 
-	@RequestMapping("/get")
-	public boolean get() {
-		return useLocalCache;
-	}
+    @RequestMapping("/get")
+    public boolean get() {
+        return useLocalCache;
+    }
 }

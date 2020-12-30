@@ -13,8 +13,8 @@ import javax.annotation.PostConstruct;
 @Slf4j
 @Configuration
 public class LoggerTraceConfig {
-	@PostConstruct
-	public void init() {
-		log.debug("LoggerTraceConfig ... ");
-	}
+    @PostConstruct
+    public void init() {
+        log.debug("LoggerTraceConfig ... ");
+    }
 }

@@ -10,12 +10,12 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
  * @date 2020-04-20 10:51
  */
 public class AopTest {
-	@Test
-	public void t1() {
-		AspectJExpressionPointcut ajexp = new AspectJExpressionPointcut();
-		//ajexp.setExpression("execution(* com.tiamaes.cloud.bigscreen.*.controller.*.*(..))");
-		ajexp.setExpression("target(org.springframework.beans.factory.BeanFactory)");
-		System.out.println(ajexp.matches(DefaultListableBeanFactory.class));
+    @Test
+    public void t1() {
+        AspectJExpressionPointcut ajexp = new AspectJExpressionPointcut();
+        //ajexp.setExpression("execution(* com.tiamaes.cloud.bigscreen.*.controller.*.*(..))");
+        ajexp.setExpression("target(org.springframework.beans.factory.BeanFactory)");
+        System.out.println(ajexp.matches(DefaultListableBeanFactory.class));
 
-	}
+    }
 }

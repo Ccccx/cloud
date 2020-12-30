@@ -19,24 +19,24 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 class ListenerTest {
 
-	@Test
-	@SneakyThrows
-	void t1() {
-		final AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(ListenerTest.class);
-		log.info("flag : true ----");
-		final Foo foo = new Foo();
-		foo.setFlag(true);
-		applicationContext.publishEvent(foo);
-		log.info("flag : false ----");
-		foo.setFlag(false);
-		applicationContext.publishEvent(foo);
-		TimeUnit.SECONDS.sleep(3);
-	}
+    @Test
+    @SneakyThrows
+    void t1() {
+        final AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(ListenerTest.class);
+        log.info("flag : true ----");
+        final Foo foo = new Foo();
+        foo.setFlag(true);
+        applicationContext.publishEvent(foo);
+        log.info("flag : false ----");
+        foo.setFlag(false);
+        applicationContext.publishEvent(foo);
+        TimeUnit.SECONDS.sleep(3);
+    }
 
-	@EventListener(condition = "#foo.flag")
-	public void handlerFooEvent(Foo foo) {
-		log.info("{}", foo);
+    @EventListener(condition = "#foo.flag")
+    public void handlerFooEvent(Foo foo) {
+        log.info("{}", foo);
 
-	}
+    }
 
 }

@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class JobTask {
 
-	private final UserComponent userComponent;
+    private final UserComponent userComponent;
 
-	public JobTask(UserComponent userComponent) {
-		this.userComponent = userComponent;
-	}
+    public JobTask(UserComponent userComponent) {
+        this.userComponent = userComponent;
+    }
 
-	@Scheduled(cron = "*/5 * * * * ?")
-	public void pushListUser() {
-		userComponent.pushListUser();
-	}
+    @Scheduled(cron = "*/5 * * * * ?")
+    public void pushListUser() {
+        userComponent.pushListUser();
+    }
 }

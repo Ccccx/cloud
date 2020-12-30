@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 开发环境不启用缓存，方便测试
+ *
  * @author chengjz
  * @version 1.0
  * @since 2020-04-21 9:14
@@ -30,56 +31,57 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching(proxyTargetClass = true)
 public class CacheConfig {
 
-	/**
-	 * 构建spring boot cache 管理类
-	 *  <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching>Spring  Caching</a>
-	 * @return ig
-	 */
-	@Bean
-	public CacheManager cacheManager() {
-		SimpleCacheManager cacheManager = new SimpleCacheManager();
-		ArrayList<CaffeineCache> caches = Lists.newArrayList();
-		caches.add(buildCaffeineCache("web-mvc"));
-		cacheManager.setCaches(caches);
-		return cacheManager;
-	}
+    /**
+     * 构建spring boot cache 管理类
+     * <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching>Spring  Caching</a>
+     *
+     * @return ig
+     */
+    @Bean
+    public CacheManager cacheManager() {
+        SimpleCacheManager cacheManager = new SimpleCacheManager();
+        ArrayList<CaffeineCache> caches = Lists.newArrayList();
+        caches.add(buildCaffeineCache("web-mvc"));
+        cacheManager.setCaches(caches);
+        return cacheManager;
+    }
 
 
-	@Bean
-	public KeyGenerator simpleKeyGenerator() {
-		return (target,  method,  params)  -> {
-			StringBuilder sb = new StringBuilder();
-			sb.append(target.getClass().getSimpleName())
-					.append("_")
-					.append(method.getName())
-					.append("_");
-			for (Object param : params) {
-				if (param == null) {
-					sb.append("null");
-				} else {
-					sb.append(param.toString());
-				}
-			}
-			final String cacheKey = sb.toString();
-			log.debug("cache key : {}", cacheKey);
-			return cacheKey;
-		};
-	}
+    @Bean
+    public KeyGenerator simpleKeyGenerator() {
+        return (target, method, params) -> {
+            StringBuilder sb = new StringBuilder();
+            sb.append(target.getClass().getSimpleName())
+                    .append("_")
+                    .append(method.getName())
+                    .append("_");
+            for (Object param : params) {
+                if (param == null) {
+                    sb.append("null");
+                } else {
+                    sb.append(param.toString());
+                }
+            }
+            final String cacheKey = sb.toString();
+            log.debug("cache key : {}", cacheKey);
+            return cacheKey;
+        };
+    }
 
-	private CaffeineCache buildCaffeineCache(String cacheName) {
-		ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1, r -> {
-			Thread t = new Thread(r);
-			t.setName("cache-schedule");
-			t.setDaemon(true);
-			return t;
-		});
-		return new CaffeineCache(cacheName,
-				Caffeine.newBuilder()
-						.scheduler(Scheduler.forScheduledExecutorService(executorService))
-						.removalListener((key, value, cause) -> log.debug("{} : {}", key, cause))
-						.recordStats()
-						.expireAfterWrite(1, TimeUnit.MINUTES)
-						.maximumSize(1000)
-						.build());
-	}
+    private CaffeineCache buildCaffeineCache(String cacheName) {
+        ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1, r -> {
+            Thread t = new Thread(r);
+            t.setName("cache-schedule");
+            t.setDaemon(true);
+            return t;
+        });
+        return new CaffeineCache(cacheName,
+                Caffeine.newBuilder()
+                        .scheduler(Scheduler.forScheduledExecutorService(executorService))
+                        .removalListener((key, value, cause) -> log.debug("{} : {}", key, cause))
+                        .recordStats()
+                        .expireAfterWrite(1, TimeUnit.MINUTES)
+                        .maximumSize(1000)
+                        .build());
+    }
 }

@@ -18,21 +18,25 @@ import javax.annotation.PreDestroy;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Foo {
-	public String name;
-	private boolean flag;
-	private Integer age;
+    public String name;
+    private boolean flag;
+    private Integer age;
 
-	@PostConstruct
-	public void init() {
-		log.info("前置方法调用 ...");
-	}
+    @PostConstruct
+    public void init() {
+        log.info("前置方法调用 ...");
+    }
 
-	@PreDestroy
-	public void destroy() {
-		log.info("销毁方法调用 ...");
-	}
+    @PreDestroy
+    public void destroy() {
+        log.info("销毁方法调用 ...");
+    }
 
-	public void say(String str) {
-		System.out.println("Say: " + str);
-	}
+    public void say(String str) {
+        System.out.println("Say: " + str);
+    }
+
+    public void logClassLoader() {
+        System.out.println("Foo: " + this.getClass().getClassLoader());
+    }
 }

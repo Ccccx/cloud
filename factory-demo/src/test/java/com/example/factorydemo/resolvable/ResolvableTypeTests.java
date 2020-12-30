@@ -15,19 +15,19 @@ import java.util.List;
  */
 @Slf4j
 class ResolvableTypeTests {
-	@Test
-	@SneakyThrows
-	void t1() {
-		ResolvableType t = ResolvableType.forField(Foo.class.getDeclaredField("myMap"));
-		log.info("{} ", t.getSuperType()); // AbstractMap<Integer, List<String>>
-		log.info("{} ", t.asMap()); // Map<Integer, List<String>>
-		log.info("{} ", t.getGeneric(0).resolve()); // Integer
-		log.info("{} ", t.getGeneric(1).resolve()); // List
-		log.info("{} ", t.getGeneric(1)); // List<String>
-		log.info("{} ", t.resolveGeneric(1, 0)); // String
-	}
+    @Test
+    @SneakyThrows
+    void t1() {
+        ResolvableType t = ResolvableType.forField(Foo.class.getDeclaredField("myMap"));
+        log.info("{} ", t.getSuperType()); // AbstractMap<Integer, List<String>>
+        log.info("{} ", t.asMap()); // Map<Integer, List<String>>
+        log.info("{} ", t.getGeneric(0).resolve()); // Integer
+        log.info("{} ", t.getGeneric(1).resolve()); // List
+        log.info("{} ", t.getGeneric(1)); // List<String>
+        log.info("{} ", t.resolveGeneric(1, 0)); // String
+    }
 
-	private static class Foo {
-		private HashMap<Integer, List<String>> myMap;
-	}
+    private static class Foo {
+        private HashMap<Integer, List<String>> myMap;
+    }
 }

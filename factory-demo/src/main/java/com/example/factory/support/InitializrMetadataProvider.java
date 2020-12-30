@@ -8,10 +8,10 @@ import com.example.factory.support.model.InitializrMetadata;
  * @date 2019-12-09 10:36
  */
 public interface InitializrMetadataProvider {
-	/**
-	 * 获取元数据
-	 *
-	 * @return ig
-	 */
-	InitializrMetadata get();
+    /**
+     * 获取元数据
+     *
+     * @return ig
+     */
+    InitializrMetadata get();
 }

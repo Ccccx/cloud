@@ -8,8 +8,8 @@ import com.example.factorydemo.dyjava.IHelloService;
  * @since 2020-10-27 15:45
  */
 public class HelloServiceImpl implements IHelloService {
-	@Override
-	public void sayHello(String name) {
-		System.out.println(String.format("%s say hello [by default]", name));
-	}
+    @Override
+    public void sayHello(String name) {
+        System.out.println(String.format("%s say hello [by default]", name));
+    }
 }

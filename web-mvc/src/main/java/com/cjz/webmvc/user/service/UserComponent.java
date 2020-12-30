@@ -19,31 +19,31 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Component
 public class UserComponent {
-	public static final Map<String, User> ONL_USER = new ConcurrentHashMap<>();
+    public static final Map<String, User> ONL_USER = new ConcurrentHashMap<>();
 
-	private final SimpMessageSendingOperations simpMessageSendingOperations;
+    private final SimpMessageSendingOperations simpMessageSendingOperations;
 
-	public UserComponent(SimpMessageSendingOperations simpMessageSendingOperations) {
-		this.simpMessageSendingOperations = simpMessageSendingOperations;
-	}
+    public UserComponent(SimpMessageSendingOperations simpMessageSendingOperations) {
+        this.simpMessageSendingOperations = simpMessageSendingOperations;
+    }
 
 
-	public void addUser(Principal user) {
-		ONL_USER.put(user.getName(), new User(user.getName()));
-		simpMessageSendingOperations.convertAndSend("/topic/users", getAllUsers());
-	}
+    public void addUser(Principal user) {
+        ONL_USER.put(user.getName(), new User(user.getName()));
+        simpMessageSendingOperations.convertAndSend("/topic/users", getAllUsers());
+    }
 
-	public void removeUser(Principal user) {
-		ONL_USER.remove(user.getName());
-		// simpMessageSendingOperations.convertAndSend("/topic/users", getAllUsers());
-	}
+    public void removeUser(Principal user) {
+        ONL_USER.remove(user.getName());
+        // simpMessageSendingOperations.convertAndSend("/topic/users", getAllUsers());
+    }
 
-	public void pushListUser() {
-		log.info("pushListUser ...");
-		simpMessageSendingOperations.convertAndSend("/topic/users", getAllUsers());
-	}
+    public void pushListUser() {
+        log.info("pushListUser ...");
+        simpMessageSendingOperations.convertAndSend("/topic/users", getAllUsers());
+    }
 
-	public List<User> getAllUsers() {
-		return new LinkedList<>(ONL_USER.values());
-	}
+    public List<User> getAllUsers() {
+        return new LinkedList<>(ONL_USER.values());
+    }
 }

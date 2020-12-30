@@ -11,18 +11,18 @@ import java.math.BigDecimal;
  * @since 2020-09-28 18:55
  */
 public class NumberTest {
-	@Test
-	public void t1() {
-		final Object bigDecimal = BigDecimal.valueOf(113.0 + RandomUtils.nextDouble(0.1, 0.9));
-		System.out.println(bigDecimal.toString());
-		System.out.println(Double.valueOf(bigDecimal.toString()));
-		final Integer integer = new Integer(1164383);
-		System.out.println(Double.valueOf(integer / 10000.0));
-	}
+    @Test
+    public void t1() {
+        final Object bigDecimal = BigDecimal.valueOf(113.0 + RandomUtils.nextDouble(0.1, 0.9));
+        System.out.println(bigDecimal.toString());
+        System.out.println(Double.valueOf(bigDecimal.toString()));
+        final Integer integer = new Integer(1164383);
+        System.out.println(Double.valueOf(integer / 10000.0));
+    }
 
-	@Test
-	public void t2() {
-		System.out.println(-1 >>> 1);
-		System.out.println(-1 >> 1);
-	}
+    @Test
+    public void t2() {
+        System.out.println(-1 >>> 1);
+        System.out.println(-1 >> 1);
+    }
 }

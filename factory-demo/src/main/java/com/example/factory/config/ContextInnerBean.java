@@ -18,15 +18,15 @@ import javax.annotation.Resource;
 @Data
 public class ContextInnerBean {
 
-	@Resource
-	private BeanFactory beanFactory;
+    @Resource
+    private BeanFactory beanFactory;
 
-	@Resource
-	private ObjectFactory<ApplicationContext> objectFactory;
+    @Resource
+    private ObjectFactory<ApplicationContext> objectFactory;
 
-	@Resource
-	private ApplicationContext applicationContext;
+    @Resource
+    private ApplicationContext applicationContext;
 
-	@Resource
-	private Environment environment;
+    @Resource
+    private Environment environment;
 }

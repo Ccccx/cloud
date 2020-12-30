@@ -26,70 +26,69 @@ import java.lang.annotation.RetentionPolicy;
 class AopTests {
 
 
-	@Bean
-	public Foo foo() {
-		return new Foo();
-	}
+    @Bean
+    public Foo foo() {
+        return new Foo();
+    }
 
-	@Test
-	void t1() {
-		final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AopTests.class);
-		final Foo foo = context.getBean(Foo.class);
-		foo.say("aspect 测试");
-	}
+    @Test
+    void t1() {
+        final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AopTests.class);
+        final Foo foo = context.getBean(Foo.class);
+        foo.say("aspect 测试");
+    }
 
 
-	@Component
-	@Aspect
-	public static class ConcurrentOperationExecutor implements Ordered {
-		private static final int DEFAULT_MAX_RETRIES = 2;
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface LogTrace {
 
-		private int maxRetries = DEFAULT_MAX_RETRIES;
-		private final int order = 1;
+    }
 
-		public void setMaxRetries(int maxRetries) {
-			this.maxRetries = maxRetries;
-		}
+    @Component
+    @Aspect
+    public static class ConcurrentOperationExecutor implements Ordered {
+        private static final int DEFAULT_MAX_RETRIES = 2;
+        private final int order = 1;
+        private int maxRetries = DEFAULT_MAX_RETRIES;
 
-		public int getOrder() {
-			return this.order;
-		}
+        public void setMaxRetries(int maxRetries) {
+            this.maxRetries = maxRetries;
+        }
 
-		/**
-		 * 任何通知方法都可以将类型的参数声明为它的第一个参数 org.aspectj.lang.JoinPoint（请注意，在通知周围需要声明type的第一个参数ProceedingJoinPoint，它是的子类JoinPoint。该 JoinPoint接口提供了许多有用的方法：
-		 * getArgs()：返回方法参数。
-		 * getThis()：返回代理对象。
-		 * getTarget()：返回目标对象。
-		 * getSignature()：返回建议使用的方法的描述。
-		 * toString()：打印有关所建议方法的有用描述。
-		 */
-		@Around("@annotation(com.example.factorydemo.proxy.AopTests.LogTrace)")
-		public Object doConcurrentOperation(ProceedingJoinPoint pjp) throws Throwable {
-			final long start = System.currentTimeMillis();
-			log.info("{}", pjp.getArgs());
-			log.info("{}", pjp.getThis());
-			log.info("{}", pjp.getTarget());
-			log.info("{}", pjp.toString());
-			try {
-				return pjp.proceed();
-			} finally {
-				log.info("耗时: {} ------------------------", System.currentTimeMillis() - start);
-			}
-		}
-	}
+        public int getOrder() {
+            return this.order;
+        }
 
-	@Retention(RetentionPolicy.RUNTIME)
-	public @interface LogTrace {
+        /**
+         * 任何通知方法都可以将类型的参数声明为它的第一个参数 org.aspectj.lang.JoinPoint（请注意，在通知周围需要声明type的第一个参数ProceedingJoinPoint，它是的子类JoinPoint。该 JoinPoint接口提供了许多有用的方法：
+         * getArgs()：返回方法参数。
+         * getThis()：返回代理对象。
+         * getTarget()：返回目标对象。
+         * getSignature()：返回建议使用的方法的描述。
+         * toString()：打印有关所建议方法的有用描述。
+         */
+        @Around("@annotation(com.example.factorydemo.proxy.AopTests.LogTrace)")
+        public Object doConcurrentOperation(ProceedingJoinPoint pjp) throws Throwable {
+            final long start = System.currentTimeMillis();
+            log.info("{}", pjp.getArgs());
+            log.info("{}", pjp.getThis());
+            log.info("{}", pjp.getTarget());
+            log.info("{}", pjp.toString());
+            try {
+                return pjp.proceed();
+            } finally {
+                log.info("耗时: {} ------------------------", System.currentTimeMillis() - start);
+            }
+        }
+    }
 
-	}
+    public static class Foo {
 
-	public static class Foo {
-
-		@LogTrace
-		public void say(String str) {
-			System.out.println("Foo say: " + str);
-		}
-	}
+        @LogTrace
+        public void say(String str) {
+            System.out.println("Foo say: " + str);
+        }
+    }
 
 
 }

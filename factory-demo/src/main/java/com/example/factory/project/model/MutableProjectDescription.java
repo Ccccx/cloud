@@ -10,6 +10,6 @@ import lombok.Data;
  */
 @Data
 public class MutableProjectDescription implements ProjectDescription {
-	private String msg;
-	private Long id;
+    private String msg;
+    private Long id;
 }

@@ -9,5 +9,6 @@ import lombok.Data;
  */
 @Data
 public class Bar {
-	private Foo foo;
+    private Foo foo;
+
 }

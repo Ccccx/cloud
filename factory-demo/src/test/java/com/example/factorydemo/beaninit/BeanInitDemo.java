@@ -26,67 +26,67 @@ import javax.annotation.PostConstruct;
 @Configuration
 class BeanInitDemo {
 
-	@Autowired
-	private Bar bar;
+    @Autowired
+    private Bar bar;
 
-	@Autowired
-	private Foo foo;
+    @Autowired
+    private Foo foo;
 
-	@Test
-	void t1() {
-		final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		context.register(BeanInitDemo.class);
-		// 测试通过代码方式手动注入
-		final BeanDefinitionBuilder beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(AutoModeBean.class);
-		beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
-		beanDefinition.setLazyInit(true);
-		context.registerBeanDefinition("autoModeBean", beanDefinition.getBeanDefinition());
-		context.refresh();
+    @Test
+    void t1() {
+        final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.register(BeanInitDemo.class);
+        // 测试通过代码方式手动注入
+        final BeanDefinitionBuilder beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(AutoModeBean.class);
+        beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
+        beanDefinition.setLazyInit(true);
+        context.registerBeanDefinition("autoModeBean", beanDefinition.getBeanDefinition());
+        context.refresh();
 
-		System.out.println(context.getBean("autoModeBean"));
-		// 测试引用问题  BeanInitDemo 加上@Configuration 为true ,  @Configuration(proxyBeanMethods = false) 或不加为false
-		// @Configuration 为@Bean 做了方法拦截,保证是单例
-		final Foo foo = context.getBean(Foo.class);
-		final Bar bar = context.getBean(Bar.class);
-		System.out.println("是否为相同引用 ?   " + (foo == bar.getFoo()));
+        System.out.println(context.getBean("autoModeBean"));
+        // 测试引用问题  BeanInitDemo 加上@Configuration 为true ,  @Configuration(proxyBeanMethods = false) 或不加为false
+        // @Configuration 为@Bean 做了方法拦截,保证是单例
+        final Foo foo = context.getBean(Foo.class);
+        final Bar bar = context.getBean(Bar.class);
+        System.out.println("是否为相同引用 ?   " + (foo == bar.getFoo()));
 
-	}
+    }
 
-	@Test
-	void t2() {
-		BeanWrapper wrapper = new BeanWrapperImpl(new Foo());
-		wrapper.setPropertyValue("name", "cx");
-		wrapper.setPropertyValue(new PropertyValue("flag", true));
-		final Foo foo = (Foo) wrapper.getWrappedInstance();
-		Assertions.assertEquals("cx", foo.getName());
-	}
+    @Test
+    void t2() {
+        BeanWrapper wrapper = new BeanWrapperImpl(new Foo());
+        wrapper.setPropertyValue("name", "cx");
+        wrapper.setPropertyValue(new PropertyValue("flag", true));
+        final Foo foo = (Foo) wrapper.getWrappedInstance();
+        Assertions.assertEquals("cx", foo.getName());
+    }
 
-	@PostConstruct
-	public void init() {
-		System.out.println("是否为相同引用 ?   " + (foo == bar.getFoo()));
-	}
+    @PostConstruct
+    public void init() {
+        System.out.println("是否为相同引用 ?   " + (foo == bar.getFoo()));
+    }
 
-	@Bean
-	public Bar bar() {
-		final Bar bar = new Bar();
-		bar.setFoo(foo());
-		return bar;
-	}
-
-
-	@Bean
-	public Foo foo() {
-		System.out.println("foo init ...");
-		return new Foo();
-	}
+    @Bean
+    public Bar bar() {
+        final Bar bar = new Bar();
+        bar.setFoo(foo());
+        return bar;
+    }
 
 
-	@Data
-	public static class AutoModeBean {
-		@Autowired
-		private Bar bar;
-		@Autowired
-		private Foo foo;
-	}
+    @Bean
+    public Foo foo() {
+        System.out.println("foo init ...");
+        return new Foo();
+    }
+
+
+    @Data
+    public static class AutoModeBean {
+        @Autowired
+        private Bar bar;
+        @Autowired
+        private Foo foo;
+    }
 
 }

@@ -16,14 +16,13 @@ import java.util.Random;
 @Component
 public class DemoTask {
 
-	@Resource
-	private InfluxDbComponent dbComponent;
+    private final Random random = new Random(Integer.MAX_VALUE);
+    @Resource
+    private InfluxDbComponent dbComponent;
 
-	private final Random random = new Random(Integer.MAX_VALUE);
-
-	//@Scheduled(cron = "*/3 * * * * ?")
-	public void t1() {
-		dbComponent.save(random.nextDouble());
-	}
+    //@Scheduled(cron = "*/3 * * * * ?")
+    public void t1() {
+        dbComponent.save(random.nextDouble());
+    }
 
 }

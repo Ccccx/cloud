@@ -15,33 +15,33 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @ApiModel("列信息")
 public class ColumnInfo {
-	@ApiModelProperty("列名")
-	private String name;
-	@ApiModelProperty("列类型")
-	private ColumnType type;
-	@ApiModelProperty("是否主键")
-	private boolean pk;
-	@ApiModelProperty("是否非空")
-	private boolean nonNull;
-	@ApiModelProperty("注释")
-	private String comment;
+    @ApiModelProperty("列名")
+    private String name;
+    @ApiModelProperty("列类型")
+    private ColumnType type;
+    @ApiModelProperty("是否主键")
+    private boolean pk;
+    @ApiModelProperty("是否非空")
+    private boolean nonNull;
+    @ApiModelProperty("注释")
+    private String comment;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-		ColumnInfo that = (ColumnInfo) o;
+        ColumnInfo that = (ColumnInfo) o;
 
-		return name.equals(that.name);
-	}
+        return name.equals(that.name);
+    }
 
-	@Override
-	public int hashCode() {
-		return name.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
 }

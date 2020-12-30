@@ -11,8 +11,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class InfluxdbApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(InfluxdbApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(InfluxdbApplication.class, args);
+    }
 
 }

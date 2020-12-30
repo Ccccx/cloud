@@ -20,41 +20,41 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @SpringBootApplication
 public class GatewayApplication implements Runnable {
 
-	@Value("${property.from.sample.custom.source:default}")
-	public String source;
+    @Value("${property.from.sample.custom.source:default}")
+    public String source;
 
-	public static void main(String[] args) {
-		SpringApplication.run(GatewayApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayApplication.class, args);
+    }
 
-	@GetMapping("/")
-	public String index() {
-		System.out.println("index ...");
-		return "index";
-	}
+    @GetMapping("/")
+    public String index() {
+        System.out.println("index ...");
+        return "index";
+    }
 
-	/**
-	 * 配置静态资源
-	 */
-	@Bean
-	public RouterFunction<ServerResponse> staticResourceLocator() {
-		return RouterFunctions.resources("/static/**", new ClassPathResource("/static/"));
-	}
+    /**
+     * 配置静态资源
+     */
+    @Bean
+    public RouterFunction<ServerResponse> staticResourceLocator() {
+        return RouterFunctions.resources("/static/**", new ClassPathResource("/static/"));
+    }
 
-	@Bean
-	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
-		//@formatter:off
-		return builder.routes()
-				// 根据路径路由
-				.route("path_route", r -> r.path("/get")
-						.uri("http://httpbin.org"))
-				// 主机路由
-				.route("host_route", r -> r.host("*.myhost.org")
-						.uri("http://httpbin.org"))
-				.route("rewrite_route", r -> r.host("*.rewrite.org")
-						.filters(f -> f.rewritePath("/foo/(?<segment>.*)",
-								"/${segment}"))
-						.uri("http://httpbin.org"))
+    @Bean
+    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+        //@formatter:off
+        return builder.routes()
+                // 根据路径路由
+                .route("path_route", r -> r.path("/get")
+                        .uri("http://httpbin.org"))
+                // 主机路由
+                .route("host_route", r -> r.host("*.myhost.org")
+                        .uri("http://httpbin.org"))
+                .route("rewrite_route", r -> r.host("*.rewrite.org")
+                        .filters(f -> f.rewritePath("/foo/(?<segment>.*)",
+                                "/${segment}"))
+                        .uri("http://httpbin.org"))
 //				.route("hystrix_route", r -> r.host("*.hystrix.org")
 //						.filters(f -> f.hystrix(c -> c.setName("slowcmd")))
 //						.uri("http://httpbin.org"))
@@ -67,12 +67,12 @@ public class GatewayApplication implements Runnable {
 //						.uri("http://httpbin.org"))
 //				.route("websocket_route", r -> r.path("/echo")
 //						.uri("ws://localhost:9000"))
-				.build();
-		//@formatter:on
-	}
+                .build();
+        //@formatter:on
+    }
 
-	@Override
-	public void run() {
-		System.out.println(source);
-	}
+    @Override
+    public void run() {
+        System.out.println(source);
+    }
 }

@@ -9,10 +9,10 @@ import java.io.IOException;
  */
 @FunctionalInterface
 public interface ProjectAssetGenerator<T> {
-	/**
-	 * @param context 子上下文
-	 * @return 返回结果
-	 * @throws IOException ig
-	 */
-	T generate(ChildApplicationContext context) throws IOException;
+    /**
+     * @param context 子上下文
+     * @return 返回结果
+     * @throws IOException ig
+     */
+    T generate(ChildApplicationContext context) throws IOException;
 }

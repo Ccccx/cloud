@@ -10,20 +10,20 @@ import org.springframework.core.Ordered;
  */
 @FunctionalInterface
 public interface ProjectDescriptionCustomizer extends Ordered {
-	/**
-	 * 自定义方法
-	 *
-	 * @param description ig
-	 */
-	void customize(MutableProjectDescription description);
+    /**
+     * 自定义方法
+     *
+     * @param description ig
+     */
+    void customize(MutableProjectDescription description);
 
-	/**
-	 * 循序号
-	 *
-	 * @return 序号
-	 */
-	@Override
-	default int getOrder() {
-		return 0;
-	}
+    /**
+     * 循序号
+     *
+     * @return 序号
+     */
+    @Override
+    default int getOrder() {
+        return 0;
+    }
 }

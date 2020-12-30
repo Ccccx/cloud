@@ -19,33 +19,33 @@ import org.springframework.util.MultiValueMap;
 @Conditional(value = ConditionalDemo.class)
 class ConditionalTest {
 
-	@Test
-	void t1() {
-		final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		context.register(ConditionalTest.class);
-		final ConfigurableEnvironment environment = context.getEnvironment();
-		environment.setActiveProfiles("prd");
-		context.refresh();
-		final MutablePropertySources propertySources = environment.getPropertySources();
+    @Test
+    void t1() {
+        final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.register(ConditionalTest.class);
+        final ConfigurableEnvironment environment = context.getEnvironment();
+        environment.setActiveProfiles("prd");
+        context.refresh();
+        final MutablePropertySources propertySources = environment.getPropertySources();
 
-		log.info("{}", environment.getActiveProfiles());
-	}
+        log.info("{}", environment.getActiveProfiles());
+    }
 
-	public static class ConditionalDemo implements Condition {
+    public static class ConditionalDemo implements Condition {
 
-		@Override
-		public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-			MultiValueMap<String, Object> attrs = metadata.getAllAnnotationAttributes(Profile.class.getName());
-			if (attrs != null) {
-				for (Object value : attrs.get("value")) {
-					if (context.getEnvironment().acceptsProfiles(((String[]) value))) {
-						return true;
-					}
-				}
-				return false;
-			}
-			return true;
-		}
-	}
+        @Override
+        public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+            MultiValueMap<String, Object> attrs = metadata.getAllAnnotationAttributes(Profile.class.getName());
+            if (attrs != null) {
+                for (Object value : attrs.get("value")) {
+                    if (context.getEnvironment().acceptsProfiles(((String[]) value))) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            return true;
+        }
+    }
 
 }

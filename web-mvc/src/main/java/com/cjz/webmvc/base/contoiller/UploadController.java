@@ -15,16 +15,16 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/upload")
 public class UploadController {
-	private final StorageComponent component;
+    private final StorageComponent component;
 
-	public UploadController(StorageComponent component) {
-		this.component = component;
-	}
+    public UploadController(StorageComponent component) {
+        this.component = component;
+    }
 
-	@PostMapping
-	public String uploadFile(HttpServletRequest request) {
-		component.upload(request);
-		return "SUCCESS";
-	}
+    @PostMapping
+    public String uploadFile(HttpServletRequest request) {
+        component.upload(request);
+        return "SUCCESS";
+    }
 
 }

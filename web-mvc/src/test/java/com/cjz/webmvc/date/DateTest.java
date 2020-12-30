@@ -14,10 +14,10 @@ import java.util.Date;
 @Slf4j
 public class DateTest {
 
-	@Test
-	public void t1() {
-		log.info("{}", new Date());
-		log.info("{}", new Date().toInstant());
-		log.info("{}", new Date().toInstant().atZone(ZoneOffset.of("-8")).toInstant());
-	}
+    @Test
+    public void t1() {
+        log.info("{}", new Date());
+        log.info("{}", new Date().toInstant());
+        log.info("{}", new Date().toInstant().atZone(ZoneOffset.of("-8")).toInstant());
+    }
 }

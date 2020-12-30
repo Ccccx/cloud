@@ -19,57 +19,57 @@ import java.util.concurrent.TimeUnit;
 @CacheConfig(cacheNames = "web-mvc", keyGenerator = "simpleKeyGenerator")
 public class CacheComponent {
 
-	private final CacheManager cacheManager;
+    private final CacheManager cacheManager;
 
-	public CacheComponent(CacheManager cacheManager) {
-		this.cacheManager = cacheManager;
-	}
+    public CacheComponent(CacheManager cacheManager) {
+        this.cacheManager = cacheManager;
+    }
 
-	@Cacheable
-	public String t1() {
-		try {
-			TimeUnit.SECONDS.sleep(5);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		return "休眠5秒结束!";
-	}
+    @Cacheable
+    public String t1() {
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "休眠5秒结束!";
+    }
 
-	public String clear() {
-		Cache cache = cacheManager.getCache("web-mvc");
-		if (Objects.nonNull(cache)) {
-			if (cache instanceof CaffeineCache) {
-				final CaffeineCache caffeineCache = (CaffeineCache) cache;
-				caffeineCache.clear();
-			}
-		}
-		return "清空数据成功!";
-	}
+    public String clear() {
+        Cache cache = cacheManager.getCache("web-mvc");
+        if (Objects.nonNull(cache)) {
+            if (cache instanceof CaffeineCache) {
+                final CaffeineCache caffeineCache = (CaffeineCache) cache;
+                caffeineCache.clear();
+            }
+        }
+        return "清空数据成功!";
+    }
 
 
-	/**
-	 * 手动使用缓存方式
-	 *
-	 * @return 结果
-	 */
-	public String t2() {
-		String key = "t2";
-		final Cache cache = cacheManager.getCache("web-mvc");
-		final Cache.ValueWrapper t2 = cache.get(key);
-		String result;
-		if (t2 == null || t2.get() == null) {
-			result = "t2休眠5秒结束";
-			try {
-				TimeUnit.SECONDS.sleep(5);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			cache.put(key, result);
-		} else {
-			result = ((String) t2.get());
-		}
-		return result;
-	}
+    /**
+     * 手动使用缓存方式
+     *
+     * @return 结果
+     */
+    public String t2() {
+        String key = "t2";
+        final Cache cache = cacheManager.getCache("web-mvc");
+        final Cache.ValueWrapper t2 = cache.get(key);
+        String result;
+        if (t2 == null || t2.get() == null) {
+            result = "t2休眠5秒结束";
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            cache.put(key, result);
+        } else {
+            result = ((String) t2.get());
+        }
+        return result;
+    }
 
 
 }

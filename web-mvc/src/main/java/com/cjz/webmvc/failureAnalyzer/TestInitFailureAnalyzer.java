@@ -11,8 +11,8 @@ import org.springframework.boot.diagnostics.FailureAnalyzer;
  * @since 2020-12-15 8:54
  */
 public class TestInitFailureAnalyzer implements FailureAnalyzer {
-	@Override
-	public FailureAnalysis analyze(Throwable failure) {
-		return null;
-	}
+    @Override
+    public FailureAnalysis analyze(Throwable failure) {
+        return null;
+    }
 }

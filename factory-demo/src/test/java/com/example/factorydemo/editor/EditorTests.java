@@ -17,38 +17,38 @@ import java.util.Map;
 @Configuration
 class EditorTests {
 
-	@Bean
-	public DependsOnExoticType exoticType() {
-		final DependsOnExoticType type = new DependsOnExoticType();
-		return type;
-	}
+    @Bean
+    public DependsOnExoticType exoticType() {
+        final DependsOnExoticType type = new DependsOnExoticType();
+        return type;
+    }
 
-	public CustomEditorConfigurer customEditorConfigurer() {
-		final CustomEditorConfigurer configurer = new CustomEditorConfigurer();
-		Map<Class<?>, Class<? extends PropertyEditor>> customEditors = new HashMap<>();
-		customEditors.put(ExoticType.class, ExoticTypeEditor.class);
-		return configurer;
-	}
+    public CustomEditorConfigurer customEditorConfigurer() {
+        final CustomEditorConfigurer configurer = new CustomEditorConfigurer();
+        Map<Class<?>, Class<? extends PropertyEditor>> customEditors = new HashMap<>();
+        customEditors.put(ExoticType.class, ExoticTypeEditor.class);
+        return configurer;
+    }
 
-	public class ExoticTypeEditor extends PropertyEditorSupport {
-		public void setAsText(String text) {
-			setValue(new ExoticType(text.toUpperCase()));
-		}
-	}
+    public static class ExoticType {
+        private final String name;
 
-	public static class ExoticType {
-		private final String name;
+        public ExoticType(String name) {
+            this.name = name;
+        }
+    }
 
-		public ExoticType(String name) {
-			this.name = name;
-		}
-	}
+    public static class DependsOnExoticType {
+        private ExoticType type;
 
-	public static class DependsOnExoticType {
-		private ExoticType type;
+        public void setType(ExoticType type) {
+            this.type = type;
+        }
+    }
 
-		public void setType(ExoticType type) {
-			this.type = type;
-		}
-	}
+    public class ExoticTypeEditor extends PropertyEditorSupport {
+        public void setAsText(String text) {
+            setValue(new ExoticType(text.toUpperCase()));
+        }
+    }
 }

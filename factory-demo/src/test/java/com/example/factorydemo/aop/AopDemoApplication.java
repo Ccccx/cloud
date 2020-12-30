@@ -16,27 +16,27 @@ import java.lang.annotation.*;
 @Slf4j
 @AopDemoApplication.CustomerConf
 public class AopDemoApplication {
-	public static void main(String[] args) {
-		final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		context.register(AopDemoApplication.class);
-		context.refresh();
-		final Foo foo = context.getBean(Foo.class);
-		log.info("Foo : {}", foo);
-		context.close();
-	}
+    public static void main(String[] args) {
+        final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.register(AopDemoApplication.class);
+        context.refresh();
+        final Foo foo = context.getBean(Foo.class);
+        log.info("Foo : {}", foo);
+        context.close();
+    }
 
-	@Bean
-	public Foo foo() {
-		log.info("foo init ...");
-		return new Foo("cjz", true, 18);
-	}
+    @Bean
+    public Foo foo() {
+        log.info("foo init ...");
+        return new Foo("cjz", true, 18);
+    }
 
 
-	@Target(ElementType.TYPE)
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	@Configuration
-	public @interface CustomerConf {
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @Configuration
+    public @interface CustomerConf {
 
-	}
+    }
 }

@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ChildFinishEvent extends BaseProjectRequestEvent {
-	public ChildFinishEvent(BaseRequest request, InitializrMetadata metadata) {
-		super(request, metadata);
-	}
+    public ChildFinishEvent(BaseRequest request, InitializrMetadata metadata) {
+        super(request, metadata);
+    }
 }

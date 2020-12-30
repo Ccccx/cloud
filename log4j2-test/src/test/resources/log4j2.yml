@@ -1,0 +1,107 @@
+Configutation:
+  name: Default
+  status: info
+  shutdownHook: disable
+  Console:
+    name: Console-Appender
+    target: SYSTEM_OUT
+    CustomJsonPatternLayout:
+      appName: $${sys:logstash.app.name:-unknow_app_name}
+      version: $${sys:logstash.app.version:-unknow_app_version}
+      KeyValuePair:
+        - key: host
+          value: $${sys:logstash.app.ip:-unknow_app_ip}
+        - key: trace_id
+          value: $${ctx:trace_id:-unknow_trace_id}
+        - key: request_id
+          value: $${ctx:request_id:-unknow_request_id}
+        - key: request_uri
+          value: $${ctx:request_uri:-unknow_request_uri}
+        - key: request_method
+          value: $${ctx:request_method:-unknow_request_method}
+    Socket:
+      name: Logstash-Appender
+      host: 127.0.0.1
+      port: 5044
+      protocol: TCP
+      connectTimeoutMillis: 300000
+      reconnectionDelayMillis: 5000
+      bufferSize: 8192
+      CustomJsonPatternLayout:
+        appName: $${sys:logstash.app.name:-unknow_app_name}
+        version: $${sys:logstash.app.version:-unknow_app_version}
+        KeyValuePair:
+          - key: host
+            value: $${sys:logstash.app.ip:-unknow_app_ip}
+          - key: trace_id
+            value: $${ctx:trace_id:-unknow_trace_id}
+          - key: request_id
+            value: $${ctx:request_id:-unknow_request_id}
+          - key: request_uri
+            value: $${ctx:request_uri:-unknow_request_uri}
+          - key: request_method
+            value: $${ctx:request_method:-unknow_request_method}
+  Loggers:
+    Root:
+      level: WARN
+      AppenderRef:
+        - ref: Console-Appender
+        - ref: Logstash-Appender
+    Logger:
+      - name: com.tiamaes.cloud.m1.logger.ControllerLoggingAspect
+        level: 'INFO'
+        additivity: false
+        AppenderRef:
+          - ref: Logstash-Appender
+      - name: com.tiamaes.cloud
+        level: 'INFO'
+      - name: io.fabric8.kubernetes.client.Config
+        level: 'OFF'
+      - name: com.netflix.discovery.DiscoveryClient
+        level: 'OFF'
+      - name: org.apache.tomcat.util.modeler.Registry
+        level: 'OFF'
+      - name: com.netflix.discovery.InstanceInfoReplicator
+        level: 'ERROR'
+      - name: com.netflix.discovery.TimedSupervisorTask
+        level: 'OFF'
+      - name: com.netflix.config.AbstractPollingScheduler
+        level: 'OFF'
+      - name: com.netflix.eureka.resources.InstanceResource
+        level: 'ERROR'
+      - name: org.apache.kafka.clients.producer.ProducerConfig
+        level: 'OFF'
+      - name: org.apache.kafka.clients.consumer.ConsumerConfig
+        level: 'OFF'
+      - name: com.netflix.eureka.cluster.ReplicationTaskProcessor
+        level: 'OFF'
+      - name: com.netflix.eureka.registry.AbstractInstanceRegistry
+        level: 'OFF'
+      - name: org.springframework.boot.actuate.endpoint.EndpointId
+        level: 'OFF'
+      - name: com.tiamaes.cloud.zuul.filter.HttpResponseTimeFilter
+        level: 'INFO'
+      - name: com.alibaba.cloud.nacos.client.NacosPropertySourceBuilder
+        level: 'OFF'
+      - name: org.springframework.security.access.vote.AffirmativeBased
+        level: 'WARN'
+      - name: org.springframework.cloud.client.discovery.DiscoveryClient
+        level: 'OFF'
+      - name: org.springframework.boot.web.embedded.tomcat.TomcatWebServer
+        level: 'WARN'
+      - name: org.springframework.context.support.ResourceBundleMessageSource
+        level: 'ERROR'
+      - name: org.springframework.jmx.export.annotation.AnnotationMBeanExporter
+        level: 'ERROR'
+      - name: org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter
+        level: 'WARN'
+      - name: org.springframework.context.annotation.ConfigurationClassPostProcessor
+        level: 'OFF'
+      - name: org.springframework.context.annotation.AnnotationConfigApplicationContext
+        level: 'OFF'
+      - name: com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient
+        level: 'OFF'
+      - name: com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient
+        level: 'OFF'
+      - name: org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver
+        level: 'ERROR'

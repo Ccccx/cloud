@@ -24,6 +24,18 @@ import java.util.stream.Collectors;
 @Slf4j
 public class TestDemo {
 
+    public static <T> Object getParam(T obj, Function<T, Object> fc) {
+        return fc.apply(obj);
+    }
+
+    public static void out(Object str) {
+        System.out.println(str);
+    }
+
+    public static void out(String format, Object... args) {
+        System.out.println(String.format(format, args));
+    }
+
     /**
      * map 根据排序
      */
@@ -46,7 +58,6 @@ public class TestDemo {
             System.out.println(k + ":" + v);
         });
     }
-
 
     @Test
     public void t1() {
@@ -172,7 +183,6 @@ public class TestDemo {
 
     }
 
-
     @Test
     public void t4() {
         final TestBean bean = new TestBean();
@@ -213,23 +223,9 @@ public class TestDemo {
         return resolve;
     }
 
-    public static <T> Object getParam(T obj, Function<T, Object> fc) {
-        return fc.apply(obj);
-    }
-
-
     public void demoMethod(List list, Integer sum, Object obj) {
 
     }
-
-    public static void out(Object str) {
-        System.out.println(str);
-    }
-
-    public static void out(String format, Object... args) {
-        System.out.println(String.format(format, args));
-    }
-
 
     public void split() {
         System.out.println("\n---------------------------------");

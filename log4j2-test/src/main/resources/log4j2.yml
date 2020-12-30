@@ -1,0 +1,118 @@
+Configutation:
+  name: Logstash-Log4j2
+  status: warn
+  shutdownTimeout: 5000
+  Appenders:
+    Console:
+      name: Console-Appender
+      target: SYSTEM_OUT
+      ThreadContextMapFilter:
+        onMatch: DENY
+        onMismatch: ACCEPT
+        KeyValuePair:
+          - key: source
+            value: fx
+      PatternLayout:
+        disableAnsi: false
+        pattern: "%highlight{[%-5p] %d{ISO8601} [%t] %c{1} - %m%n%throwable}{ERROR=Bright Red, WARN=Bright Yellow, INFO=Normal, DEBUG=Blue, TRACE=Green}"
+    RollingFile:
+      name: RollingFile-Appender
+      fileName: ${logging.path:-/data/logs/log4j2}/server.log
+      FilePattern: ${logging.path:/data/logs/log4j2}/server-%d{yyyy-MM-dd}-%i.gz
+      PatternLayout:
+        disableAnsi: false
+        pattern: "%highlight{[%-5p] %d{ISO8601} [%t] %c{1} - %m%n%throwable}{ERROR=Red, WARN=Yellow, INFO=Normal, DEBUG=Blue, TRACE=Green}"
+      Policies:
+        CronTriggeringPolicy:
+          schedule: 0 0 0 * * ? *
+        SizeBasedTriggeringPolicy:
+          size: 10M
+      DefaultRolloverStrategy:
+        Delete:
+          basePath: logs
+          IfFileName:
+            glob: server-????-??-??-?.gz
+          IfLastModified:
+            age: 7d
+    Socket:
+      name: Logstash-Appender
+      host: 192.168.250.80
+      port: 5045
+      protocol: TCP
+      connectTimeoutMillis: 300000
+      reconnectionDelayMillis: 5000
+      bufferSize: 8192
+      CustomJsonPatternLayout:
+        appName: $${sys:logstash.app.name:-unknow_app_name}
+        version: $${sys:logstash.app.version:-unknow_app_version}
+        KeyValuePair:
+          - key: host
+            value: $${sys:logstash.app.ip:-unknow_app_ip}
+          - key: trace_id
+            value: $${ctx:trace_id:-unknow_trace_id}
+          - key: request_id
+            value: $${ctx:request_id:-unknow_request_id}
+          - key: request_uri
+            value: $${ctx:request_uri:-unknow_request_uri}
+          - key: request_method
+            value: $${ctx:request_method:-unknow_request_method}
+  Loggers:
+    Root:
+      level: WARN
+      AppenderRef:
+        - ref: Logstash-Appender
+        - ref: Console-Appender
+        - ref: RollingFile-Appender
+    Logger:
+      - name: com.example
+        level: 'INFO'
+      - name: io.fabric8.kubernetes.client.Config
+        level: 'OFF'
+      - name: com.netflix.discovery.DiscoveryClient
+        level: 'OFF'
+      - name: org.apache.tomcat.util.modeler.Registry
+        level: 'OFF'
+      - name: com.netflix.discovery.InstanceInfoReplicator
+        level: 'ERROR'
+      - name: com.netflix.discovery.TimedSupervisorTask
+        level: 'OFF'
+      - name: com.netflix.config.AbstractPollingScheduler
+        level: 'OFF'
+      - name: com.netflix.eureka.resources.InstanceResource
+        level: 'ERROR'
+      - name: org.apache.kafka.clients.producer.ProducerConfig
+        level: 'OFF'
+      - name: org.apache.kafka.clients.consumer.ConsumerConfig
+        level: 'OFF'
+      - name: com.netflix.eureka.cluster.ReplicationTaskProcessor
+        level: 'OFF'
+      - name: com.netflix.eureka.registry.AbstractInstanceRegistry
+        level: 'OFF'
+      - name: org.springframework.boot.actuate.endpoint.EndpointId
+        level: 'OFF'
+      - name: com.tiamaes.cloud.zuul.filter.HttpResponseTimeFilter
+        level: 'INFO'
+      - name: com.alibaba.cloud.nacos.client.NacosPropertySourceBuilder
+        level: 'OFF'
+      - name: org.springframework.security.access.vote.AffirmativeBased
+        level: 'WARN'
+      - name: org.springframework.cloud.client.discovery.DiscoveryClient
+        level: 'OFF'
+      - name: org.springframework.boot.web.embedded.tomcat.TomcatWebServer
+        level: 'WARN'
+      - name: org.springframework.context.support.ResourceBundleMessageSource
+        level: 'ERROR'
+      - name: org.springframework.jmx.export.annotation.AnnotationMBeanExporter
+        level: 'ERROR'
+      - name: org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter
+        level: 'WARN'
+      - name: org.springframework.context.annotation.ConfigurationClassPostProcessor
+        level: 'OFF'
+      - name: org.springframework.context.annotation.AnnotationConfigApplicationContext
+        level: 'OFF'
+      - name: com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient
+        level: 'OFF'
+      - name: com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient
+        level: 'OFF'
+      - name: org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver
+        level: 'ERROR'
