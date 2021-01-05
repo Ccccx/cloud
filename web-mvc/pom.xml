@@ -19,11 +19,11 @@
 
     <dependencies>
         <!--引入日志框架-->
-        <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>log4j2-test</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.example</groupId>-->
+        <!--            <artifactId>log4j2-test</artifactId>-->
+        <!--            <version>${parent.version}</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -43,6 +43,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--添加jsp解析servlet-->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
         <!--加解密-->
         <dependency>

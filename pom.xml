@@ -22,6 +22,7 @@
         <module>web-tomcat</module>
         <module>influxdb</module>
         <module>log4j2-test</module>
+        <module>embed-tomcat</module>
     </modules>
 
     <!--自动部署-->

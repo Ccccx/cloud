@@ -1,0 +1,17 @@
+@startuml
+activate SpringApplication
+SpringApplication -> SpringApplication: run
+SpringApplication -> SpringApplication: createApplicationContext
+SpringApplication -> SpringApplication: refreshContext
+SpringApplication -> AnnotationConfigServletWebServerApplicationContext: refresh
+AnnotationConfigServletWebServerApplicationContext -> ServletWebServerApplicationContext : refresh
+ServletWebServerApplicationContext ->  AbstractApplicationContext : refresh
+activate AbstractApplicationContext
+AbstractApplicationContext ->  AbstractApplicationContext : 模板方法配置Spring 上下文
+AbstractApplicationContext --> ServletWebServerApplicationContext: onRefresh
+deactivate AbstractApplicationContext
+ServletWebServerApplicationContext -> GenericWebApplicationContext: onRefresh
+ServletWebServerApplicationContext -> ServletWebServerApplicationContext : createWebServer 创建Tomcat
+deactivate SpringApplication
+
+@enduml
