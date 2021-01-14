@@ -2,6 +2,7 @@ package com.example.factorydemo.classload;
 
 import com.example.factorydemo.bean.Per;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.startup.Tomcat;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -9,8 +10,11 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.*;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
@@ -63,17 +67,17 @@ class ClassLoadTest {
         for (Resource resource : resources) {
             System.out.println(resource.getURI().toURL());
         }
-        System.out.println("---------------");
+        System.out.println("JarEntry ---------------");
         final JarFile jarFile = new JarFile("D:/software/apache-maven-3.6.0/repository/org/springframework/spring-beans/5.2.2.RELEASE/spring-beans-5.2.2.RELEASE.jar");
         final Enumeration<JarEntry> entries = jarFile.entries();
         while (entries.hasMoreElements()) {
             JarEntry entry = entries.nextElement();
             System.out.println(entry);
         }
-        System.out.println("---------------");
+        System.out.println("MANIFEST.MF ---------------");
         final JarEntry jarEntry = jarFile.getJarEntry("META-INF/MANIFEST.MF");
         System.out.println(jarEntry);
-        System.out.println("---------------");
+        System.out.println("manifest ---------------");
 //		URLConnection connection = url.openConnection();
 //		connection.setUseCaches(false);
 //		InputStream resourceAsStream = connection.getInputStream();
@@ -84,7 +88,7 @@ class ClassLoadTest {
         objects.forEach(obj -> {
             System.out.println(obj + "\t" + mainAttributes.get(obj));
         });
-        System.out.println("---------------");
+        System.out.println("license ---------------");
         final JarEntry license = jarFile.getJarEntry("META-INF/license.txt");
         InputStream jarInputStream = jarFile.getInputStream(license);
         BufferedReader reader = new BufferedReader(new InputStreamReader(jarInputStream));
@@ -93,6 +97,19 @@ class ClassLoadTest {
             System.out.println(line);
         }
         jarInputStream.close();
+        System.out.println("ProtectionDomain ---------------");
+        final ProtectionDomain protectionDomain = Tomcat.class.getProtectionDomain();
+        CodeSource codeSource = protectionDomain.getCodeSource();
+        URI location = (codeSource != null) ? codeSource.getLocation().toURI() : null;
+        String path = (location != null) ? location.getSchemeSpecificPart() : null;
+        if (path == null) {
+            throw new IllegalStateException("Unable to determine code source archive");
+        }
+        File root = new File(path);
+        if (!root.exists()) {
+            throw new IllegalStateException("Unable to determine code source archive from " + root);
+        }
+        System.out.println(root.getPath());
     }
 
     @Test

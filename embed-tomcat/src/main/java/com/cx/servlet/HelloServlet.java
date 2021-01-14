@@ -22,16 +22,16 @@ public class HelloServlet extends HttpServlet {
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		final Enumeration<String> parameterNames = config.getInitParameterNames();
-		log.info("HelloServlet 初始化开始 >>>");
-		StringBuilder sb = new StringBuilder("\n");
-		while (parameterNames.hasMoreElements()) {
-			final String element = parameterNames.nextElement();
-			sb.append(String.format("%s \t %s %n", element, config.getInitParameter(element)));
-		}
-		log.info(sb.toString());
-		log.info("HelloServlet 初始化结束 <<<");
-	}
+        final Enumeration<String> parameterNames = config.getInitParameterNames();
+        log.info("{} 初始化开始 >>>", this.getClass().getSimpleName());
+        StringBuilder sb = new StringBuilder("\n");
+        while (parameterNames.hasMoreElements()) {
+            final String element = parameterNames.nextElement();
+            sb.append(String.format("%s \t %s %n", element, config.getInitParameter(element)));
+        }
+        log.info(sb.toString());
+        log.info("{} 初始化结束 <<<", this.getClass().getSimpleName());
+    }
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

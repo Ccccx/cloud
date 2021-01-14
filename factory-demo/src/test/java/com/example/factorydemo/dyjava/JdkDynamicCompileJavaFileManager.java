@@ -72,7 +72,7 @@ public class JdkDynamicCompileJavaFileManager extends ForwardingJavaFileManager<
 
     @Override
     public Iterable<JavaFileObject> list(Location location, String packageName, Set<JavaFileObject.Kind> kinds, boolean recurse) throws IOException {
-        Iterable<JavaFileObject> superResult = super.list(location, packageName, kinds, recurse);
+         Iterable<JavaFileObject> superResult = super.list(location, packageName, kinds, recurse);
         List<JavaFileObject> result = Lists.newArrayList();
         // 这里要区分编译的Location以及编译的Kind
         if (location == StandardLocation.CLASS_PATH && kinds.contains(JavaFileObject.Kind.CLASS)) {

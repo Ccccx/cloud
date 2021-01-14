@@ -6,12 +6,12 @@ Configutation:
     Console:
       name: Console-Appender
       target: SYSTEM_OUT
-      ThreadContextMapFilter:
-        onMatch: DENY
-        onMismatch: ACCEPT
-        KeyValuePair:
-          - key: source
-            value: fx
+      #      ThreadContextMapFilter:
+      #        onMatch: DENY
+      #        onMismatch: ACCEPT
+      #        KeyValuePair:
+      #          - key: source
+      #            value: fx
       PatternLayout:
         disableAnsi: false
         pattern: "%highlight{[%-5p] %d{ISO8601} [%t] %c{1} - %m%n%throwable}{ERROR=Bright Red, WARN=Bright Yellow, INFO=Normal, DEBUG=Blue, TRACE=Green}"
@@ -34,33 +34,33 @@ Configutation:
             glob: server-????-??-??-?.gz
           IfLastModified:
             age: 7d
-    Socket:
-      name: Logstash-Appender
-      host: 192.168.250.80
-      port: 5045
-      protocol: TCP
-      connectTimeoutMillis: 300000
-      reconnectionDelayMillis: 5000
-      bufferSize: 8192
-      CustomJsonPatternLayout:
-        appName: $${sys:logstash.app.name:-unknow_app_name}
-        version: $${sys:logstash.app.version:-unknow_app_version}
-        KeyValuePair:
-          - key: host
-            value: $${sys:logstash.app.ip:-unknow_app_ip}
-          - key: trace_id
-            value: $${ctx:trace_id:-unknow_trace_id}
-          - key: request_id
-            value: $${ctx:request_id:-unknow_request_id}
-          - key: request_uri
-            value: $${ctx:request_uri:-unknow_request_uri}
-          - key: request_method
-            value: $${ctx:request_method:-unknow_request_method}
+  #    Socket:
+  #      name: Logstash-Appender
+  #      host: 192.168.250.80
+  #      port: 5045
+  #      protocol: TCP
+  #      connectTimeoutMillis: 300000
+  #      reconnectionDelayMillis: 5000
+  #      bufferSize: 8192
+  #      CustomJsonPatternLayout:
+  #        appName: $${sys:logstash.app.name:-unknow_app_name}
+  #        version: $${sys:logstash.app.version:-unknow_app_version}
+  #        KeyValuePair:
+  #          - key: host
+  #            value: $${sys:logstash.app.ip:-unknow_app_ip}
+  #          - key: trace_id
+  #            value: $${ctx:trace_id:-unknow_trace_id}
+  #          - key: request_id
+  #            value: $${ctx:request_id:-unknow_request_id}
+  #          - key: request_uri
+  #            value: $${ctx:request_uri:-unknow_request_uri}
+  #          - key: request_method
+  #            value: $${ctx:request_method:-unknow_request_method}
   Loggers:
     Root:
       level: WARN
       AppenderRef:
-        - ref: Logstash-Appender
+        #        - ref: Logstash-Appender
         - ref: Console-Appender
         - ref: RollingFile-Appender
     Logger:

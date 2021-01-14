@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.ssl.SSLContexts;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -31,11 +32,13 @@ import org.springframework.data.elasticsearch.client.RestClients;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.data.elasticsearch.core.query.StringQuery;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -246,6 +249,72 @@ public class ElasticsearchTest {
         for (Terms.Bucket bucket : parsedTerms.getBuckets()) {
             callback.accept(bucket);
         }
+    }
+
+    @Test
+    @SneakyThrows
+    void t9() {
+        final IndexCoordinates logstashIndex = IndexCoordinates.of("bus_device*");
+        elasticsearchRestTemplate.indexOps(logstashIndex).delete();
+        TimeUnit.SECONDS.sleep(5);
+    }
+
+    @Test
+    void t10() throws InterruptedException {
+        final IndexCoordinates logstashIndex = IndexCoordinates.of("logstash-log4j2-*");
+        final Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        Date week = cal.getTime();
+        final String date = DateFormatUtils.format(week, "yyyy-MM-dd");
+        final NativeSearchQuery query = new NativeSearchQueryBuilder()
+                .withQuery(rangeQuery("@timestamp").lt(date)).build();
+        elasticsearchRestTemplate.delete(query, DataInfo.class, logstashIndex);
+        log.info("\n{}", query.getQuery().toString());
+        elasticsearchRestTemplate.indexOps(logstashIndex).refresh();
+        TimeUnit.SECONDS.sleep(20);
+    }
+
+    @Test
+    void t11() {
+        final IndexCoordinates logstashIndex = IndexCoordinates.of("logstash-log4j2-*");
+        final Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        Date week = cal.getTime();
+        final String date = DateFormatUtils.format(week, "yyyy-MM-dd");
+        final NativeSearchQuery query = new NativeSearchQueryBuilder()
+                .withPageable(PageRequest.of(1, 1))
+                .withQuery(rangeQuery("@timestamp").lte(date))
+                .addAggregation(terms("groupByIndex").field("_index").size(10))
+                .build();
+        log.info("\n{}", query.getQuery().toString());
+        final SearchHits<DataInfo> search = elasticsearchRestTemplate.search(query, DataInfo.class, logstashIndex);
+        final Aggregations aggregations = search.getAggregations();
+        final List<Aggregation> list = aggregations.asList();
+        final Aggregation aggregation = list.get(0);
+        final ParsedStringTerms stringTerms = (ParsedStringTerms) aggregation;
+        final List<? extends Bucket> buckets = stringTerms.getBuckets();
+        for (Bucket bucket : buckets) {
+            log.info("{} : {}", bucket.getKey(), bucket.getDocCount());
+        }
+    }
+
+    @Test
+    void t12() {
+        final IndexCoordinates logstashIndex = IndexCoordinates.of("device_index");
+        final NativeSearchQuery query = new NativeSearchQueryBuilder()
+                .withPageable(PageRequest.of(1, 1))
+                .withQuery(boolQuery().filter(termQuery("type.keyword", "TEST")))
+                .addAggregation(terms("cityDeviceTop").field("areaInfo.cityName.keyword").size(10))
+                .build();
+        log.info("\n{}", query.getQuery().toString());
+        final SearchHits<DataInfo> search = elasticsearchRestTemplate.search(query, DataInfo.class, logstashIndex);
+        log.info("total: {}", search.getTotalHits());
     }
 
     @Data

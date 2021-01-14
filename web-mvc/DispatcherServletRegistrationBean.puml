@@ -1,0 +1,9 @@
+@startuml
+DispatcherServletRegistrationBean -> DispatcherServletRegistrationBean: onStartup
+DispatcherServletRegistrationBean -> DynamicRegistrationBean : register
+DynamicRegistrationBean -> ServletRegistrationBean: addRegistration
+ServletRegistrationBean -> ApplicationContext: addServlet 调用应用上下文配置添加servlet
+ApplicationContext ->ApplicationServletRegistration: 创建Wrapper, 配置servlet, 返回ApplicationServletRegistration
+ServletRegistrationBean -> ServletRegistrationBean: configure
+ServletRegistrationBean -> ApplicationServletRegistration: addMapping配置请求映射
+@enduml

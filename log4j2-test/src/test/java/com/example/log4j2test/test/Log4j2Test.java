@@ -82,6 +82,11 @@ class Log4j2Test {
 
     }
 
+    @Test
+    void t4() {
+
+    }
+
     public static class MyApp {
 
         // Define a static logger variable so that it references the

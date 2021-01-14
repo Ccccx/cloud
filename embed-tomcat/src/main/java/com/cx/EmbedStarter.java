@@ -1,17 +1,21 @@
 package com.cx;
 
 import com.cx.servlet.HelloServlet;
+import com.cx.servlet.TestServlet;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.*;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 
+import javax.servlet.ServletRegistration.Dynamic;
 import java.io.File;
+import java.util.Collections;
 
 /**
  * 嵌入式tomcat 启动类, 启动后访问:
  * <a href="http://127.0.0.1:8080/"> 首页 </a>
- * <a href="http://127.0.0.1:8080/hello"> servlet </a>
+ * <a href="http://127.0.0.1:8080/hello"> hello servlet </a>
+ * <a href="http://127.0.0.1:8080/test"> test servlet </a>
  *
  * @author chengjz
  * @version 1.0
@@ -51,10 +55,18 @@ public class EmbedStarter {
 		final Context context = tomcat.addWebapp("/", webappDir);
 		context.addLifecycleListener(event -> log.info("自定义监听器: {}", event.getType()));
 
-		// 添加自定义的HelloServlet
+		// servlet 3.0方式添加TestServlet, spring boot 使用的就是这种方式
+		context.addServletContainerInitializer((c, ctx) -> {
+			log.warn("servlet 3.0方式添加TestServlet");
+			final Dynamic dynamic = ctx.addServlet("test", new TestServlet());
+			dynamic.addMapping("/test");
+			dynamic.setInitParameter("aaa", "aaa");
+		}, Collections.emptySet());
+
+		// 监听器方式添加自定义的HelloServlet
 		context.addLifecycleListener(event -> {
 			if (Lifecycle.BEFORE_START_EVENT.equals(event.getType())) {
-				log.warn("添加自定义的Servlet");
+				log.warn(" 监听器方式添加自定义的HelloServlet");
 				addServlet((Context) event.getLifecycle());
 			}
 		});

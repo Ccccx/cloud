@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: log4j2-test
+# 应用信息
+logstash:
+  enable: true
+  app:
+    name: ${spring.application.name}
+    author: ChengJz
+    version: @project.version@
+  logger:
+    host: 192.168.250.80
+    port: 5045
+  inetutils:
+    ignoredInterfaces: docker0,veth.*,.*VMware.*,.*VirtualBox.*
+
