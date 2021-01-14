@@ -1,0 +1,24 @@
+{
+  "groups": [
+    {
+      "name": "initializr",
+      "type": "com.example.factory.support.model.InitializrMetadata",
+      "sourceType": "com.example.factory.support.model.InitializrMetadata"
+    }
+  ],
+  "properties": [
+    {
+      "name": "initializr.desc",
+      "type": "java.lang.String",
+      "sourceType": "com.example.factory.support.model.InitializrMetadata",
+      "defaultValue": "This is a demo!"
+    },
+    {
+      "name": "initializr.name",
+      "type": "java.lang.String",
+      "sourceType": "com.example.factory.support.model.InitializrMetadata",
+      "defaultValue": "parent"
+    }
+  ],
+  "hints": []
+}

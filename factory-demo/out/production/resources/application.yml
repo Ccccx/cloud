@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: factoryDemo
+logging:
+  level:
+    com.example.factory: debug
+    'org.springframework.context': trace
+server:
+  port: 8080

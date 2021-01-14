@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="ChengJinzhou" id="m1-cloud-2.2.2.0-202009081006">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="ONL_FORM_CHANGELOG"/>
+            </not>
+        </preConditions>
+        <createTable tableName="ONL_FORM_CHANGELOG">
+            <column name="TABLE_NAME" remarks="表名" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="STATUS" remarks="状态 1 正常 0 删除" type="INT(1)" defaultValueNumeric="1"/>
+            <column name="CHANGELOG" remarks="版本文件" type="MEDIUMTEXT"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="ONL_FORM_CHANGELOG"/>
+        </rollback>
+    </changeSet>
+    <changeSet author="ChengJinZhou" id="m1-cloud-2.2.2.0-202010201730">
+        <createTable tableName="T_USERS" remarks="用户信息表">
+            <column name="USERNAME" type="varchar(32)" remarks="用户帐号">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="PASSWORD" type="varchar(128)" remarks="用户密码">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NICKNAME" type="varchar(32)" remarks="用户昵称">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MOBILE" type="varchar(32)" remarks="手机号码">
+                <constraints nullable="true"/>
+            </column>
+            <column name="EMAIL" type="varchar(280)" remarks="电子邮箱">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CREATE_DATE" type="datetime" remarks="创建日期"
+                    defaultValueDate="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED" type="int" remarks="是否可用"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
