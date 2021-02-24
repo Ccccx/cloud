@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <title>SockJS</title>
+    <script>
+
+        // 设置 STOMP 客户端
+        var stompClient = null;
+
+        // 定时器
+        var task = null;
+
+        function init() {
+          //  $("#example").hide();
+        }
+
+        function wsConnect() {
+            connect();
+        }
+
+
+        /* 进行连接 */
+        function connect() {
+            // 设置 SOCKET
+            // 输出建立连接地址
+            var serverConnectAddr = $("#serverConnectAddr").val();
+            // serverConnectAddr + "?_t=" + $("#token").val()
+            console.log("建立WS地址：%s" , serverConnectAddr);
+            var socket = new SockJS(serverConnectAddr);
+            // 配置 STOMP 客户端
+            stompClient = Stomp.over(socket);
+            // STOMP 客户端连接
+            // Token
+            var headers = {
+                "Authorization": 'Bearer  ' + $("#token").val()
+            }
+            stompClient.connect(headers, function (frame) {
+                console.log("连接成功");
+                subscribeSocket();
+                mockMessage();
+            });
+        }
+
+        /* 订阅信息 */
+        function subscribeSocket() {
+            var publicAddr = $("#publicAddr").val();
+            var privateAddr = $("#privateAddr").val();
+            // 输出订阅地址
+            console.log("公共订阅：%s  私有订阅: %s", publicAddr, privateAddr);
+
+            // 订阅公共消息
+            stompClient.subscribe(publicAddr, function (responseBody) {
+                $("#public-information").append("<tr><td>" + responseBody.body + "</td></tr>");
+            });
+
+            // 订阅用户私有信息
+            stompClient.subscribe(privateAddr, function (responseBody) {
+                $("#private-information").append("<tr><td>" + responseBody.body + "</td></tr>");
+            });
+
+        }
+
+        /* 断开连接 */
+        function disconnect() {
+            // 关闭定时器
+            window.clearInterval(task);
+            stompClient.disconnect(function () {
+                alert("断开连接");
+            });
+        }
+
+
+        function clearInput() {
+            $("#serverConnectAddr").val('');
+            $("#publicAddr").val('');
+            $("#privateAddr").val('');
+            $("#serverAddr").val('');
+            $("#public-information").empty();
+            $("#private-information").empty();
+        }
+
+        function exampleAction() {
+            $("#example").toggle();
+        }
+
+
+        function mockMessage() {
+            task = window.setInterval(function () {
+                // 设置待发送的消息内容
+                // var message = '设备[' + uuid() + ']异常告警!';
+                var message = randomNumber();
+                // 发送消息
+                stompClient.send($("#serverAddr").val(), {}, message);
+            }, 5000);
+        }
+
+        function uuid() {
+            var s = [];
+            var hexDigits = "0123456789abcdef";
+            for (var i = 0; i < 36; i++) {
+                s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+            }
+            s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
+            s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
+            s[8] = s[13] = s[18] = s[23] = "-";
+
+            var uuid = s.join("");
+            return uuid;
+        }
+
+        function randomNumber() {
+            return Math.floor(Math.random()*10+1);
+        }
+    </script>
+
+    <style>
+        .tableDiv{
+            height:450px;
+            overflow-y:scroll;
+            background-color: black;
+            color: white;
+            font-size: 1em;
+        }
+        .exampleDiv{
+            height:300px;
+            overflow-y:scroll;
+            background-color: black;
+            color: white;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body onload="init();">
+<div class="container" id="main-content" style="margin-top: 30px;">
+    <div class="row">
+        <div class="row">
+            <label class="col-sm-4 control-label center">WebSocket连接: </label>
+            <div class="col-sm-8">
+                <button class="btn btn-primary" onclick="wsConnect()">测试WS</button>
+                <button class="btn btn-danger" onclick="disconnect()">断开WS</button>
+                <button class="btn btn-success" onclick="exampleAction()">查看/隐藏代码实例</button>
+                <button class="btn btn-warning" onclick="clearInput()">清空数据</button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <label class="col-sm-4 control-label center">服务端Websocket连接点：</label>
+            <div class="col-sm-8">
+                <input class="form-control" id="serverConnectAddr" value="http://192.168.32.87:8781/ws" placeholder="http://127.0.0.1:8080/ws"  />
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <label class="col-sm-4 control-label center">Token信息：</label>
+            <div class="col-sm-8">
+                <input class="form-control" id="token" value="eyJhbGciOiJIUzUxMiJ9.eyJwcmluY2lwYWwiOiJleUpoY21jeElqb2lNVE0zT0RNMk9UZzBNRFFpTENKaGNtY3lJam9pNlptSTVwMk81NnVMSWl3aVlYSm5NeUk2SWxKUFRFVmZSRVZXSWl3aVlYSm5OQ0k2SWpRNWJuUTVhV1pvSW4wPSIsInN1YiI6InB1YmxpYyIsImlzcyI6InRpYW1hZXMiLCJleHAiOjE2MTI0MzUxMzcsImlhdCI6MTYxMjM0ODczN30.kAcvHrFntTfO3xREatVjwOPWyckaFfkPQDlUaoXcjEXIDT8kLTwIn6IXNXHDW7n7HUfFFiLj8st-MTFNZgbRCA" placeholder="123456"  />
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <label class="col-sm-4 control-label center" >服务端接收消息地址：</label>
+            <div class="col-sm-8">
+                <input class="form-control" id="serverAddr" value="/app/mockMsg" placeholder="/app/mockMsg"  />
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <label class="col-sm-4 control-label center">公共订阅地址：</label>
+            <div class="col-sm-8">
+                <input class="form-control" id="publicAddr" value="/topic/public" placeholder="/topic/public"  />
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <label class="col-sm-4 control-label center">私有订阅地址：</label>
+            <div class="col-sm-8">
+                <input class="form-control" id="privateAddr" value="/user/topic/userMsg" placeholder="/user/topic/userMsg"  />
+            </div>
+        </div>
+        <br>
+    </div>
+    <div class="row" id="example" style="display: none;">
+        <div class="col-md-6">
+            <h5 class="page-header" style="font-weight:bold">配置实例：</h5>
+            <pre>
+            <div class="exampleDiv">
+ spring:
+    security:
+        enabled: true
+        websocket:
+          enabled: true                  #  是否开启WebSocket
+          origins: *                        # 允许跨域
+          appPrefix: /app               # 固定前缀
+          userPrefix: /user/            #用户主题前缀
+          topicPrefix: /topic/          # 公共主题前缀
+          endpoint: /ws                 # websocket端点
+            </div>
+            </pre>
+        </div>
+        <div class="col-md-6">
+            <h5 class="page-header" style="font-weight:bold">代码实例：</h5>
+                <pre>
+                    <div class="exampleDiv">
+
+    /**
+     * 消息发送工具对象
+     */
+    @Autowired
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
+    @MessageMapping("/mockMsg")
+    public void handlerMessage(String message) {
+        log.info("handlerMessage: {}", message);
+        // 广播给所有订阅的用户
+        final String time = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss") + " : ";
+        simpMessagingTemplate.convertAndSend("/topic/public", time + "系统幸运数【" +message+"】");
+        // 给当前登录用户发送消息
+        SecurityContext context = SecurityContextHolder.getContext();
+        final User principal = (User) Objects.requireNonNull(context.getAuthentication()).getPrincipal();
+        final int userRandNum = RandomUtils.nextInt(0, 10) + 1;
+        simpMessagingTemplate.convertAndSendToUser(principal.getUsername() ,"/topic/userMsg", time + (userRandNum == message ? "【√】数字一致," : "【×】数字不一致,")+ "你的数字为" + userRandNum);
+    }
+                    </div>
+                </pre>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h5 class="page-header" style="font-weight:bold">公共消息：</h5>
+            <div class="tableDiv">
+                <table  >
+                    <tbody id="public-information">
+<!--                        <tr><td>11111111111111111111</td></tr>-->
+<!--                        <tr><td>11111111111111111111</td></tr>-->
+<!--                        <tr><td>11111111111111111111</td></tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6 overflow-y:auto">
+            <h5 class="page-header" style="font-weight:bold">私有消息：</h5>
+            <div class="tableDiv">
+                <table >
+                    <tbody id="private-information"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+### 获取API列表
+GET http://192.168.32.87:8080
+Accept: application/json
+
+### 获取API描述
+GET http://192.168.32.87:8080/profile
+
+### 获取用户描述(ALPS:   Application-Level Profile Semantics )
+GET http://192.168.32.87:8080/profile/user
+Accept: application/json;charset=utf-8
+
+### 获取用户json schema
+GET http://192.168.32.87:8080/profile/user
+Accept: application/schema+json;charset=utf-8
+
+### 新增用户
+POST http://192.168.32.87:8080/user
+Content-Type: application/json
+
+ {
+   "password": "123456",
+   "nickname": "cjz"
+ }
+
+### 查询用户接口
+GET http://192.168.32.87:8080/user
+Accept: application/json
+
+### 分页查询
+GET http://192.168.32.87:8080/user/1
+Accept: application/json
+
+### 获取所有查询接口
+GET http://192.168.32.87:8080/user/search
+Accept: application/json
+
+### 按照用户昵称搜索
+GET  http://192.168.32.87:8080/user/search/findByNickname?nickname=cjz
+
+### 更新用户
+PUT http://192.168.32.87:8080/user/1
+Content-Type: application/json
+
+ {
+   "password": "123456",
+   "nickname": "cjz",
+   "email": "123456@test.com",
+   "enabled": 1,
+   "mobile": "15036113212"
+ }
+
+### 删除用户
+DELETE  http://192.168.32.87:8080/user/1

@@ -14,15 +14,22 @@ import org.springframework.security.config.annotation.web.socket.AbstractSecurit
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.support.RequestContext;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * WebSocketHandlerDecorator
@@ -108,6 +115,9 @@ public class WebSocketConfig extends AbstractSecurityWebSocketMessageBrokerConfi
         @Override
         public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response,
                                        WebSocketHandler wsHandler, Map<String, Object> attributes) {
+            final HttpServletRequest httpServletRequest = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+            final String token = httpServletRequest.getParameter("token");
+            log.info("token: {}", token);
             // 将 request 对象转换为 ServletServerHttpRequest 对象
             ServletServerHttpRequest serverRequest = (ServletServerHttpRequest) request;
             // 获取 HTTP Session 对象

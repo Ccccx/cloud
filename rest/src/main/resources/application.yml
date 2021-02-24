@@ -1,0 +1,23 @@
+server:
+  port: 8081
+spring:
+  data:
+    rest:
+      detectionStrategy: default
+      return-body-on-create: on
+      return-body-on-update: on
+  datasource:
+    url: jdbc:mysql://cx:13306/cloud?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: meiyoumima.0
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 5
+  jpa:
+    generate-ddl: true
+    show-sql: true
+logging:
+  level:
+    "com.example": debug
+    "org.springframework": debug
+

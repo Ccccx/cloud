@@ -312,6 +312,7 @@ public class ElasticsearchTest {
                 .withQuery(boolQuery().filter(termQuery("type.keyword", "TEST")))
                 .addAggregation(terms("cityDeviceTop").field("areaInfo.cityName.keyword").size(10))
                 .build();
+        query.setTrackTotalHits(true);
         log.info("\n{}", query.getQuery().toString());
         final SearchHits<DataInfo> search = elasticsearchRestTemplate.search(query, DataInfo.class, logstashIndex);
         log.info("total: {}", search.getTotalHits());

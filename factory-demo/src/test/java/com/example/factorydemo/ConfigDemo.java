@@ -37,4 +37,19 @@ public class ConfigDemo {
         final ClassPathResource prd = new ClassPathResource("prd");
         log.info("{}", prd.getFile().getAbsolutePath());
     }
+
+    @Test
+    void t4() {
+        long start = System.currentTimeMillis();
+        for (int a = 0; a < 100000; ++a) {
+            double result = Math.sqrt(a);
+        }
+        log.info("{} ms",  System.currentTimeMillis() - start);
+        start = System.currentTimeMillis();
+        for (int a = 0; a < 100000; ++a) {
+            double result = StrictMath.sqrt(a);
+        }
+        log.info("{} ms",  System.currentTimeMillis() - start);
+
+    }
 }

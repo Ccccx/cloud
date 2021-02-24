@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FactoryDemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FactoryDemoApplication.class, args);
+       SpringApplication.run(FactoryDemoApplication.class, args);
     }
 
 }

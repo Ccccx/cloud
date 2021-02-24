@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: rlzy
+          uri: http://192.168.242.221:17101
+          predicates:
+            - Path=/rlzy/**
+            - Path=/template/rlzy/**
+        - id: m1
+          uri: http://192.168.32.87:8080
+          predicates:
+            - Path=/**

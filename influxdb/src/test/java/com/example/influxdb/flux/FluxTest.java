@@ -20,6 +20,8 @@ import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -89,26 +91,44 @@ public class FluxTest {
         final WriteApi writeApi = client.getWriteApi();
         while ((str = bufferedReader.readLine()) != null) {
             final String[] data = str.split(",");
-            Date date = new Date();
             final Calendar instance = Calendar.getInstance();
-            instance.setTime(date);
-            instance.set(Calendar.MONTH, Calendar.DECEMBER);
-            instance.set(Calendar.DAY_OF_MONTH, 1);
-            date = instance.getTime();
+            instance.setTime(DateUtils.parseDate(data[0], "YYYY/MM/DD HH:mm"));
+            instance.set(Calendar.YEAR, 2021);
+            instance.set(Calendar.MONTH, Calendar.JANUARY);
+            instance.set(Calendar.DAY_OF_MONTH, 27);
+            Date date = instance.getTime();
             final Point point = Point.measurement("replays")
                     .addTag("id", "1310115752375099393")
                     .time(date.getTime(), WritePrecision.MS);
-            point.addField("lon", Double.valueOf(data[1]));
-            point.addField("lat", Double.valueOf(data[2]));
-            point.addField("speed", RandomUtils.nextLong(10, 100));
-            point.addField("direction", RandomUtils.nextInt(1, 360));
+            final Double lon = Double.valueOf(data[1]);
+            final Double lat = Double.valueOf(data[2]);
+            point.addField("lon", lon);
+            point.addField("lat", lat);
+            final long speed = RandomUtils.nextLong(10, 100);
+            final int direction = RandomUtils.nextInt(1, 360);
+            point.addField("speed", speed);
+            point.addField("direction", direction);
             writeApi.writePoint("history", ORG, point);
-            System.out.println(date + "\t" + data[1] + "\t" + data[2]);
+            System.out.println(date + "\t" + lon + "\t" + lat + "\t" + speed + "\t" + direction);
             writeApi.flush();
         }
         //close
         inputStream.close();
         bufferedReader.close();
+    }
+
+    @Test
+    @SneakyThrows
+    public void deleteHistory() {
+        InfluxDBClient client = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, "history");
+        DeletePredicateRequest request = new DeletePredicateRequest();
+        request.setPredicate("_measurement=replays");
+        request.setPredicate("id=1310115752375099393");
+        request.setStart(OffsetDateTime.of(LocalDateTime.of(2021, 1, 20, 0, 0), ZoneOffset.UTC));
+        request.setStop(OffsetDateTime.of(LocalDateTime.of(2021, 1, 30, 0, 0), ZoneOffset.UTC));
+        final DeleteApi deleteApi = client.getDeleteApi();
+        deleteApi.delete(request, "history", ORG);
+        Thread.sleep(5 * 1000);
     }
 
 
@@ -209,14 +229,14 @@ public class FluxTest {
     @Test
     @SneakyThrows
     public void delete() {
-        InfluxDBClient client = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, "demo");
+        InfluxDBClient client = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, "history");
         DeletePredicateRequest request = new DeletePredicateRequest();
         request.setPredicate("_measurement=lineBus");
         // request.setPredicate("id=1310115752375099393");
-        request.setStart(OffsetDateTime.of(LocalDateTime.of(2020, 10, 27, 0, 0), ZoneOffset.UTC));
-        request.setStop(OffsetDateTime.of(LocalDateTime.of(2020, 10, 31, 0, 0), ZoneOffset.UTC));
+        request.setStart(OffsetDateTime.of(LocalDateTime.of(2021, 1, 26, 0, 0), ZoneOffset.UTC));
+        request.setStop(OffsetDateTime.of(LocalDateTime.of(2020, 1, 30, 0, 0), ZoneOffset.UTC));
         final DeleteApi deleteApi = client.getDeleteApi();
-        deleteApi.delete(request, "demo", ORG);
+        deleteApi.delete(request, "history", ORG);
         Thread.sleep(5 * 1000);
 
 

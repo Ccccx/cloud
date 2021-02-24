@@ -1,0 +1,48 @@
+### 单表分页查询
+GET http://localhost:8081/T_USERS/page/1/size/10?sort=createDate,desc,username,asc&username=a2589e0159544cc6b5d14243f610fac1
+
+### 单表分页查询
+GET http://localhost:8081/rest_user/page/1/size/10
+
+
+### 关联表分页查询  1
+GET http://localhost:8081/T_USERS/username/T_USERS_IMAGE/username/page/1/size/10?sort=createDate,desc,username,asc&username=a2589e0159544cc6b5d14243f610fac1
+
+### 关联表分页查询  2
+GET http://localhost:8081/T_USERS/username/T_USERS_IMAGE/username/page/1/size/10?sort=createDate,desc,username,asc
+
+### 新增
+POST http://localhost:8081/DY_REST
+Content-Type: application/json;charset=utf-8
+
+{
+     "id": "999",
+      "name": "999",
+      "age": 999,
+      "createTime": "2021-02-02T07:21:06.000+00:00",
+      "updateTime": "2021-02-02T07:21:09.000+00:00"
+}
+
+### 更新
+PUT http://localhost:8081/DY_REST
+Content-Type: application/json;charset=utf-8
+
+{
+  "id": "999",
+  "name": "123",
+  "age": 123,
+  "createTime": "2021-02-02T07:21:06.000+00:00",
+  "updateTime": "2021-02-02T07:21:09.000+00:00"
+}
+
+### 删除
+DELETE http://localhost:8081/DY_REST/999
+
+### 导出表
+GET http://localhost:8081/rest_user/export
+
+
+### 导入表
+POST http://localhost:8081/rest_user/import
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+

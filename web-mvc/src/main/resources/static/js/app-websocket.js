@@ -1,7 +1,7 @@
 // 设置 STOMP 客户端
 var stompClient = null;
 // 设置 WebSocket 进入端点
-var SOCKET_ENDPOINT = "/gs-guide-websocket";
+var SOCKET_ENDPOINT = "/gs-guide-websocket?token=123456";
 
 // 设置订阅消息的请求前缀
 var SUBSCRIBE_PREFIX = "/topic"

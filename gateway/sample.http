@@ -9,3 +9,20 @@ Host: www.myhost.org
 ### 根据主机重新请求路径
 GET  http://localhost:8080/foo/get
 Host: www.rewrite.org
+
+### t4 接口测试
+POST http://192.168.242.221:17101/rlzy/rlzy.action/RsEmpAction/show.do?dsName=8&empStatus=1
+Content-Type: application/x-www-form-urlencoded
+
+
+_tp_data={"parameters":{},"rowsets":{},"headers":{"IDENTIFIER":"MzsxNjEyMTY5ODcyMTg4"},"requestComponent":"1"}
+
+### t4用户登录
+POST http://192.168.32.87:8080/login?username=3&password=aaaaaa
+
+
+### 获取菜单
+POST http://192.168.242.221:17101/rlzy/inter.right/MenuAction/getMenuData.do
+Content-Type: application/x-www-form-urlencoded
+
+_tp_data={"parameters":{},"rowsets":{},"headers":{"IDENTIFIER":"MzsxNjEyMTY5ODcyMTg4"},"requestComponent":"0"}

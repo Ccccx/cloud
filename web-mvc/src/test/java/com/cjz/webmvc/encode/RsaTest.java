@@ -1,4 +1,4 @@
-package com.cjz.webmvc.rsa;
+package com.cjz.webmvc.encode;
 
 import com.cjz.webmvc.utils.RsaUtil;
 import lombok.extern.slf4j.Slf4j;

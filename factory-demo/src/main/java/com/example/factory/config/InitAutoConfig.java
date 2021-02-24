@@ -18,6 +18,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import javax.annotation.PostConstruct;
+
 /**
  * 基础容器自动初始化
  *
@@ -26,10 +28,13 @@ import org.springframework.context.annotation.Import;
  * @date 2019-12-09 9:16
  */
 @Slf4j
-@Configuration
 @Import(InitializrMetadata.class)
 public class InitAutoConfig {
 
+    @PostConstruct
+    public void init() {
+        log.info("InitAutoConfig ...");
+    }
 
     @Bean
     @ConditionalOnMissingBean(InitializrMetadataProvider.class)

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+# 指定了这个 API 对象的类型（Type），是一个 Deployment
+kind: Deployment
+# 元数据，它也是我们从 Kubernetes 里找到这个对象的主要依据
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    # 过滤规则的定义，是在 Deployment 的“spec.selector.matchLabels”字段。我们一般称之为：Label Selector。
+    matchLabels:
+      app: nginx
+  # 指定副本数
+  replicas: 1
+  template:
+    # 元数据，它也是我们从 Kubernetes 里找到这个对象的主要依据
+    metadata:
+# 内部信息，指的是对这些信息感兴趣的，是 Kubernetes 组件本身，而不是用户
+#      annotations:
+#        contextPath: /upv2
+      # Labels 就是一组 key-value 格式的标签。而像 Deployment 这样的控制器对象，就可以通过这个 Labels 字段从 Kubernetes 中过滤出它所关心的被控制对象
+      labels:
+        app: nginx
+    spec:
+      # 容器的镜像
+      containers:
+        - name: nginx
+          image: nginx:1.7.9
+          # 监听端口
+          ports:
+            - containerPort: 20080

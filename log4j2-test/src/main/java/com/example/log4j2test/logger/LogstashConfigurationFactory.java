@@ -49,6 +49,7 @@ public class LogstashConfigurationFactory extends ConfigurationFactory {
         final ClassPathResource classPathResource = new ClassPathResource("application.yml");
         if (classPathResource.isReadable()) {
             final YamlPropertySourceLoader sourceLoader = new YamlPropertySourceLoader();
+
             try {
                 SOURCES.addAll(sourceLoader.load("application", classPathResource));
             } catch (IOException e) {

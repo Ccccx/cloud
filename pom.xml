@@ -42,7 +42,7 @@
         <knife4j.version>2.0.3</knife4j.version>
         <springfox.version>2.9.2</springfox.version>
         <dynamic-datasource.version>2.5.6</dynamic-datasource.version>
-        <mybatis-plus.version>3.3.2</mybatis-plus.version>
+        <mybatis-plus.version>3.4.2</mybatis-plus.version>
     </properties>
 
     <!-- 所有的子项目默认依赖 -->

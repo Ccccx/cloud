@@ -4,6 +4,6 @@ spring:
 logging:
   level:
     com.example.factory: debug
-    'org.springframework.context': trace
+    'org.springframework': trace
 server:
   port: 8080

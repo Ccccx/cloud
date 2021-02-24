@@ -27,27 +27,28 @@ public class GatewayApplication implements Runnable {
         SpringApplication.run(GatewayApplication.class, args);
     }
 
-    @GetMapping("/")
+    // @GetMapping("/test")
     public String index() {
-        System.out.println("index ...");
-        return "index";
+        return "test";
     }
 
     /**
      * 配置静态资源
      */
-    @Bean
-    public RouterFunction<ServerResponse> staticResourceLocator() {
-        return RouterFunctions.resources("/static/**", new ClassPathResource("/static/"));
-    }
+//    @Bean
+//    public RouterFunction<ServerResponse> staticResourceLocator() {
+//        return RouterFunctions.resources("/static/**", new ClassPathResource("/static/"));
+//    }
 
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         //@formatter:off
         return builder.routes()
                 // 根据路径路由
-                .route("path_route", r -> r.path("/get")
-                        .uri("http://httpbin.org"))
+//                .route("rlzy", r -> r.path("/rlzy/**")
+//                        .uri("http://192.168.242.221:17101/"))
+//                .route("base", r -> r.path("/**")
+//                        .uri("http://192.168.32.87:8080/"))
                 // 主机路由
                 .route("host_route", r -> r.host("*.myhost.org")
                         .uri("http://httpbin.org"))

@@ -11,3 +11,4 @@ spring:
 logging:
   level:
     "com.example.log4j2test.web.controller": debug
+    "org.springframework": debug
