@@ -6,4 +6,12 @@ logging:
     com.example.factory: debug
     'org.springframework': trace
 server:
-  port: 8080
+  port: 8081
+
+m1:
+  server:
+    title: 123456
+    customize:
+      testEnabled: true
+      str: hello
+

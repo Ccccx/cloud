@@ -6,11 +6,13 @@ import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
+import com.example.mybatis.rest.model.DynamicCaptchaWrapper;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.web.context.annotation.RequestScope;
 
 /**
  * @author chengjz
@@ -28,6 +30,12 @@ public class MybatisConfig {
         dataSourceConfig.setUsername(dataSourceProperties.getUsername());
         dataSourceConfig.setPassword(dataSourceProperties.getPassword());
         return dataSourceConfig;
+    }
+
+    @Bean
+    @RequestScope
+    public DynamicCaptchaWrapper dynamicCaptchaWrapper() {
+        return new DynamicCaptchaWrapper();
     }
 
     @Bean
