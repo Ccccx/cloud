@@ -13,6 +13,8 @@ import org.apache.logging.log4j.core.config.yaml.YamlConfiguration;
 import org.apache.logging.log4j.core.filter.ThreadContextMapFilter;
 import org.apache.logging.log4j.core.net.Protocol;
 import org.apache.logging.log4j.core.util.KeyValuePair;
+import org.springframework.boot.env.PropertiesPropertySourceLoader;
+import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.ClassPathResource;
@@ -48,10 +50,9 @@ public class LogstashConfigurationFactory extends ConfigurationFactory {
     static {
         final ClassPathResource classPathResource = new ClassPathResource("application.yml");
         if (classPathResource.isReadable()) {
-            final YamlPropertySourceLoader sourceLoader = new YamlPropertySourceLoader();
-
+            final PropertySourceLoader yml = new YamlPropertySourceLoader();
             try {
-                SOURCES.addAll(sourceLoader.load("application", classPathResource));
+                SOURCES.addAll(yml.load("application", classPathResource));
             } catch (IOException e) {
                 e.printStackTrace();
             }

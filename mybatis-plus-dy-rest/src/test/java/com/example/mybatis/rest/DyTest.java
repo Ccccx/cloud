@@ -227,8 +227,8 @@ import static org.mockito.Mockito.mock;
 
     @Test
     void t6() throws Exception{
-
     }
+
 
     private void pt(DbColumnType type) {
         if (typeMap.containsKey(type)) {
@@ -317,4 +317,5 @@ import static org.mockito.Mockito.mock;
         @Excel(name = "操作时间", format = "yyyy-MM-dd HH:mm:ss", width = 20)
         private Date time;
     }
+
 }

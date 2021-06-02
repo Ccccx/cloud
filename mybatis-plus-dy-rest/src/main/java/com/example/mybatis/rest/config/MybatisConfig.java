@@ -1,18 +1,24 @@
 package com.example.mybatis.rest.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
+import com.example.mybatis.rest.extend.InsertBatchInterceptor;
+import com.example.mybatis.rest.extend.MyLogicSqlInjector;
 import com.example.mybatis.rest.model.DynamicCaptchaWrapper;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import com.example.mybatis.rest.support.HotCompileTableConfigManager;
+import com.example.mybatis.rest.support.ITableConfigManager;
+import org.apache.ibatis.type.JdbcType;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.context.annotation.RequestScope;
+
+import java.util.Properties;
 
 /**
  * @author chengjz
@@ -32,6 +38,20 @@ public class MybatisConfig {
         return dataSourceConfig;
     }
 
+    /**
+     * 自定义 SqlInjector
+     * 里面包含自定义的全局方法
+     */
+    @Bean
+    public MyLogicSqlInjector myLogicSqlInjector() {
+        return new MyLogicSqlInjector();
+    }
+
+    @Bean
+    public ITableConfigManager tableConfigManager() {
+        return new HotCompileTableConfigManager();
+    }
+
     @Bean
     @RequestScope
     public DynamicCaptchaWrapper dynamicCaptchaWrapper() {
@@ -46,16 +66,27 @@ public class MybatisConfig {
     }
 
     @Bean
+    @Order(30)
+    public InsertBatchInterceptor insertBatchInterceptor(){
+        return new InsertBatchInterceptor();
+    }
+
+    @Bean
     @Primary
     public MybatisPlusProperties mybatisPlusProperties() {
         final MybatisPlusProperties mybatisPlusProperties = new MybatisPlusProperties();
+        final Properties properties = new Properties();
+        properties.setProperty("jdbcTypeForNull", "NULL");
+        mybatisPlusProperties.setConfigurationProperties(properties);
         mybatisPlusProperties.setConfiguration(dyMybatisConfiguration());
         return mybatisPlusProperties;
     }
 
     @Bean
     public DyMybatisConfiguration dyMybatisConfiguration() {
-        return new DyMybatisConfiguration();
+        final DyMybatisConfiguration dyMybatisConfiguration = new DyMybatisConfiguration();
+        // dyMybatisConfiguration.setJdbcTypeForNull(JdbcType.NULL);
+        return dyMybatisConfiguration;
     }
 
 }

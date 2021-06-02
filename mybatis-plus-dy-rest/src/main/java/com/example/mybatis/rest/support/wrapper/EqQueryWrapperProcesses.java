@@ -2,7 +2,7 @@ package com.example.mybatis.rest.support.wrapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.mybatis.rest.model.BaseModel;
-import com.example.mybatis.rest.model.TableMetaConfig;
+import com.example.mybatis.rest.model.TableConfig;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +21,13 @@ public class EqQueryWrapperProcesses implements IQueryWrapperProcesses{
 
     /**
      * 通用参数 ?k1=v1&k2=v2
-     * @param tableMetaConfig    表元信息
+     * @param tableConfig    表元信息
      * @param wrapper    查询wrapper
      * @param requestKey 请求key
      * @param requestVal 请求值
      */
     @Override
-    public void doProcess(TableMetaConfig tableMetaConfig, QueryWrapper<BaseModel> wrapper,  String requestKey, String requestVal) {
-        wrapper.eq(tableMetaConfig.getFieldMap().get(requestKey).getColumnName(), requestVal);
+    public   <T extends BaseModel> void doProcess(TableConfig tableConfig, QueryWrapper<T> wrapper, String requestKey, String requestVal) {
+        wrapper.eq(tableConfig.getFieldMap().get(requestKey).getColumnName(), requestVal);
     }
 }

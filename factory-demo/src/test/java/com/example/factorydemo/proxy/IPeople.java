@@ -6,5 +6,5 @@ package com.example.factorydemo.proxy;
  * @since 2020-06-28 15:09
  */
 public interface IPeople {
-    String say(String name);
+    String say(String str);
 }

@@ -1,0 +1,12 @@
+### index.jsp
+GET http://127.0.0.1:8080
+
+### /test/index.jsp
+GET http://127.0.0.1:8080/test/
+
+###  TestServlet.java
+GET http://127.0.0.1:8080/test
+
+
+###  HelloServlet.java
+GET http://127.0.0.1:8080/hello

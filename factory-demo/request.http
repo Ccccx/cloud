@@ -1,0 +1,4 @@
+GET 192.168.32.87:8081/publishConfig?dataId=user&configInfo=helloworld
+
+### jsp
+GET 127.0.0.1:8081/demo.jsp

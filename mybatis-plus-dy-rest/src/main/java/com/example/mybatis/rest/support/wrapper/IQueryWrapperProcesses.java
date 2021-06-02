@@ -2,9 +2,7 @@ package com.example.mybatis.rest.support.wrapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.mybatis.rest.model.BaseModel;
-import com.example.mybatis.rest.model.TableMetaConfig;
-
-import javax.servlet.http.HttpServletRequest;
+import com.example.mybatis.rest.model.TableConfig;
 
 /**
  * @author chengjz
@@ -24,10 +22,10 @@ public interface IQueryWrapperProcesses {
 
     /**
      * 处理请求
-     * @param tableMetaConfig    表元信息
+     * @param tableConfig    表元信息
      * @param wrapper    查询wrapper
      * @param requestKey 请求key
      * @param requestVal 请求值
      */
-   void doProcess(TableMetaConfig tableMetaConfig, QueryWrapper<BaseModel> wrapper, String requestKey, String requestVal);
+    <T extends BaseModel> void doProcess(TableConfig tableConfig, QueryWrapper<T> wrapper, String requestKey, String requestVal);
 }

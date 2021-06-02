@@ -12,6 +12,7 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.security.Principal;
 
 /**
@@ -24,7 +25,7 @@ import java.security.Principal;
 @Component
 public class MyChannelInterceptor implements ChannelInterceptor {
 
-    @Autowired
+    @Resource
     @Lazy
     private UserComponent userComponent;
 

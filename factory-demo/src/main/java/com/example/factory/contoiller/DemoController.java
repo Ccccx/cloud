@@ -36,9 +36,6 @@ public class DemoController {
     @Resource
     private ApplicationContext applicationContext;
 
-    @Resource
-    private Map<String, Scope> scopes = new LinkedHashMap<>(8);
-
     public DemoController(ChildGenerationInvoker<BaseRequest> childGenerationInvoker) {
         this.childGenerationInvoker = childGenerationInvoker;
     }

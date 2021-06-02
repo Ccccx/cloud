@@ -1,17 +1,19 @@
 package com.example.factorydemo.proxy;
 
 import com.example.factorydemo.bean.Foo;
+import com.example.factorydemo.bean.Person;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.aop.MethodBeforeAdvice;
-import org.springframework.aop.framework.AdvisedSupport;
-import org.springframework.aop.framework.AopProxy;
-import org.springframework.aop.framework.DefaultAopProxyFactory;
+import org.springframework.aop.framework.*;
 import org.springframework.aop.support.DefaultIntroductionAdvisor;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.DelegatingIntroductionInterceptor;
+import org.springframework.aop.support.JdkRegexpMethodPointcut;
+import org.springframework.aop.target.ThreadLocalTargetSource;
 
 import java.lang.reflect.Proxy;
 
@@ -21,13 +23,13 @@ import java.lang.reflect.Proxy;
  * @since 2020-06-28 11:45
  */
 @Slf4j
-public class ProxyTest {
+  class ProxyTest {
 
     /**
      * java原生方法创建代理对象
      */
     @Test
-    public void test() {
+      void test() {
         //    我们要代理的真实对象
         Boy boy = new Boy();
         //    我们要代理哪个真实对象，就将该对象传进去，最后是通过该真实对象来调用其方法的
@@ -48,7 +50,7 @@ public class ProxyTest {
     }
 
     @Test
-    public void test1() {
+      void test1() {
         final String name = "cjz";
         MethodBeforeAdvice before = (method, args, target) -> {
             log.info("before  method: {} args: {}", method, args);
@@ -73,18 +75,70 @@ public class ProxyTest {
     }
 
     @Test
-    public void test2() {
+      void test2() {
+//        final Foo foo = new Foo("cx", false, 10);
+//        final AdvisedSupport as = new AdvisedSupport(Lockable.class);
+//        final LockMixin lockMixin = new LockMixin();
+//        lockMixin.lock();
+//        as.addAdvisor(new LockMixinAdvisor(lockMixin));
+//        as.setTarget(foo);
+//        as.setProxyTargetClass(true);
+//        final DefaultAopProxyFactory proxyFactory = new DefaultAopProxyFactory();
+//        final AopProxy aopProxy = proxyFactory.createAopProxy(as);
+//        final Foo proxy = (Foo) aopProxy.getProxy();
+//        System.out.println(proxy.getName());
+//        proxy.setName("test");
+//        System.out.println(proxy.getName());
+    }
+
+    @Test
+    void t3() {
         final Foo foo = new Foo("cx", false, 10);
-        final AdvisedSupport sp = new AdvisedSupport(Lockable.class);
-        sp.addAdvisor(new LockMixinAdvisor());
-        sp.setTarget(foo);
-        final DefaultAopProxyFactory proxyFactory = new DefaultAopProxyFactory();
-        final AopProxy aopProxy = proxyFactory.createAopProxy(sp);
-        final Lockable lockable = (Lockable) aopProxy.getProxy();
-        lockable.locked();
-        System.out.println(foo.name);
-        foo.setName("test");
-        System.out.println(foo.name);
+        final ProxyFactory proxyFactory = new ProxyFactory(foo);
+        MethodBeforeAdvice before = (method, args, target) -> {
+            log.info("before  method: {} args: {}", method, args);
+        };
+        MethodInterceptor interceptor = (invocation -> {
+            log.info("interceptor: method {} args: {}", invocation.getMethod(), invocation.getArguments());
+            return "cjz";
+        });
+        AfterReturningAdvice after = (returnValue, method, args, target) -> {
+            log.info("returnValue: {} method: {}", returnValue, method);
+        };
+
+        proxyFactory.addAdvice(before);
+        proxyFactory.addAdvice(interceptor);
+        proxyFactory.addAdvice(after);
+        proxyFactory.setTargetSource(new ThreadLocalTargetSource());
+        final Foo proxy = (Foo) proxyFactory.getProxy();
+        proxy.setName("12312");
+        log.info("proxy {}", proxy);
+
+        final Advised advised = (Advised) proxyFactory.getProxy();
+        log.info("advised {}", advised);
+    }
+
+    @Test
+    void t4() {
+        final Person personTarget = new Person("cjz", 18);
+        final ProxyFactory proxyFactory = new ProxyFactory(personTarget);
+        proxyFactory.setInterfaces(IPeople.class);
+        proxyFactory.addAdvice(new DebugInterceptor());
+        final IPeople people = (IPeople) proxyFactory.getProxy();
+        log.info("IPeople = {}", people.say("hello"));
+    }
+
+    @Test
+    void t5() {
+        final TestPointcut testPointcut = new TestPointcut();
+        final DebugInterceptor advice = new DebugInterceptor();
+        final DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(testPointcut, advice);
+        final Person personTarget = new Person("cjz", 18);
+        final ProxyFactory proxyFactory = new ProxyFactory(personTarget);
+        proxyFactory.setInterfaces(IPeople.class);
+        proxyFactory.addAdvisors(advisor);
+        final IPeople people = (IPeople) proxyFactory.getProxy();
+        log.info("IPeople = {}", people.say("hello"));
     }
 
 

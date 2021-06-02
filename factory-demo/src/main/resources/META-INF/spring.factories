@@ -3,3 +3,7 @@ com.example.factory.project.ChildGenerationConfiguration=com.example.factory.con
   com.example.factory.config.ChildCustomConfig
 org.springframework.cloud.bootstrap.BootstrapConfiguration=com.cjz.gateway.config.CustomPropertySourceLocator
 # com.example.factory.support.TmAutoConfig
+
+
+# Application Listeners
+org.springframework.context.ApplicationListener=com.example.factory.runner.RunningListener

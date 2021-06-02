@@ -229,6 +229,13 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>8.0.21</version>
             </dependency>
+
+            <!---->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>5.6.3</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

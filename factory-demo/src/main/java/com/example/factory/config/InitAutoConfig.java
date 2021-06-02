@@ -1,8 +1,11 @@
 package com.example.factory.config;
 
 import com.example.factory.contoiller.DemoController;
+import com.example.factory.contoiller.LongPollingConfigClient;
+import com.example.factory.contoiller.LongPollingController;
 import com.example.factory.project.ChildGenerationInvoker;
 import com.example.factory.runner.Runner;
+import com.example.factory.runner.RunningListener;
 import com.example.factory.support.*;
 import com.example.factory.support.model.InitializrMetadata;
 import com.example.factory.vo.BaseRequest;
@@ -13,11 +16,13 @@ import org.springframework.beans.factory.config.ObjectFactoryCreatingFactoryBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -30,7 +35,8 @@ import java.util.List;
  * @date 2019-12-09 9:16
  */
 @Slf4j
-@Import({InitializrMetadata.class})
+@Configuration
+@Import({InitializrMetadata.class, TomcatConfig.class})
 public class InitAutoConfig {
 
     @PostConstruct
@@ -39,10 +45,11 @@ public class InitAutoConfig {
     }
 
     @Bean
-    @RequestScope
-    public TestProperties testProperties() {
+    public static TestProperties testProperties() {
         return new TestProperties();
     }
+
+
 
     @Bean
     public DefaultCustomize defaultCustomize() {
@@ -60,6 +67,11 @@ public class InitAutoConfig {
         log.debug("demoController ...");
         ChildGenerationInvoker<BaseRequest> childGenerationInvoker = new ChildGenerationInvoker<>(context, new DefaultRequestToDescriptionConverter());
         return new DemoController(childGenerationInvoker);
+    }
+
+    @Bean
+    public LongPollingController longPollingController() {
+        return new LongPollingController();
     }
 
     @Bean

@@ -15,3 +15,6 @@ http://192.168.32.87:8080/actuator/prometheus
 
 ### 获取prometheus具体指标
 http://192.168.32.87:8080/actuator/prometheus
+
+### demo.jsp
+http://192.168.32.87:8080/demo.jsp

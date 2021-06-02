@@ -1,0 +1,1044 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="m1-authorize-2.2.0.0-202004281140" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT 1 FROM M1_ORGANIZATION WHERE ID = 'YgW06azM')</sqlCheck>
+        </preConditions>
+        <insert tableName="M1_ORGANIZATION">
+            <column name="ID" value="YgW06azM"/>
+            <column name="ORGANIZATION" value="天迈科技"/>
+            <column name="ALIAS" value="天迈科技"/>
+            <column name="PARENTID"/>
+            <column name="RANK" valueNumeric="1"/>
+            <column name="CREATEDATE" valueDate="2020-03-20T10:42:20"/>
+            <column name="REMARKS"/>
+            <column name="PARENTKEYS"/>
+        </insert>
+        <insert tableName="M1_ORGANIZATION">
+            <column name="ID" value="JsQdTpIA"/>
+            <column name="ORGANIZATION" value="研发中心"/>
+            <column name="ALIAS" value="研发中心"/>
+            <column name="PARENTID" value="YgW06azM"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="CREATEDATE" valueDate="2020-03-20T10:59:05"/>
+            <column name="REMARKS"/>
+            <column name="PARENTKEYS" value="YgW06azM"/>
+        </insert>
+        <insert tableName="M1_ORGANIZATION">
+            <column name="ID" value="tlouU3k4"/>
+            <column name="ORGANIZATION" value="软件部"/>
+            <column name="ALIAS" value="软件部"/>
+            <column name="PARENTID" value="JsQdTpIA"/>
+            <column name="RANK" valueNumeric="3"/>
+            <column name="CREATEDATE" valueDate="2020-03-20T11:00:00"/>
+            <column name="REMARKS"/>
+            <column name="PARENTKEYS" value="YgW06azM-JsQdTpIA"/>
+        </insert>
+        <insert tableName="M1_ORGANIZATION">
+            <column name="ID" value="45NSxb6g"/>
+            <column name="ORGANIZATION" value="VE前端组"/>
+            <column name="ALIAS" value="VE前端组"/>
+            <column name="PARENTID" value="tlouU3k4"/>
+            <column name="RANK" valueNumeric="4"/>
+            <column name="CREATEDATE" valueDate="2020-03-20T11:00:15"/>
+            <column name="REMARKS"/>
+            <column name="PARENTKEYS" value="YgW06azM-JsQdTpIA-tlouU3k4"/>
+        </insert>
+        <insert tableName="M1_ORGANIZATION">
+            <column name="ID" value="49nt9ifh"/>
+            <column name="ORGANIZATION" value="M1平台组"/>
+            <column name="ALIAS" value="M1平台组"/>
+            <column name="PARENTID" value="tlouU3k4"/>
+            <column name="RANK" valueNumeric="4"/>
+            <column name="CREATEDATE" valueDate="2020-03-20T11:00:29"/>
+            <column name="REMARKS"/>
+            <column name="PARENTKEYS" value="YgW06azM-JsQdTpIA-tlouU3k4"/>
+        </insert>
+        <insert tableName="M1_USER_ORGANIZATION">
+            <column name="USERID" value="13783698404"/>
+            <column name="ORGANIZATIONID" value="49nt9ifh"/>
+        </insert>
+        <insert tableName="M1_USER_ORGANIZATION">
+            <column name="USERID" value="18537169260"/>
+            <column name="ORGANIZATIONID" value="tlouU3k4"/>
+        </insert>
+        <insert tableName="M1_USER_ORGANIZATION">
+            <column name="USERID" value="18595902563"/>
+            <column name="ORGANIZATIONID" value="45NSxb6g"/>
+        </insert>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.0.0-202004281142" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT 1 FROM M1_RESOURCES WHERE ID = 'jw1MUnwu')</sqlCheck>
+        </preConditions>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="UbFkJecK"/>
+            <column name="NAME" value="首页"/>
+            <column name="PATH" value="/"/>
+            <column name="PARENTID"/>
+            <column name="METHOD"/>
+            <column name="ICO" value="&#xe67e;"/>
+            <column name="RANK" valueNumeric="0"/>
+            <column name="ORDERNO" valueNumeric="1"/>
+            <column name="TYPE" valueNumeric="1"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="jw1MUnwu"/>
+            <column name="NAME" value="系统管理"/>
+            <column name="PATH"/>
+            <column name="PARENTID"/>
+            <column name="METHOD"/>
+            <column name="ICO" value="fa fa-cog"/>
+            <column name="RANK" valueNumeric="0"/>
+            <column name="ORDERNO" valueNumeric="5"/>
+            <column name="TYPE" valueNumeric="1"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="1uYLUsrN"/>
+            <column name="NAME" value="资源管理"/>
+            <column name="PATH" value="/sys/resource"/>
+            <column name="PARENTID" value="jw1MUnwu"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="1"/>
+            <column name="ORDERNO" valueNumeric="1"/>
+            <column name="TYPE" valueNumeric="1"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="9ThLkx7r"/>
+            <column name="NAME" value="新增资源"/>
+            <column name="PATH" value="resource_add"/>
+            <column name="PARENTID" value="1uYLUsrN"/>
+            <column name="METHOD" value="com.tiamaes.cloud.m1.authority.resource.controller.M1ResourceController.add"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="1"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="O4HbLPnb"/>
+            <column name="NAME" value="更新资源"/>
+            <column name="PATH" value="resource_edit"/>
+            <column name="PARENTID" value="1uYLUsrN"/>
+            <column name="METHOD"
+                    value="com.tiamaes.cloud.m1.authority.resource.controller.M1ResourceController.update"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="2"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="sr0Cjp0o"/>
+            <column name="NAME" value="删除资源"/>
+            <column name="PATH" value="resource_delete"/>
+            <column name="PARENTID" value="1uYLUsrN"/>
+            <column name="METHOD"
+                    value="com.tiamaes.cloud.m1.authority.resource.controller.M1ResourceController.delete"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="3"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="WohiuT0I"/>
+            <column name="NAME" value="移动资源"/>
+            <column name="PATH" value="resource_move"/>
+            <column name="PARENTID" value="1uYLUsrN"/>
+            <column name="METHOD" value="com.tiamaes.cloud.m1.authority.resource.controller.M1ResourceController.move"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="4"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="9e4sWAdn"/>
+            <column name="NAME" value="角色管理"/>
+            <column name="PATH" value="/sys/role"/>
+            <column name="PARENTID" value="jw1MUnwu"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="1"/>
+            <column name="ORDERNO" valueNumeric="2"/>
+            <column name="TYPE" valueNumeric="1"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="SXY72GTE"/>
+            <column name="NAME" value="权限设置"/>
+            <column name="PATH" value="role_permission"/>
+            <column name="PARENTID" value="9e4sWAdn"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="1"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="SEweDODm"/>
+            <column name="NAME" value="新增角色"/>
+            <column name="PATH" value="role_add"/>
+            <column name="PARENTID" value="9e4sWAdn"/>
+            <column name="METHOD" value="com.tiamaes.cloud.m1.authority.role.controller.M1RoleController.add"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="2"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="xUmLnLQy"/>
+            <column name="NAME" value="更新角色"/>
+            <column name="PATH" value="role_edit"/>
+            <column name="PARENTID" value="9e4sWAdn"/>
+            <column name="METHOD" value="com.tiamaes.cloud.m1.authority.role.controller.M1RoleController.update"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="3"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="2HflHpka"/>
+            <column name="NAME" value="删除角色"/>
+            <column name="PATH" value="role_delete"/>
+            <column name="PARENTID" value="9e4sWAdn"/>
+            <column name="METHOD" value="com.tiamaes.cloud.m1.authority.role.controller.M1RoleController.delete"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="4"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="HbkspYqi"/>
+            <column name="NAME" value="用户管理"/>
+            <column name="PATH" value="/sys/user"/>
+            <column name="PARENTID" value="jw1MUnwu"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="1"/>
+            <column name="ORDERNO" valueNumeric="3"/>
+            <column name="TYPE" valueNumeric="1"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="LoRUXWNx"/>
+            <column name="NAME" value="新增用户"/>
+            <column name="PATH" value="user_add"/>
+            <column name="PARENTID" value="HbkspYqi"/>
+            <column name="METHOD" value="com.tiamaes.cloud.m1.authority.user.controller.M1UserController.add"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="1"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="LEpQx7uf"/>
+            <column name="NAME" value="更新用户"/>
+            <column name="PATH" value="user_edit"/>
+            <column name="PARENTID" value="HbkspYqi"/>
+            <column name="METHOD" value="com.tiamaes.cloud.m1.authority.user.controller.M1UserController.update"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="2"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="UFW4x4OQ"/>
+            <column name="NAME" value="删除用户"/>
+            <column name="PATH" value="user_delete"/>
+            <column name="PARENTID" value="HbkspYqi"/>
+            <column name="METHOD" value="com.tiamaes.cloud.m1.authority.user.controller.M1UserController.delete"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="3"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="SBctwOO4"/>
+            <column name="NAME" value="组织管理"/>
+            <column name="PATH" value="/sys/group"/>
+            <column name="PARENTID" value="jw1MUnwu"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="1"/>
+            <column name="ORDERNO" valueNumeric="4"/>
+            <column name="TYPE" valueNumeric="1"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="dKS0HiMX"/>
+            <column name="NAME" value="新增组织"/>
+            <column name="PATH" value="org_add"/>
+            <column name="PARENTID" value="SBctwOO4"/>
+            <column name="METHOD" value="com.tiamaes.cloud.m1.authority.organization.controller.M1OrganController.add"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="1"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="9ATivEP1"/>
+            <column name="NAME" value="修改组织"/>
+            <column name="PATH" value="org_update"/>
+            <column name="PARENTID" value="SBctwOO4"/>
+            <column name="METHOD"
+                    value="com.tiamaes.cloud.m1.authority.organization.controller.M1OrganController.update"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="2"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="y3hanied"/>
+            <column name="NAME" value="删除组织"/>
+            <column name="PATH" value="org_delete"/>
+            <column name="PARENTID" value="SBctwOO4"/>
+            <column name="METHOD"
+                    value="com.tiamaes.cloud.m1.authority.organization.controller.M1OrganController.delete"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="3"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="4y3OpJFy"/>
+            <column name="NAME" value="字典管理"/>
+            <column name="PATH"/>
+            <column name="PARENTID" value="jw1MUnwu"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="1"/>
+            <column name="ORDERNO" valueNumeric="5"/>
+            <column name="TYPE" valueNumeric="1"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="ZH3krS6E"/>
+            <column name="NAME" value="分类管理"/>
+            <column name="PATH" value="/sys/dict/category"/>
+            <column name="PARENTID" value="4y3OpJFy"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="1"/>
+            <column name="TYPE" valueNumeric="1"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="3UEbnqnC"/>
+            <column name="NAME" value="数据管理"/>
+            <column name="PATH" value="/sys/dict/data"/>
+            <column name="PARENTID" value="4y3OpJFy"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="2"/>
+            <column name="TYPE" valueNumeric="1"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="ORvXmJpF"/>
+            <column name="NAME" value="系统日志"/>
+            <column name="PATH" value="/sys/log"/>
+            <column name="PARENTID" value="jw1MUnwu"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="1"/>
+            <column name="ORDERNO" valueNumeric="6"/>
+            <column name="TYPE" valueNumeric="1"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="0SUfYutu"/>
+            <column name="NAME" value="生成代码"/>
+            <column name="PATH" value="/sys/generator"/>
+            <column name="PARENTID" value="jw1MUnwu"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="1"/>
+            <column name="ORDERNO" valueNumeric="7"/>
+            <column name="TYPE" valueNumeric="1"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="qfyqs8ON"/>
+            <column name="NAME" value="创建根组织"/>
+            <column name="PATH" value="org_top_add"/>
+            <column name="PARENTID" value="SBctwOO4"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="4"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+            <column name="DEV" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.0.0-202004281143" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT 1 FROM M1_ROLES WHERE AUTHORITY IN( 'ROLE_ADMIN', 'ROLE_DEV', 'ROLE_SYSTEM', 'ROLE_USER', 'ROLE_MANAGER'))</sqlCheck>
+        </preConditions>
+        <insert tableName="M1_ROLES">
+            <column name="AUTHORITY" value="ROLE_ADMIN"/>
+            <column name="ALIAS" value="后台管理员"/>
+            <column name="ICON"/>
+            <column name="CREATEDATE" valueDate="2017-06-28T09:27:31"/>
+            <column name="REMARKS" value="系统内置角色，不允许删除"/>
+        </insert>
+        <insert tableName="M1_ROLES">
+            <column name="AUTHORITY" value="ROLE_DEV"/>
+            <column name="ALIAS" value="开发工程师"/>
+            <column name="ICON"/>
+            <column name="CREATEDATE" valueDate="2017-06-28T09:22:50"/>
+            <column name="REMARKS" value="系统内置角色，不允许删除"/>
+        </insert>
+        <insert tableName="M1_ROLES">
+            <column name="AUTHORITY" value="ROLE_SYSTEM"/>
+            <column name="ALIAS" value="系统管理员"/>
+            <column name="ICON"/>
+            <column name="CREATEDATE" valueDate="2019-03-12T18:08:03"/>
+            <column name="REMARKS" value="系统内置角色，不允许删除"/>
+        </insert>
+        <insert tableName="M1_ROLES">
+            <column name="AUTHORITY" value="ROLE_USER"/>
+            <column name="ALIAS" value="普通用户"/>
+            <column name="ICON"/>
+            <column name="CREATEDATE" valueDate="2017-06-28T09:27:31"/>
+            <column name="REMARKS" value="2017-06-28 09:31:20"/>
+        </insert>
+        <insert tableName="M1_ROLES">
+            <column name="AUTHORITY" value="ROLE_MANAGER"/>
+            <column name="ALIAS" value="部门主管"/>
+            <column name="ICON"/>
+            <column name="CREATEDATE" valueDate="2020-04-20T14:22:40"/>
+            <column name="REMARKS" value="系统内置角色，不允许删除"/>
+        </insert>
+        <insert tableName="M1_USER_ROLES">
+            <column name="USERID" value="13783698404"/>
+            <column name="AUTHORITY" value="ROLE_DEV"/>
+        </insert>
+        <insert tableName="M1_USER_ROLES">
+            <column name="USERID" value="18537169260"/>
+            <column name="AUTHORITY" value="ROLE_DEV"/>
+        </insert>
+        <insert tableName="M1_USER_ROLES">
+            <column name="USERID" value="18595902563"/>
+            <column name="AUTHORITY" value="ROLE_DEV"/>
+        </insert>
+        <insert tableName="M1_USERS">
+            <column name="USERNAME" value="13783698404"/>
+            <column name="PASSWORD"
+                    value="171dbf98edd85c493b6cdd642b2ba84b58c3660521f96420121f7dfe20515fb9ccb186407c424199"/>
+            <column name="NICKNAME" value="陈李立"/>
+            <column name="MOBILE" value="13783698404"/>
+            <column name="EMAIL" value="chenlili@tiamaes.com"/>
+            <column name="CREATEDATE" valueDate="2015-09-15T15:02:16"/>
+            <column name="ENABLED" valueNumeric="1"/>
+        </insert>
+        <insert tableName="M1_USERS">
+            <column name="USERNAME" value="18537169260"/>
+            <column name="PASSWORD"
+                    value="1265df8b546c30e0203090716833a598a5f9ea7b3c50daf355af77772252f2007a4bf1c363af2bde"/>
+            <column name="NICKNAME" value="张会冰"/>
+            <column name="MOBILE" value="18537169260"/>
+            <column name="EMAIL" value="zhanghuibing@tiamaes.com"/>
+            <column name="CREATEDATE" valueDate="2019-07-31T20:11:29"/>
+            <column name="ENABLED" valueNumeric="1"/>
+            <column name="TENANTID" value="tlouU3k4"/>
+            <column name="OWNER" value="49nt9ifh"/>
+        </insert>
+        <insert tableName="M1_USERS">
+            <column name="USERNAME" value="18595902563"/>
+            <column name="PASSWORD"
+                    value="c6a7cf3e8553283f3552973289880b3cffdfb0ba854f82c077c3d759e76fa63a694e207bdda99a16"/>
+            <column name="NICKNAME" value="王誉栋"/>
+            <column name="MOBILE" value="18595902563"/>
+            <column name="EMAIL" value="wangyudong@tiamaes.com"/>
+            <column name="CREATEDATE" valueDate="2020-02-20T21:01:22"/>
+            <column name="ENABLED" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.0.0-202004301826" author="ChenLili">
+        <update tableName="M1_ROLES">
+            <column name="REMARKS" type="varchar(280)" value="系统内置角色，不允许删除"/>
+            <where>AUTHORITY = 'ROLE_USER'</where>
+        </update>
+        <update tableName="M1_RESOURCES">
+            <column name="DEV" type="int" valueNumeric="1"/>
+            <where>ID IN ('0SUfYutu', '1uYLUsrN', '9ThLkx7r', 'O4HbLPnb', 'qfyqs8ON', 'sr0Cjp0o', '4y3OpJFy',
+                '3UEbnqnC', 'ZH3krS6E', 'WohiuT0I')
+            </where>
+        </update>
+        <update tableName="M1_RESOURCES">
+            <column name="RANK" type="int" valueNumeric="2147483647"/>
+            <where>TYPE = 3</where>
+        </update>
+    </changeSet>
+    <!-- 迁移资源数据 -->
+    <changeSet id="m1-authorize-2.2.0.0-202005231728" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="TM_RESOURCES"/>
+            </and>
+            <and>
+                <not>
+                    <tableIsEmpty tableName="TM_RESOURCES"/>
+                </not>
+            </and>
+            <and>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT T1.ID FROM TM_RESOURCES T1,M1_RESOURCES T2 WHERE T1.ID = T2.ID AND T1.ID NOT IN (
+                    '554a327651ad477c86669123ca29262a',
+                    '75cf3a9df39641589c266e168d34694d',
+                    '1e9163b473b1443dbfb44020f13ccd90',
+                    '3b112d1acc464c24bebda910215e815f',
+                    '74dc5fabb8ad4943b584af78b346b1fc',
+                    '5a23f078b05a467a818420326becf17c',
+                    '832b7143d8db4770b8451e2d7eb288d1',
+                    '3fa4a53ae2324211a17f0cb93757393c',
+                    '857a5910db904159896dc8d4b8471351',
+                    '2983a3d708fe4be298332bbb4b3f2ad2',
+                    '920398255c11437f8f83ac844389fb9e',
+                    '2f958a8e4d18443d942c73ff3e55277c',
+                    '897e072bca2e4828a446a894990a4f7f',
+                    '8291d5dba0334a0bb75470210a881c3a',
+                    'cbedc26973464f368872073b316cb874',
+                    '1cd6596d489b4087b361f9e9a818a142',
+                    '0e022d5a818848379e2199e86e605825',
+                    '8cfe6afbcf0e4aed908cee2f8392f344',
+                    '0051b2653b1644b4a05799cd804d358d',
+                    '857a5910db904159893dc8c4b8471351',
+                    '7e79674968224a48995d49a21f790405'))
+                </sqlCheck>
+            </and>
+        </preConditions>
+        <delete tableName="M1_ROLE_RESOURCES"/>
+        <sql>
+            INSERT INTO M1_RESOURCES (ID, NAME, PATH, PARENTID, METHOD, ICO, RANK, ORDERNO, TYPE, HIDDEN) SELECT ID, NAME, PATH, PARENTID, METHOD, ICO, RANK, ORDERNO, TYPE, HIDDEN FROM TM_RESOURCES
+            WHERE ID NOT IN(
+                '554a327651ad477c86669123ca29262a',
+                '75cf3a9df39641589c266e168d34694d',
+                '1e9163b473b1443dbfb44020f13ccd90',
+                '3b112d1acc464c24bebda910215e815f',
+                '74dc5fabb8ad4943b584af78b346b1fc',
+                '5a23f078b05a467a818420326becf17c',
+                '832b7143d8db4770b8451e2d7eb288d1',
+                '3fa4a53ae2324211a17f0cb93757393c',
+                '857a5910db904159896dc8d4b8471351',
+                '2983a3d708fe4be298332bbb4b3f2ad2',
+                '920398255c11437f8f83ac844389fb9e',
+                '2f958a8e4d18443d942c73ff3e55277c',
+                '897e072bca2e4828a446a894990a4f7f',
+                '8291d5dba0334a0bb75470210a881c3a',
+                'cbedc26973464f368872073b316cb874',
+                '1cd6596d489b4087b361f9e9a818a142',
+                '0e022d5a818848379e2199e86e605825',
+                '8cfe6afbcf0e4aed908cee2f8392f344',
+                '0051b2653b1644b4a05799cd804d358d',
+                '857a5910db904159893dc8c4b8471351',
+                '7e79674968224a48995d49a21f790405');
+        </sql>
+        <sql>
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'ZH3krS6E' WHERE RESOURCEID = '554a327651ad477c86669123ca29262a';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'UFW4x4OQ' WHERE RESOURCEID = '75cf3a9df39641589c266e168d34694d';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = '2HflHpka' WHERE RESOURCEID = '1e9163b473b1443dbfb44020f13ccd90';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'sr0Cjp0o' WHERE RESOURCEID = '3b112d1acc464c24bebda910215e815f';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = '4y3OpJFy' WHERE RESOURCEID = '74dc5fabb8ad4943b584af78b346b1fc';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = '3UEbnqnC' WHERE RESOURCEID = '5a23f078b05a467a818420326becf17c';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'LoRUXWNx' WHERE RESOURCEID = '832b7143d8db4770b8451e2d7eb288d1';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'SEweDODm' WHERE RESOURCEID = '3fa4a53ae2324211a17f0cb93757393c';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = '9ThLkx7r' WHERE RESOURCEID = '857a5910db904159896dc8d4b8471351';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'LEpQx7uf' WHERE RESOURCEID = '2983a3d708fe4be298332bbb4b3f2ad2';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'xUmLnLQy' WHERE RESOURCEID = '920398255c11437f8f83ac844389fb9e';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'O4HbLPnb' WHERE RESOURCEID = '2f958a8e4d18443d942c73ff3e55277c';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'SXY72GTE' WHERE RESOURCEID = '897e072bca2e4828a446a894990a4f7f';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'HbkspYqi' WHERE RESOURCEID = '8291d5dba0334a0bb75470210a881c3a';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'WohiuT0I' WHERE RESOURCEID = 'cbedc26973464f368872073b316cb874';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'ORvXmJpF' WHERE RESOURCEID = '1cd6596d489b4087b361f9e9a818a142';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'jw1MUnwu' WHERE RESOURCEID = '0e022d5a818848379e2199e86e605825';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'SBctwOO4' WHERE RESOURCEID = '8cfe6afbcf0e4aed908cee2f8392f344';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = '9e4sWAdn' WHERE RESOURCEID = '0051b2653b1644b4a05799cd804d358d';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = '1uYLUsrN' WHERE RESOURCEID = '857a5910db904159893dc8c4b8471351';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'UbFkJecK' WHERE RESOURCEID = '7e79674968224a48995d49a21f790405';
+        </sql>
+    </changeSet>
+    <!-- 迁移资源角色关系 -->
+    <changeSet id="m1-authorize-2.2.0.0-202005231729" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="TM_ROLE_RESOURCES"/>
+            </and>
+            <and>
+                <not>
+                    <tableIsEmpty tableName="TM_ROLE_RESOURCES"/>
+                </not>
+            </and>
+            <and>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT T.RESOURCEID FROM M1_ROLE_RESOURCES T)
+                </sqlCheck>
+            </and>
+        </preConditions>
+        <sql dbms="mysql,oracle">
+            INSERT INTO M1_ROLE_RESOURCES(AUTHORITY, RESOURCEID) SELECT AUTHORITY, RESOURCEID FROM TM_ROLE_RESOURCES WHERE AUTHORITY NOT IN('ROLE_DEV', 'ROLE_SYSTEM');
+        </sql>
+        <sql>
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'ZH3krS6E' WHERE RESOURCEID = '554a327651ad477c86669123ca29262a';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'UFW4x4OQ' WHERE RESOURCEID = '75cf3a9df39641589c266e168d34694d';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = '2HflHpka' WHERE RESOURCEID = '1e9163b473b1443dbfb44020f13ccd90';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'sr0Cjp0o' WHERE RESOURCEID = '3b112d1acc464c24bebda910215e815f';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = '4y3OpJFy' WHERE RESOURCEID = '74dc5fabb8ad4943b584af78b346b1fc';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = '3UEbnqnC' WHERE RESOURCEID = '5a23f078b05a467a818420326becf17c';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'LoRUXWNx' WHERE RESOURCEID = '832b7143d8db4770b8451e2d7eb288d1';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'SEweDODm' WHERE RESOURCEID = '3fa4a53ae2324211a17f0cb93757393c';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = '9ThLkx7r' WHERE RESOURCEID = '857a5910db904159896dc8d4b8471351';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'LEpQx7uf' WHERE RESOURCEID = '2983a3d708fe4be298332bbb4b3f2ad2';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'xUmLnLQy' WHERE RESOURCEID = '920398255c11437f8f83ac844389fb9e';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'O4HbLPnb' WHERE RESOURCEID = '2f958a8e4d18443d942c73ff3e55277c';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'SXY72GTE' WHERE RESOURCEID = '897e072bca2e4828a446a894990a4f7f';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'HbkspYqi' WHERE RESOURCEID = '8291d5dba0334a0bb75470210a881c3a';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'WohiuT0I' WHERE RESOURCEID = 'cbedc26973464f368872073b316cb874';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'ORvXmJpF' WHERE RESOURCEID = '1cd6596d489b4087b361f9e9a818a142';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'jw1MUnwu' WHERE RESOURCEID = '0e022d5a818848379e2199e86e605825';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'SBctwOO4' WHERE RESOURCEID = '8cfe6afbcf0e4aed908cee2f8392f344';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = '9e4sWAdn' WHERE RESOURCEID = '0051b2653b1644b4a05799cd804d358d';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = '1uYLUsrN' WHERE RESOURCEID = '857a5910db904159893dc8c4b8471351';
+            UPDATE M1_ROLE_RESOURCES SET RESOURCEID = 'UbFkJecK' WHERE RESOURCEID = '7e79674968224a48995d49a21f790405';
+        </sql>
+    </changeSet>
+    <!-- 迁移角色数据 -->
+    <changeSet id="m1-authorize-2.2.0.0-202005231730" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="TM_ROLES"/>
+            </and>
+            <and>
+                <not>
+                    <tableIsEmpty tableName="TM_ROLES"/>
+                </not>
+            </and>
+            <and>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT T1.AUTHORITY FROM TM_ROLES T1,M1_ROLES T2 WHERE T1.AUTHORITY = T2.AUTHORITY AND T1.AUTHORITY NOT IN (
+                        'ROLE_ADMIN', 'ROLE_DEV','ROLE_SYSTEM', 'ROLE_USER', 'ROLE_MANAGER'))
+                </sqlCheck>
+            </and>
+        </preConditions>
+        <sql>
+            INSERT INTO M1_ROLES (AUTHORITY, ALIAS, REMARKS) SELECT AUTHORITY, ALIAS, REMARKS FROM TM_ROLES WHERE AUTHORITY NOT IN ('ROLE_ADMIN', 'ROLE_DEV','ROLE_SYSTEM', 'ROLE_USER', 'ROLE_MANAGER');
+        </sql>
+    </changeSet>
+    <!-- 迁移用户数据 -->
+    <changeSet id="m1-authorize-2.2.0.0-202009271504" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="TM_USERS"/>
+            </and>
+            <and>
+                <not>
+                    <tableIsEmpty tableName="TM_USERS"/>
+                </not>
+            </and>
+            <and>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT T1.USERNAME FROM TM_USERS T1,M1_USERS T2 WHERE T1.USERNAME = T2.USERNAME AND T1.USERNAME NOT IN('13783698404','18537169260', '18595902563'))
+                </sqlCheck>
+            </and>
+        </preConditions>
+        <sql >
+            INSERT INTO M1_USERS (USERNAME, PASSWORD, NICKNAME, MOBILE, EMAIL, ENABLED) SELECT USERNAME, PASSWORD, NICKNAME, MOBILE, EMAIL, ENABLED FROM TM_USERS WHERE USERNAME NOT IN('13783698404','18537169260', '18595902563');
+        </sql>
+    </changeSet>
+    <!-- 迁移用户角色关系 -->
+    <changeSet id="m1-authorize-2.2.0.0-202005231732" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="TM_USER_ROLES"/>
+            </and>
+            <and>
+                <not>
+                    <tableIsEmpty tableName="TM_USER_ROLES"/>
+                </not>
+            </and>
+            <and>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT T1.USERID FROM TM_USER_ROLES T1,M1_USER_ROLES T2 WHERE T1.USERID = T2.USERID AND T1.USERID NOT IN('13783698404','18537169260', '18595902563'))
+                </sqlCheck>
+            </and>
+        </preConditions>
+        <sql>
+            INSERT INTO M1_USER_ROLES (USERID, AUTHORITY) SELECT USERID, AUTHORITY FROM TM_USER_ROLES WHERE USERID NOT IN('13783698404','18537169260', '18595902563');
+        </sql>
+    </changeSet>
+    <!-- 迁移组织机构数据 -->
+    <changeSet id="m1-authorize-2.2.0.0-202005231737" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="TM_ORGANIZATION"/>
+            </and>
+            <and>
+                <columnExists tableName="TM_ORGANIZATION" columnName="LEVEL"/>
+            </and>
+            <and>
+                <not>
+                    <tableIsEmpty tableName="TM_ORGANIZATION"/>
+                </not>
+            </and>
+            <and>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT T1.ID FROM TM_ORGANIZATION T1, M1_ORGANIZATION T2 WHERE T1.ID = T2.ID AND T1.ID NOT IN ('YgW06azM', 'JsQdTpIA', 'tlouU3k4', '49nt9ifh', '45NSxb6g'))
+                </sqlCheck>
+            </and>
+        </preConditions>
+        <sql>
+            INSERT INTO M1_ORGANIZATION (ID, ORGANIZATION, ALIAS, PARENTID, RANK, REMARKS) SELECT ID, ORGANIZATION, ALIAS, PARENTID, LEVEL AS RANK, REMARKS FROM TM_ORGANIZATION
+            WHERE ID NOT IN('YgW06azM', 'JsQdTpIA', 'tlouU3k4', '49nt9ifh', '45NSxb6g');
+        </sql>
+    </changeSet>
+    <!-- 迁移组织机构数据 -->
+    <changeSet id="m1-authorize-2.2.0.0-202005231738" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="TM_ORGANIZATION"/>
+            </and>
+            <and>
+                <columnExists tableName="TM_ORGANIZATION" columnName="RANK"/>
+            </and>
+            <and>
+                <not>
+                    <tableIsEmpty tableName="TM_ORGANIZATION"/>
+                </not>
+            </and>
+            <and>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT T1.ID FROM TM_ORGANIZATION T1, M1_ORGANIZATION T2 WHERE T1.ID = T2.ID AND T1.ID NOT IN ('YgW06azM', 'JsQdTpIA', 'tlouU3k4', '49nt9ifh', '45NSxb6g'))
+                </sqlCheck>
+            </and>
+        </preConditions>
+        <sql>
+            INSERT INTO M1_ORGANIZATION (ID, ORGANIZATION, ALIAS, PARENTID, RANK, REMARKS) SELECT ID, ORGANIZATION, ALIAS, PARENTID, RANK, REMARKS FROM TM_ORGANIZATION
+            WHERE ID NOT IN('YgW06azM', 'JsQdTpIA', 'tlouU3k4', '49nt9ifh', '45NSxb6g');
+        </sql>
+    </changeSet>
+    <!-- 迁移用户组织关系 -->
+    <changeSet id="m1-authorize-2.2.0.0-202005231739" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="TM_USER_ORGANIZATION"/>
+            </and>
+            <and>
+                <not>
+                    <tableIsEmpty tableName="TM_USER_ORGANIZATION"/>
+                </not>
+            </and>
+            <and>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT T1.ORGANIZATIONID FROM TM_USER_ORGANIZATION T1, M1_USER_ORGANIZATION T2
+                    WHERE T1.USERID = T2.USERID AND T1.USERID NOT IN ('13783698404','18537169260', '18595902563'))
+                </sqlCheck>
+            </and>
+        </preConditions>
+        <sql>
+            INSERT INTO M1_USER_ORGANIZATION (USERID, ORGANIZATIONID) SELECT USERID, ORGANIZATIONID FROM TM_USER_ORGANIZATION WHERE USERID NOT IN('13783698404','18537169260', '18595902563');
+        </sql>
+    </changeSet>
+
+    <changeSet id="m1-authorize-2.2.0.0-202005242159" author="ChenLili">
+        <customChange class="com.tiamaes.cloud.m1.authority.resource.service.M1ResourceLiquibaseChange"/>
+    </changeSet>
+
+    <changeSet id="m1-authorize-2.2.1.0-202007271459" author="DongHaoRan">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="M1_RESOURCES"/>
+            </and>
+            <and>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT T.ID FROM M1_RESOURCES T WHERE T.ID = '7mzPE5Gd')
+                </sqlCheck>
+            </and>
+        </preConditions>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="7mzPE5Gd"/>
+            <column name="NAME" value="多级字典"/>
+            <column name="PATH" value="/sys/dict"/>
+            <column name="PARENTID" value="4y3OpJFy"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="3"/>
+            <column name="TYPE" valueNumeric="1"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+            <column name="PARENTKEYS" value="jw1MUnwu-4y3OpJFy"/>
+            <column name="DEV" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2.0-202008181418" author="ChenLili">
+        <update tableName="M1_USERS">
+            <column name="TENANTID"/>
+            <column name="OWNER"/>
+            <where>USERNAME = '18537169260'</where>
+        </update>
+        <update tableName="M1_RESOURCES">
+            <column name="ICO" value="fa fa-home"/>
+            <where>ID = 'UbFkJecK'</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="m1-authorize-2.2.2.0-202010141423" author="ChenLili">
+        <update tableName="M1_RESOURCES">
+            <column name="PATH" value="/sys/dict"/>
+            <where>ID = '4y3OpJFy'</where>
+        </update>
+        <delete tableName="M1_RESOURCES">
+            <where>PARENTID = '4y3OpJFy'</where>
+        </delete>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2.0-202011171105" author="ChenLili">
+        <delete tableName="M1_RESOURCES">
+            <where>ID = '0SUfYutu'</where>
+        </delete>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2-202102181953" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="M1_RESOURCES"/>
+            </and>
+            <and>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT T.ID FROM M1_RESOURCES T WHERE T.ID = 'YZELcKaI')
+                </sqlCheck>
+            </and>
+        </preConditions>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="YZELcKaI"/>
+            <column name="NAME" value="授权管理"/>
+            <column name="PATH" value="/sys/thirdParty"/>
+            <column name="PARENTID" value="jw1MUnwu"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="1"/>
+            <column name="ORDERNO" valueNumeric="999"/>
+            <column name="TYPE" valueNumeric="1"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+            <column name="PARENTKEYS" value="jw1MUnwu"/>
+            <column name="DEV" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="1362586519813337090"/>
+            <column name="NAME" value="接口管理"/>
+            <column name="PATH"/>
+            <column name="PARENTID" value="jw1MUnwu"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="1"/>
+            <column name="ORDERNO" valueNumeric="1000"/>
+            <column name="TYPE" valueNumeric="0"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+            <column name="PARENTKEYS" value="jw1MUnwu"/>
+            <column name="DEV" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="1362586519813337091"/>
+            <column name="NAME" value="用户接口"/>
+            <column name="PATH"/>
+            <column name="PARENTID" value="1362586519813337090"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="2"/>
+            <column name="ORDERNO" valueNumeric="1"/>
+            <column name="TYPE" valueNumeric="0"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+            <column name="PARENTKEYS" value="jw1MUnwu-1362586519813337090"/>
+            <column name="DEV" valueNumeric="0"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="1362586519813337092"/>
+            <column name="NAME" value="获取部门下所有员工的UID列表"/>
+            <column name="PATH"/>
+            <column name="PARENTID" value="1362586519813337091"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="3"/>
+            <column name="ORDERNO" valueNumeric="1"/>
+            <column name="TYPE" valueNumeric="0"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+            <column name="PARENTKEYS" value="jw1MUnwu-1362586519813337090-1362586519813337091"/>
+            <column name="DEV" valueNumeric="0"/>
+            <column name="REMARK" value="根据部门编号查询该部门所有员工的编号"/>
+        </insert>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="1362586519813337093"/>
+            <column name="NAME" value="获取拥有指定角色的员工UID列表"/>
+            <column name="PATH"/>
+            <column name="PARENTID" value="1362586519813337091"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="3"/>
+            <column name="ORDERNO" valueNumeric="2"/>
+            <column name="TYPE" valueNumeric="0"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+            <column name="PARENTKEYS" value="jw1MUnwu-1362586519813337090-1362586519813337091"/>
+            <column name="DEV" valueNumeric="0"/>
+            <column name="REMARK" value="根据角色编号查询拥有该角色所有员工的编号"/>
+        </insert>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2-202102221846" author="WuQian">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="M1_USERS"/>
+            </and>
+            <and>
+                <sqlCheck expectedResult="1">
+                    SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT T.USERNAME FROM M1_USERS T WHERE T.USERNAME = '13783698404')
+                </sqlCheck>
+            </and>
+        </preConditions>
+
+        <update tableName="M1_USERS">
+            <column name="PASSWORD"
+                    value="853415c9feeb55755d8e56810ab00543f39a975ca327441f3abb05b6096bc8c8ec94cba23ea5e0db"/>
+            <where>
+                USERNAME = '13783698404'
+            </where>
+        </update>
+        <update tableName="M1_USERS">
+            <column name="PASSWORD"
+                    value="edb41b2a298cc9d740f27611def1e99da1d3eb5cd23febc056a03395409f94a8f7729ecb04889bcd"/>
+            <where>
+                USERNAME = '18537169260'
+            </where>
+        </update>
+        <update tableName="M1_USERS">
+            <column name="PASSWORD"
+                    value="a85139fc3aa14bc0dedbcb1643d143026d37bc21e47866fb298c3493054e3c427231b99d6721d7e0"/>
+            <where>
+                USERNAME = '18595902563'
+            </where>
+        </update>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.3-202103301405" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="M1_RESOURCES"/>
+            </and>
+            <and>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT T.ID FROM M1_RESOURCES T WHERE T.ID = '1376496373682466817')
+                </sqlCheck>
+            </and>
+        </preConditions>
+        <insert tableName="M1_RESOURCES">
+            <column name="ID" value="1376496373682466817"/>
+            <column name="NAME" value="根据用户编号查询用户基本信息"/>
+            <column name="PATH"/>
+            <column name="PARENTID" value="1362586519813337091"/>
+            <column name="METHOD"/>
+            <column name="ICO"/>
+            <column name="RANK" valueNumeric="3"/>
+            <column name="ORDERNO" valueNumeric="2"/>
+            <column name="TYPE" valueNumeric="0"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+            <column name="PARENTKEYS" value="jw1MUnwu-1362586519813337090-1362586519813337091"/>
+            <column name="DEV" valueNumeric="0"/>
+            <column name="REMARK" value="根据用户编号查询用户基本信息"/>
+        </insert>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.3-202104091741" author="WuQian">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(1) FROM DUAL WHERE EXISTS(SELECT 1 FROM M1_RESOURCES WHERE ID = '7VSFrGbK')</sqlCheck>
+        </preConditions>
+        <insert tableName="m1_resources">
+            <column name="ID" value="7VSFrGbK"/>
+            <column name="NAME" value="菜单权限设置"/>
+            <column name="PATH" value="user_menu_set"/>
+            <column name="PARENTID" value="HbkspYqi"/>
+            <column name="METHOD" value=""/>
+            <column name="ICO" value=""/>
+            <column name="RANK" valueNumeric="2147483647"/>
+            <column name="ORDERNO" valueNumeric="5"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+            <column name="PARENTKEYS" value="jw1MUnwu-HbkspYqi"/>
+            <column name="DEV" valueNumeric="0"/>
+            <column name="REMARK"/>
+        </insert>
+        <insert tableName="m1_resources">
+            <column name="ID" value="8xKLkmLg"/>
+            <column name="NAME" value="查看数据权限"/>
+            <column name="PATH" value="user_data_view"/>
+            <column name="PARENTID" value="HbkspYqi"/>
+            <column name="METHOD" value=""/>
+            <column name="ICO" value=""/>
+            <column name="RANK" valueNumeric="2147483647"/>
+            <column name="ORDERNO" valueNumeric="6"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+            <column name="PARENTKEYS" value="jw1MUnwu-HbkspYqi"/>
+            <column name="DEV" valueNumeric="0"/>
+            <column name="REMARK"/>
+        </insert>
+        <insert tableName="m1_resources">
+            <column name="ID" value="l7ixBSOA"/>
+            <column name="NAME" value="数据权限设置"/>
+            <column name="PATH" value="user_data_set"/>
+            <column name="PARENTID" value="HbkspYqi"/>
+            <column name="METHOD" value=""/>
+            <column name="ICO" value=""/>
+            <column name="RANK" valueNumeric="2147483647"/>
+            <column name="ORDERNO" valueNumeric="7"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+            <column name="PARENTKEYS" value="jw1MUnwu-HbkspYqi"/>
+            <column name="DEV" valueNumeric="0"/>
+            <column name="REMARK"/>
+        </insert>
+        <insert tableName="m1_resources">
+            <column name="ID" value="PjHaWJx2"/>
+            <column name="NAME" value="查看菜单权限"/>
+            <column name="PATH" value="user_menu_view"/>
+            <column name="PARENTID" value="HbkspYqi"/>
+            <column name="METHOD" value=""/>
+            <column name="ICO" value=""/>
+            <column name="RANK" valueNumeric="2147483647"/>
+            <column name="ORDERNO" valueNumeric="4"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+            <column name="PARENTKEYS" value="jw1MUnwu-HbkspYqi"/>
+            <column name="DEV" valueNumeric="0"/>
+            <column name="REMARK"/>
+        </insert>
+        <insert tableName="m1_resources">
+            <column name="ID" value="RqF8NqkW"/>
+            <column name="NAME" value="权限复制"/>
+            <column name="PATH" value="user_permission_copy"/>
+            <column name="PARENTID" value="HbkspYqi"/>
+            <column name="METHOD" value=""/>
+            <column name="ICO" value=""/>
+            <column name="RANK" valueNumeric="2147483647"/>
+            <column name="ORDERNO" valueNumeric="8"/>
+            <column name="TYPE" valueNumeric="3"/>
+            <column name="HIDDEN" valueNumeric="0"/>
+            <column name="PARENTKEYS" value="jw1MUnwu-HbkspYqi"/>
+            <column name="DEV" valueNumeric="0"/>
+            <column name="REMARK"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

@@ -3,20 +3,18 @@ package com.example.mybatis.rest.component;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.TableInfo;
-import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.example.mybatis.rest.config.DyMybatisConfiguration;
-import com.example.mybatis.rest.model.*;
-import com.example.mybatis.rest.support.TableMetaManager;
+import com.example.mybatis.rest.model.BaseModel;
+import com.example.mybatis.rest.model.TableConfig;
+import com.example.mybatis.rest.support.HotCompileTableConfigManager;
+import com.example.mybatis.rest.support.ByteBuddyTableConfigManager;
+import com.example.mybatis.rest.support.ITableConfigManager;
 import com.example.mybatis.rest.support.wrapper.QueryWrapperBuilder;
 import com.example.mybatis.rest.utils.FileWithExcelUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.Serializers.Base;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,8 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
-import java.util.function.BiConsumer;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author chengjz
@@ -36,16 +34,11 @@ import java.util.function.BiConsumer;
 @Component
 public class TableManagerComponent {
 
-
-
     @Resource
     private DefaultListableBeanFactory beanFactory;
 
     @Resource
-    private TableMetaManager classInject;
-
-    @Resource
-    private DyMybatisConfiguration dyMybatisConfiguration;
+    private ITableConfigManager tableConfigManager;
 
     @Resource
     private QueryWrapperBuilder builder;
@@ -58,33 +51,23 @@ public class TableManagerComponent {
     }
 
     public void clear(String  tableName) {
-        TableMetaConfig config = null;
-        try {
-            //final TableMetadata metadata = TABLES.get(tableName);
-            config = classInject.loadTableMeta(tableName);
-            beanFactory.removeBeanDefinition(config.getMapperClass().getName());
-            dyMybatisConfiguration.removeMappedStatement(config.getMapperClass());
-            dyMybatisConfiguration.removeMapper(config.getMapperClass());
-            //classInject.remove(metadata);
-        } catch (Exception e) {
-            log.info("清空 发生异常",  e);
-        }
+        tableConfigManager.clearByTableName(tableName);
     }
 
     public IPage<BaseModel> pageQuery(String  tableName, Page<BaseModel> page, HttpServletRequest request) {
-        final TableMetaConfig metaConfig = getConfigByTableName(tableName);
-        final QueryWrapper<BaseModel> wrapper = builder.buildQueryWrapper(metaConfig, request.getParameterMap());
-        return getMapperByTableName(tableName).selectPage(page, wrapper);
+        final TableConfig tableConfig = getConfigByTableName(tableName);
+        final QueryWrapper<BaseModel> wrapper = builder.buildQueryWrapper(tableConfig, request.getParameterMap());
+        return getMapper(tableConfig).selectPage(page, wrapper);
     }
 
     public IPage<BaseModel> pageQuery(String tableName, String id, String subTableName, String subId, Page<BaseModel> page, HttpServletRequest request) {
         final IPage<BaseModel> list = pageQuery(tableName, page, request);
         final List<BaseModel> records = list.getRecords();
-        final TableMetaConfig subTableMetaConfig = getConfigByTableName(subTableName);
+        final TableConfig subTableConfig = getConfigByTableName(subTableName);
         for (BaseModel record : records) {
             final Map<String, Object> objectMap = record.toMap();
             final Object idVal = objectMap.get(id);
-            final QueryWrapper<BaseModel> wrapper = builder.buildQueryWrapper(subTableMetaConfig, subId, idVal.toString());
+            final QueryWrapper<BaseModel> wrapper = builder.buildQueryWrapper(subTableConfig, subId, idVal.toString());
             List<BaseModel>  subTable = getMapperByTableName(subTableName).selectList(wrapper);
             record.setSubTable(subTable);
         }
@@ -92,7 +75,7 @@ public class TableManagerComponent {
     }
 
     public BaseModel save(String  tableName, BaseModel model) {
-        final TableMetaConfig dyRest = getConfigByTableName(tableName);
+        final TableConfig dyRest = getConfigByTableName(tableName);
         try {
             final BaseModel o =(BaseModel)objectMapper.convertValue(model.getParamMap(), dyRest.getModelClass());
             getMapper(dyRest).insert(o);
@@ -104,7 +87,7 @@ public class TableManagerComponent {
     }
 
     public BaseModel update(String  tableName, BaseModel model) {
-        final TableMetaConfig dyRest = getConfigByTableName(tableName);
+        final TableConfig dyRest = getConfigByTableName(tableName);
         try {
             final BaseModel o =(BaseModel)objectMapper.convertValue(model.getParamMap(), dyRest.getModelClass());
             getMapper(dyRest).updateById(o);
@@ -116,7 +99,7 @@ public class TableManagerComponent {
     }
 
     public void delete(String  tableName, String  pk) {
-        final TableMetaConfig dyRest = getConfigByTableName(tableName);
+        final TableConfig dyRest = getConfigByTableName(tableName);
         try {
             getMapper(dyRest).deleteById(pk);
         } catch (Exception e) {
@@ -125,13 +108,13 @@ public class TableManagerComponent {
     }
 
     public void exportExcel(String tableName, HttpServletResponse response) {
-        TableMetaConfig dyRest = getConfigByTableName(tableName);
+        TableConfig dyRest = getConfigByTableName(tableName);
         final List<BaseModel> baseModels = selectList(tableName);
         FileWithExcelUtil.exportExcel(baseModels,"数据导出",tableName, dyRest.getModelClass(),tableName + ".xls",response);
     }
 
     public void importExcel(String tableName, MultipartFile file) {
-        TableMetaConfig dyRest = getConfigByTableName(tableName);
+        TableConfig dyRest = getConfigByTableName(tableName);
         List<?> personList = FileWithExcelUtil.importExcel(file, 1, 1, dyRest.getModelClass());
         log.info("导入{}行", personList.size());
         for(Object obj : personList) {
@@ -143,9 +126,9 @@ public class TableManagerComponent {
         return  getMapper(getConfigByTableName(tableName));
     }
 
-    public TableMetaConfig getConfigByTableName(String tableName) {
+    public TableConfig getConfigByTableName(String tableName) {
         try {
-          return classInject.findDyClassConfig(tableName);
+            return tableConfigManager.loadTableConfig(tableName);
         } catch (Exception e) {
             log.info("获取配置 发生异常",  e);
             return null;
@@ -154,7 +137,7 @@ public class TableManagerComponent {
 
 
     @SuppressWarnings("unchecked")
-    public BaseMapper<BaseModel> getMapper(TableMetaConfig config) {
+    public BaseMapper<BaseModel> getMapper(TableConfig config) {
          return (BaseMapper<BaseModel> )beanFactory.getBean(config.getMapperClass());
     }
 

@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="m1-authorize-2.2.0.0-202003221111" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="M1_USERS"/>
+            </not>
+        </preConditions>
+        <createTable tableName="M1_USERS" remarks="用户信息表">
+            <column name="USERNAME" type="varchar(32)" remarks="用户帐号">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="PASSWORD" type="varchar(128)" remarks="用户密码">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NICKNAME" type="varchar(32)" remarks="用户昵称">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MOBILE" type="varchar(32)" remarks="手机号码">
+                <constraints nullable="true"/>
+            </column>
+            <column name="EMAIL" type="varchar(280)" remarks="电子邮箱">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CREATEDATE" type="datetime" remarks="创建日期"
+                    defaultValueDate="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED" type="int" remarks="是否可用"/>
+        </createTable>
+        <createTable tableName="M1_ROLES" remarks="角色信息表">
+            <column name="AUTHORITY" type="varchar(32)" remarks="角色名称">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="ALIAS" type="varchar(128)" remarks="角色别名">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ICON" type="varchar(32)" remarks="用户图标">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CREATEDATE" type="datetime" remarks="创建日期"
+                    defaultValueDate="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REMARKS" type="varchar(280)" remarks="角色描述">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="M1_USER_ROLES" remarks="用户角色关系表">
+            <column name="USERID" type="varchar(32)" remarks="用户帐号">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="AUTHORITY" type="varchar(32)" remarks="角色名称">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="M1_RESOURCES" remarks="资源信息表">
+            <column name="ID" type="varchar(32)" remarks="资源编号">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="NAME" type="varchar(128)" remarks="资源名称">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PATH" type="varchar(200)" remarks="资源路径">
+                <constraints nullable="true"/>
+            </column>
+            <column name="PARENTID" type="varchar(32)" remarks="父节点编号">
+                <constraints nullable="true"/>
+            </column>
+            <column name="METHOD" type="varchar(255)" remarks="对应后台方法函数">
+                <constraints nullable="true"/>
+            </column>
+            <column name="ICO" type="varchar(32)" remarks="图标">
+                <constraints nullable="true"/>
+            </column>
+            <column name="RANK" type="int" remarks="级别">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ORDERNO" type="int" remarks="排序">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TYPE" type="int" remarks="类型-1:菜单,2:外链,3:按钮" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HIDDEN" type="int" remarks="是否隐藏" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="M1_ROLE_RESOURCES" remarks="角色资源关系表">
+            <column name="AUTHORITY" type="varchar(32)" remarks="角色名称">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="RESOURCEID" type="varchar(32)" remarks="资源编号">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.0.0-202003221112" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="M1_ORGANIZATION"/>
+            </not>
+        </preConditions>
+        <createTable tableName="M1_ORGANIZATION" remarks="组织机构表">
+            <column name="ID" type="varchar(32)" remarks="主键">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="ORGANIZATION" type="varchar(32)" remarks="组织编码">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ALIAS" type="varchar(32)" remarks="别名">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PARENTID" type="varchar(32)" remarks="父ID，NULL 代表顶级"/>
+            <column name="RANK" type="int" remarks="级别：最顶层为1，后边层数累加"/>
+            <column name="CREATEDATE" type="datetime" remarks="创建日期"
+                    defaultValueDate="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REMARKS" type="varchar(280)" remarks="备注"/>
+            <column name="PARENTKEYS" type="varchar(1000)" remarks="父节点关键字"/>
+        </createTable>
+        <createTable tableName="M1_USER_ORGANIZATION" remarks="用户组织关系表">
+            <column name="USERID" type="varchar(32)" remarks="用户帐号">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="ORGANIZATIONID" type="varchar(32)" remarks="组织编号">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="M1_ORGANIZATION_ROLES" remarks="组织角色关系表">
+            <column name="AUTHORITY" type="varchar(32)" remarks="角色名称">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="ORGANIZATIONID" type="varchar(32)" remarks="机构编号">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="M1_ORGANIZATION_RESOURCES" remarks="机构资源关系表">
+            <column name="ORGANIZATIONID" type="varchar(32)" remarks="机构编号">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="RESOURCEID" type="varchar(32)" remarks="资源编号">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.0.0-202003221113" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="M1_OPERATION_LOGS"/>
+            </not>
+        </preConditions>
+        <createTable tableName="M1_OPERATION_LOGS" remarks="操作日志表">
+            <column name="ID" type="varchar(8)" remarks="主键">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="METHOD" type="varchar(255)" remarks="方法">
+                <constraints nullable="true"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(255)" remarks="描述">
+                <constraints nullable="true"/>
+            </column>
+            <column name="OPERATOR" type="varchar(255)" remarks="操作人员">
+                <constraints nullable="true"/>
+            </column>
+            <column name="OPERATION" type="varchar(255)" remarks="操作方式">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CREATEDATE" type="datetime" remarks="操作时间"
+                    defaultValueDate="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CAST" type="int" remarks="处理耗时">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DETAIL" type="varchar(4000)" remarks="详情">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.0.0-202003221141" author="ChenLili" dbms="oracle">
+        <modifyDataType tableName="M1_USERS" columnName="CREATEDATE" newDataType="DATE"/>
+        <addDefaultValue tableName="M1_USERS" columnName="CREATEDATE" defaultValueDate="SYSDATE"/>
+        <modifyDataType tableName="M1_ROLES" columnName="CREATEDATE" newDataType="DATE"/>
+        <addDefaultValue tableName="M1_ROLES" columnName="CREATEDATE" defaultValueDate="SYSDATE"/>
+        <modifyDataType tableName="M1_ORGANIZATION" columnName="CREATEDATE" newDataType="DATE"/>
+        <addDefaultValue tableName="M1_ORGANIZATION" columnName="CREATEDATE" defaultValueDate="SYSDATE"/>
+        <modifyDataType tableName="M1_OPERATION_LOGS" columnName="CREATEDATE" newDataType="DATE"/>
+        <addDefaultValue tableName="M1_OPERATION_LOGS" columnName="CREATEDATE" defaultValueDate="SYSDATE"/>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.0.0-202004301648" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="M1_USERS" columnName="TENANTID"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="M1_USERS">
+            <column name="TENANTID" type="varchar(32)" remarks="租户">
+                <constraints nullable="true"/>
+            </column>
+            <column name="OWNER" type="varchar(32)" remarks="拥有者">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="M1_ROLES">
+            <column name="TENANTID" type="varchar(32)" remarks="租户">
+                <constraints nullable="true"/>
+            </column>
+            <column name="OWNER" type="varchar(32)" remarks="拥有者">
+                <constraints nullable="true"/>
+            </column>
+            <column name="HIDDEN" type="int" defaultValueNumeric="0" remarks="是否隐藏">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="M1_ORGANIZATION">
+            <column name="OWNER" type="varchar(32)" remarks="拥有者">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="M1_RESOURCES">
+            <column name="PARENTKEYS" type="varchar(1000)" remarks="上级节点集">
+                <constraints nullable="true"/>
+            </column>
+            <column name="DEV" type="int" defaultValueNumeric="0" remarks="是否是开发者功能, 0:否,1:是">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <setTableRemarks tableName="M1_USERS" remarks="用户信息表"/>
+        <setTableRemarks tableName="M1_ROLES" remarks="角色信息表"/>
+        <setTableRemarks tableName="M1_RESOURCES" remarks="资源信息表"/>
+        <setTableRemarks tableName="M1_ORGANIZATION" remarks="组织机构表"/>
+    </changeSet>
+
+    <changeSet id="m1-authorize-2.2.0.0-202006161618" author="DongHaoRan">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="M1_ORGANIZATION" columnName="TENANT"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="M1_ORGANIZATION">
+            <column name="TENANT" type="int" defaultValueNumeric="0" remarks="机构类型，普通机构:0,租户机构:1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="M1_ORGANIZATION">
+            <column name="ENABLED" type="int" defaultValueNumeric="1" remarks="是否启用，未启用:0,已启用:1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="M1_ROLES">
+            <column name="ENABLED" type="int" defaultValueNumeric="1" remarks="是否启用，未启用:0,已启用:1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATATYPE" type="int" defaultValueNumeric="0" remarks="数据层级与数据权限视图层级相同">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLETYPE" type="int" defaultValueNumeric="0" remarks="角色类型,功能角色:0,数据角色:1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="M1_RESOURCES">
+            <column name="REMARK" type="varchar(32)" remarks="备注信息">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <setTableRemarks tableName="M1_USERS" remarks="用户信息表"/>
+        <setTableRemarks tableName="M1_ROLES" remarks="角色信息表"/>
+        <setTableRemarks tableName="M1_RESOURCES" remarks="资源信息表"/>
+        <setTableRemarks tableName="M1_ORGANIZATION" remarks="组织机构表"/>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.1.0-202007151229" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="M1_CLIENTS"/>
+            </not>
+        </preConditions>
+        <createTable tableName="M1_CLIENTS" remarks="第三方客户端信息表">
+            <column name="id" type="bigint" remarks="主键">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="NAME" type="varchar(255)" remarks="客户端名称">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SECRET" type="varchar(255)" remarks="客户端密钥">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HOSTS" type="varchar(255)" remarks="绑定IP地址">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CREATED" type="datetime" remarks="创建日期"
+                    defaultValueDate="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED" type="datetime" remarks="更新时间"
+                    defaultValueDate="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EXPIRED" type="datetime" remarks="过期时间"
+                    defaultValueDate="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED" type="int" remarks="是否可用"/>
+            <column name="REMARKS" type="varchar(255)" remarks="备注">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="M1_CLIENT_RESOURCES" remarks="客户端资源关系表">
+            <column name="CLIENTID" type="bigint" remarks="客户端ID">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="RESOURCEID" type="varchar(32)" remarks="资源编号">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.1.0-202007151230" author="ChenLili" dbms="oracle">
+        <modifyDataType tableName="M1_CLIENTS" columnName="CREATED" newDataType="DATE"/>
+        <addDefaultValue tableName="M1_CLIENTS" columnName="CREATED" defaultValueDate="SYSDATE"/>
+        <modifyDataType tableName="M1_CLIENTS" columnName="UPDATED" newDataType="DATE"/>
+        <addDefaultValue tableName="M1_CLIENTS" columnName="UPDATED" defaultValueDate="SYSDATE"/>
+        <modifyDataType tableName="M1_CLIENTS" columnName="EXPIRED" newDataType="DATE"/>
+        <addDefaultValue tableName="M1_CLIENTS" columnName="EXPIRED" defaultValueDate="SYSDATE"/>
+    </changeSet>
+
+    <changeSet id="m1-authorize-2.2.2.0-202009191318" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="M1_USER_INFO"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="M1_USERS">
+            <column name="JOBNO" type="varchar(255)" remarks="工号">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <createTable tableName="M1_USER_INFO" remarks="用户扩展信息表">
+            <column name="UID" type="varchar(32)" remarks="用户编号">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="AVATAR" type="varchar(255)" remarks="头像">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2.0-202009241908" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="M1_USER_INFO" columnName="UID"/>
+        </preConditions>
+        <renameColumn tableName="M1_USER_INFO" oldColumnName="UID" newColumnName="USERID" columnDataType="varchar(32)"
+                      remarks="用户编号"/>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2.0-202011111916" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="M1_OPERATION_LOGS" columnName="TENANTID"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="M1_OPERATION_LOGS">
+            <column name="TENANTID" type="varchar(32)" remarks="租户">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2.0-202011121342" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="M1_ORGANIZATION" columnName="TENANTID"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="M1_ORGANIZATION">
+            <column name="TENANTID" type="varchar(32)" remarks="租户">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2.0-202011121515" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="M1_ROLE_RESOURCES" columnName="TENANTID"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="M1_ROLE_RESOURCES">
+            <column name="TENANTID" type="varchar(32)" remarks="租户">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2.0-202011121835" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="M1_USER_ROLES" columnName="TENANTID"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="M1_USER_ROLES">
+            <column name="TENANTID" type="varchar(32)" remarks="租户">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2.0-202011121912" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="M1_USER_ORGANIZATION" columnName="TENANTID"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="M1_USER_ORGANIZATION">
+            <column name="TENANTID" type="varchar(32)" remarks="租户">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2.0-202011121957" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="M1_USER_INFO" columnName="TENANTID"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="M1_USER_INFO">
+            <column name="TENANTID" type="varchar(32)" remarks="租户">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2.0-202011131717" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="M1_OPERATION_LOGS" columnName="cast"/>
+        </preConditions>
+        <modifyDataType tableName="M1_OPERATION_LOGS" columnName="ID" newDataType="varchar(20)"/>
+        <renameColumn tableName="M1_OPERATION_LOGS" oldColumnName="CAST" newColumnName="DURATION"
+                      columnDataType="int" remarks="耗时"/>
+        <addColumn tableName="M1_OPERATION_LOGS">
+            <column name="MODULE" type="varchar(32)" remarks="模块名">
+                <constraints nullable="true"/>
+            </column>
+            <column name="OPERATORID" type="varchar(32)" remarks="用户ID">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <setTableRemarks tableName="M1_USER_INFO" remarks="用户扩展信息"/>
+        <setTableRemarks tableName="M1_USER_ROLES" remarks="用户角色关系"/>
+        <setTableRemarks tableName="M1_ROLE_RESOURCES" remarks="角色资源关系"/>
+        <setTableRemarks tableName="M1_USER_ORGANIZATION" remarks="用户组织关系"/>
+        <setTableRemarks tableName="M1_ORGANIZATION" remarks="组织机构"/>
+        <setTableRemarks tableName="M1_OPERATION_LOGS" remarks="操作日志"/>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2-202102190843" author="ChenLili">
+        <modifyDataType tableName="M1_RESOURCES" columnName="REMARK" newDataType="varchar(2000)"/>
+        <setTableRemarks tableName="M1_RESOURCES" remarks="资源信息表"/>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2-202102192034" author="ChenLili" dbms="mysql">
+        <modifyDataType tableName="M1_CLIENTS" columnName="ID" newDataType="varchar(32)"/>
+        <setTableRemarks tableName="M1_CLIENTS" remarks="第三方客户端"/>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2-202102192035" author="ChenLili" dbms="oracle">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(1) FROM DUAL WHERE EXISTS (SELECT 1 FROM M1_CLIENTS)</sqlCheck>
+        </preConditions>
+        <modifyDataType tableName="M1_CLIENTS" columnName="ID" newDataType="varchar(32)"/>
+        <setTableRemarks tableName="M1_CLIENTS" remarks="第三方客户端"/>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2-202102192036" author="ChenLili" dbms="oracle">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">SELECT COUNT(1) FROM DUAL WHERE EXISTS (SELECT 1 FROM M1_CLIENTS)</sqlCheck>
+        </preConditions>
+        <dropPrimaryKey tableName="M1_CLIENTS"/>
+        <dropNotNullConstraint tableName="M1_CLIENTS" columnName="ID"/>
+        <addColumn tableName="M1_CLIENTS">
+            <column name="ID2" type="varchar(32)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <sql>UPDATE M1_CLIENTS SET ID2 = ID</sql>
+        <sql>UPDATE M1_CLIENTS SET ID = NULL</sql>
+        <modifyDataType tableName="M1_CLIENTS" columnName="ID" newDataType="varchar(32)"/>
+        <sql>UPDATE M1_CLIENTS SET ID = ID2</sql>
+        <dropColumn tableName="M1_CLIENTS" columnName="ID2"/>
+        <addNotNullConstraint tableName="M1_CLIENTS" columnName="ID"/>
+        <addPrimaryKey tableName="M1_CLIENTS" columnNames="ID"/>
+        <setTableRemarks tableName="M1_CLIENTS" remarks="第三方客户端"/>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.2-202103031416" author="ChenLili">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="M1_USER_INFO" columnName="REMARK"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="M1_USER_INFO">
+            <column name="REMARK" type="varchar(255)" remarks="备注信息">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <setTableRemarks tableName="M1_USER_INFO" remarks="用户扩展信息"/>
+    </changeSet>
+    <changeSet id="m1-authorize-2.2.3-202104200913" author="Chengjz">
+        <modifyDataType tableName="M1_RESOURCES" columnName="ID" newDataType="varchar(64)"/>
+        <modifyDataType tableName="M1_RESOURCES" columnName="PARENTID" newDataType="varchar(64)"/>
+        <modifyDataType tableName="M1_RESOURCES" columnName="ICO" newDataType="varchar(128)"/>
+        <addColumn tableName="M1_USERS">
+            <column name="NICKNAME_ABBR" type="varchar(8)" remarks="名称缩写">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CREATE_ACCOUNT" type="varchar(50)" remarks="创建人帐号">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="M1_USER_INFO">
+            <column name="IDENTITY_ID" type="varchar(18)" remarks="身份证号">
+                <constraints nullable="true"/>
+            </column>
+            <column name="GROUP_NO" type="varchar(20)" remarks="公司编号">
+                <constraints nullable="true"/>
+            </column>
+            <column name="LINE_NO" type="varchar(20)" remarks="线路编号">
+                <constraints nullable="true"/>
+            </column>
+            <column name="POSITION" type="varchar(10)" remarks="岗位编号">
+                <constraints nullable="true"/>
+            </column>
+            <column name="STATUS" type="varchar(2)" remarks="职工状态">
+                <constraints nullable="true"/>
+            </column>
+            <column name="FILA_NO" type="varchar(20)" remarks="路队编号">
+                <constraints nullable="true"/>
+            </column>
+            <column name="EMP_NO" type="varchar(20)" remarks="员工工号">
+                <constraints nullable="true"/>
+            </column>
+            <column name="DD_NO" type="varchar(20)" remarks="钉钉账户">
+                <constraints nullable="true"/>
+            </column>
+            <column name="WECHAT_NO" type="varchar(20)" remarks="微信账户">
+                <constraints nullable="true"/>
+            </column>
+            <column name="EXTEND_PARAM" type="varchar(512)" remarks="扩展参数">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+<!--    <include file="db/changelog/m1-authorize-data-changelog.xml"/>-->
+</databaseChangeLog>

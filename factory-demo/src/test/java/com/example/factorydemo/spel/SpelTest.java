@@ -15,6 +15,8 @@ import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.expression.EvaluationException;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ParseException;
+import org.springframework.expression.spel.SpelCompilerMode;
+import org.springframework.expression.spel.SpelParserConfiguration;
 import org.springframework.expression.spel.standard.SpelExpression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
@@ -24,6 +26,7 @@ import org.springframework.util.FileCopyUtils;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 
@@ -37,9 +40,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 class SpelTest {
 
-    public static String repeat(String s) {
-        return s + s;
-    }
 
     @Test
     void t1() {
@@ -65,6 +65,11 @@ class SpelTest {
         assertThat(value).isEqualTo(4);
     }
 
+
+    public static String repeat(String s) {
+        return s + s;
+    }
+
     @Test
     void t2() {
         try {
@@ -85,8 +90,10 @@ class SpelTest {
     @Test
     void t3() {
         try {
+            // 配置编译模式, 默认是表达式解析模式
+            SpelParserConfiguration config = new SpelParserConfiguration(SpelCompilerMode.IMMEDIATE, this.getClass().getClassLoader());
             // Create a parser
-            SpelExpressionParser parser = new SpelExpressionParser();
+            SpelExpressionParser parser = new SpelExpressionParser(config);
             // Use the standard evaluation context
             StandardEvaluationContext ctx = new StandardEvaluationContext();
             ctx.registerFunction("repeat", SpelTest.class.getDeclaredMethod("repeat", String.class));
@@ -104,6 +111,10 @@ class SpelTest {
 
             expr = parser.parseRaw("#arg[1]");
             value = expr.getValue(ctx);
+
+            final SpelExpression spelExpression = parser.parseRaw("#{T(java.lang.Math).random()*100.0}");
+            final Object random = spelExpression.getValue(ctx);
+            log.info("random: {}", random);
             assertThat(value).isEqualTo("str1");
         } catch (EvaluationException | ParseException | NoSuchMethodException ex) {
             throw new AssertionError(ex.getMessage(), ex);
@@ -122,6 +133,13 @@ class SpelTest {
         final Expression expression = parser.parseExpression("#str");
         final Object value = expression.getValue(evaluationContext);
         assertThat(value).isEqualTo(str);
+    }
+
+    @Test
+    @SneakyThrows
+    void t5() {
+        GregorianCalendar c = new GregorianCalendar();
+        c.set(1856, 7, 9);
     }
 
     @Test

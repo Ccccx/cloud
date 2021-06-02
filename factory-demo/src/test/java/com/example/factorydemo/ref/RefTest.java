@@ -11,13 +11,13 @@ import java.lang.ref.*;
  * @since 2020-10-28 14:34
  */
 @Slf4j
-public class RefTest {
+ class RefTest {
 
     /**
      * 强引用
      */
     @Test
-    public void t1() {
+     void t1() {
         final Object o = new Object();
         log.info("强引用: {}", o);
     }
@@ -26,7 +26,7 @@ public class RefTest {
      * 软引用在java中有个专门的SoftReference类型，软引用的意思是只有在内存不足的情况下，被引用的对象才会被回收。
      */
     @Test
-    public void t2() {
+     void t2() {
         Object obj = new Object();
         SoftReference<Object> soft = new SoftReference<>(obj);
         obj = null;
@@ -39,7 +39,7 @@ public class RefTest {
      * 弱引用 weakReference和softReference很类似，不同的是weekReference引用的对象只要垃圾回收执行，就会被回收，而不管是否内存不足。
      */
     @Test
-    public void t3() {
+     void t3() {
         Object obj = new Object();
         WeakReference<Object> weak = new WeakReference<>(obj);
         obj = null;
@@ -52,7 +52,7 @@ public class RefTest {
      * 虚引用 PhantomReference的作用是跟踪垃圾回收器收集对象的活动，在GC的过程中，如果发现有PhantomReference，GC则会将引用放到ReferenceQueue中，由程序员自己处理，当程序员调用ReferenceQueue.pull()方法，将引用出ReferenceQueue移除之后，Reference对象会变成Inactive状态，意味着被引用的对象可以被回收了。
      */
     @Test
-    public void t4() {
+     void t4() {
         ReferenceQueue<Object> rq = new ReferenceQueue<>();
         Object obj = new Object();
         PhantomReference<Object> phantomReference = new PhantomReference<>(obj, rq);

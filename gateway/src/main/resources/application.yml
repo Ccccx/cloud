@@ -1,13 +1,27 @@
 spring:
   cloud:
     gateway:
+      loadbalancer:
+        use404: true
       routes:
         - id: rlzy
           uri: http://192.168.242.221:17101
           predicates:
             - Path=/rlzy/**
             - Path=/template/rlzy/**
+          filters:
+            - PreserveHostHeader
         - id: m1
-          uri: http://192.168.32.87:8080
+          uri: http://192.168.32.225:20002
+          predicates:
+            - Path=/demo/**
+        - id: default
+          uri: http://127.0.0.1:3080
           predicates:
             - Path=/**
+          filters:
+            - PreserveHostHeader
+          # - RewritePath=/lark-*/*/(?<segment>.*), /lark-*/$\{segment}
+logging:
+  level:
+    'org.springframework.cloud.gateway': trace

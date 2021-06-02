@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.mybatis.rest.component.TableManagerComponent;
 import com.example.mybatis.rest.model.BaseModel;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,8 +22,9 @@ import java.util.Optional;
  * @since 2021-02-02 17:23
  */
 @Slf4j
+@Api(tags = {"动态表单"})
 @RestController
-@RequestMapping("/{tableName}")
+@RequestMapping("/form/{tableName}")
 public class TableRestController {
 
     TableManagerComponent component;
@@ -34,11 +38,12 @@ public class TableRestController {
         return component.selectList(tableName);
     }
 
+    @ApiOperation("单表分页查询")
     @GetMapping(value = {"/page/{number:\\d+}", "/page/{number:\\d+}/size/{size:\\d+}"})
-    public IPage<BaseModel> pageQuery(
-                                    @PathVariable String  tableName,
-                                    @PathVariable Integer number,
-                                   @PathVariable(required = false) Integer size,
+    public  IPage<BaseModel> pageQuery(
+                                    @PathVariable @ApiParam("表名") String  tableName,
+                                    @PathVariable  @ApiParam("页码") Integer number,
+                                   @PathVariable(required = false) @ApiParam("每页条数") Integer size,
                                    HttpServletRequest request) {
         Page<BaseModel> page = new Page<>(Optional.ofNullable(number).orElse(1), Optional.ofNullable(size).orElse(10));
         return component.pageQuery(tableName, page, request);

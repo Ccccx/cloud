@@ -19,6 +19,7 @@ class JavassistClient {
 		CtClass cc = pool.get("com.example.factorydemo.dyjava.impl.HelloServiceImpl");
 		CtMethod ctMethod = cc.getDeclaredMethod("sayHello", new CtClass[]{pool.get("java.lang.String")});
 		ctMethod.insertBefore("System.out.println(\"insert before by Javassist\");");
+		ctMethod.insertAt(13, "System.out.println(\"替换内容\");");
 		ctMethod.insertAfter("System.out.println(\"insert after by Javassist\");");
 		Class<?> klass = cc.toClass();
 		System.out.println(klass.getName());

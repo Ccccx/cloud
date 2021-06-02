@@ -50,12 +50,13 @@ public class EmbedStarter {
 		 */
 		tomcat.setAddDefaultWebXmlToWebapp(true);
 
+		// 创建默认上下文
 		// addWebapp(getHost(), contextPath, docBase);  重载方法getHost()也是一个实现了生命周期接口的监听器
 		// 注意 Context 这里添加了默认的servlet, 这里是通过DefaultWebXmlListener添加的
 		final Context context = tomcat.addWebapp("/", webappDir);
 		context.addLifecycleListener(event -> log.info("自定义监听器: {}", event.getType()));
 
-		// servlet 3.0方式添加TestServlet, spring boot 使用的就是这种方式
+		// 方式一:  servlet 3.0方式添加TestServlet, spring boot 使用的就是这种方式
 		context.addServletContainerInitializer((c, ctx) -> {
 			log.warn("servlet 3.0方式添加TestServlet");
 			final Dynamic dynamic = ctx.addServlet("test", new TestServlet());
@@ -63,13 +64,17 @@ public class EmbedStarter {
 			dynamic.setInitParameter("aaa", "aaa");
 		}, Collections.emptySet());
 
-		// 监听器方式添加自定义的HelloServlet
+		// 方式二:  监听器方式添加自定义的HelloServlet
 		context.addLifecycleListener(event -> {
 			if (Lifecycle.BEFORE_START_EVENT.equals(event.getType())) {
 				log.warn(" 监听器方式添加自定义的HelloServlet");
 				addServlet((Context) event.getLifecycle());
 			}
 		});
+		log.info("项目启动路径: {}", projectDir);
+		log.info("WEB资源目录: {}", webappDir);
+		log.info("JSP编译目录: {}", tomcatBaseDir);
+
 		tomcat.start();
 		tomcat.getServer().await();
 	}

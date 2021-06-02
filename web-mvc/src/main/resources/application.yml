@@ -4,6 +4,10 @@ spring:
     username: root
     password: meiyoumima.0
     driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:oracle:thin:@192.168.242.17:1521:orcl
+#    username: right
+#    password: ffffff
+#    driver-class-name: oracle.jdbc.driver.OracleDriver
     hikari:
       maximum-pool-size: 50
   liquibase:

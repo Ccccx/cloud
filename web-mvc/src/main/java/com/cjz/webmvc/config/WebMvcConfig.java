@@ -16,6 +16,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index.html");
+        registry.addViewController("/upload").setViewName("upload.html");
     }
 
     @Override

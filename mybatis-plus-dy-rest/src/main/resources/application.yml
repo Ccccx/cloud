@@ -5,10 +5,17 @@ spring:
     username: root
     password: meiyoumima.0
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+#    url: jdbc:p6spy:oracle:thin:@192.168.242.17:1521:orcl
+#    username: right
+#    password: ffffff
+#    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
     hikari:
       maximum-pool-size: 50
+  liquibase:
+    change-log: classpath:/db/changelog/m1-onlineform-changelog.xml  # 默认设置 db.changelog-master.yaml
 logging:
   level:
-    "com.example.log4j2test.web.controller": debug
+    "com.example": debug
+    "com.fasterxml.jackson": debug
 server:
   port: 8081

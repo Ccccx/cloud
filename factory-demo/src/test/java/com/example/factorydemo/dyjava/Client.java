@@ -1,6 +1,7 @@
 package com.example.factorydemo.dyjava;
 
 import org.assertj.core.util.Lists;
+import org.junit.platform.commons.util.StringUtils;
 
 import javax.tools.*;
 import java.util.ArrayList;
@@ -16,15 +17,17 @@ public class Client {
     static String SOURCE_CODE = "package com.example.factorydemo.dyjava.impl;\n" +
             "\n" +
             "import com.example.factorydemo.dyjava.IHelloService;\n" +
+            "import org.junit.platform.commons.util.StringUtils;\n" +
             "\n" +
             "/**\n" +
             " * @author chengjz\n" +
             " * @version 1.0\n" +
             " * @since 2020-10-27 15:45\n" +
             " */\n" +
-            "public class HelloServiceImpl implements IHelloService{\n" +
+            "public class TestServiceImpl implements IHelloService{\n" +
             "\t@Override\n" +
             "\tpublic void sayHello(String name) {\n" +
+            "\t\tSystem.out.println(\"222\" + StringUtils.isNotBlank(name));\n" +
             "\t\tSystem.out.println(String.format(\"%s say hello [by default]\", name));\n" +
             "\t}\n" +
             "}\n";
@@ -36,9 +39,12 @@ public class Client {
 
     public static void main(String[] args) throws Exception {
         String packageName = "com.example.factorydemo.dyjava.impl";
-        String className = "HelloServiceImpl";
+        String className = "TestServiceImpl";
         IHelloService instance = compile(packageName, className, SOURCE_CODE, null, null);
         instance.sayHello("Cheng Jinzhou");
+        instance = compile(packageName, className, SOURCE_CODE, null, null);
+        instance.sayHello("Cjz");
+        System.out.println(StringUtils.isNotBlank("21312"));
     }
 
     @SuppressWarnings("unchecked")
@@ -83,7 +89,6 @@ public class Client {
         Boolean result = compilationTask.call();
         System.out.println(String.format("编译[%s]结果:%s", qualifiedName, result));
         Class<?> klass = classLoader.loadClass(qualifiedName);
-        final byte[] byteCode = javaFileObject.getByteCode();
         return (T) klass.getDeclaredConstructor(constructorParamTypes).newInstance(constructorParams);
     }
 }

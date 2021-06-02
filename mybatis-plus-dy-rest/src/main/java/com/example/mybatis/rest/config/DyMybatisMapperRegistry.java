@@ -1,8 +1,6 @@
 package com.example.mybatis.rest.config;
 
-import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.MybatisMapperAnnotationBuilder;
-import com.baomidou.mybatisplus.core.MybatisMapperRegistry;
 import com.baomidou.mybatisplus.core.override.MybatisMapperProxyFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.binding.BindingException;
@@ -11,7 +9,6 @@ import org.apache.ibatis.session.SqlSession;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,7 +31,7 @@ public class DyMybatisMapperRegistry extends MapperRegistry {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getMapper(Class<T> type, SqlSession sqlSession) {
-        // TODO 这里换成 MybatisMapperProxyFactory 而不是 MapperProxyFactory
+        //  这里换成 MybatisMapperProxyFactory 而不是 MapperProxyFactory
         final MybatisMapperProxyFactory<T> mapperProxyFactory = (MybatisMapperProxyFactory<T>) knownMappers.get(type);
         if (mapperProxyFactory == null) {
             throw new BindingException("Type " + type + " is not known to the MybatisPlusMapperRegistry.");
@@ -55,19 +52,16 @@ public class DyMybatisMapperRegistry extends MapperRegistry {
     public <T> void addMapper(Class<T> type) {
         if (type.isInterface()) {
             if (hasMapper(type)) {
-                // TODO 如果之前注入 直接返回
+                //  如果之前注入 直接返回
                 return;
-                // TODO 这里就不抛异常了
-//                throw new BindingException("Type " + type + " is already known to the MapperRegistry.");
+                //  这里就不抛异常了
+                //  throw new BindingException("Type " + type + " is already known to the MapperRegistry.");
             }
             boolean loadCompleted = false;
             try {
-                // TODO 这里也换成 MybatisMapperProxyFactory 而不是 MapperProxyFactory
+                //  这里也换成 MybatisMapperProxyFactory 而不是 MapperProxyFactory
                 knownMappers.put(type, new MybatisMapperProxyFactory<>(type));
-                // It's important that the type is added before the parser is run
-                // otherwise the binding may automatically be attempted by the
-                // mapper parser. If the type is already known, it won't try.
-                // TODO 这里也换成 MybatisMapperAnnotationBuilder 而不是 MapperAnnotationBuilder
+                //  这里也换成 MybatisMapperAnnotationBuilder 而不是 MapperAnnotationBuilder
                 MybatisMapperAnnotationBuilder parser = new MybatisMapperAnnotationBuilder(config, type);
                 parser.parse();
                 loadCompleted = true;

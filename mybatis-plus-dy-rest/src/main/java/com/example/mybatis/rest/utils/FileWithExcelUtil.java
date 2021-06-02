@@ -14,10 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * @author chengjz
@@ -67,7 +64,7 @@ public class FileWithExcelUtil {
 
     public static <T> List<T> importExcel(String filePath,Integer titleRows,Integer headerRows, Class<T> pojoClass){
         if (StringUtils.isBlank(filePath)){
-            return null;
+            return Collections.emptyList();
         }
         ImportParams params = new ImportParams();
         params.setTitleRows(titleRows);

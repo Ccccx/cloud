@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class LifeDemoApplication {
     public static void main(String[] args) throws InterruptedException {
-        final AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+        final AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("com.example.factorydemo.life");
         applicationContext.register(DemoFactoryPostProcessor.class);
         applicationContext.register(LifeDemoApplication.class);
         applicationContext.refresh();

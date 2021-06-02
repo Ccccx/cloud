@@ -1,24 +1,34 @@
 package com.cjz.gateway;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
+import org.springframework.web.reactive.result.view.View;
 
 /**
  * @author chengjz
  */
 @Controller
+@Async
+@EnableScheduling
 @SpringBootApplication
-public class GatewayApplication implements Runnable {
+public class GatewayApplication implements ApplicationRunner {
 
     @Value("${property.from.sample.custom.source:default}")
     public String source;
@@ -27,18 +37,19 @@ public class GatewayApplication implements Runnable {
         SpringApplication.run(GatewayApplication.class, args);
     }
 
-    // @GetMapping("/test")
-    public String index() {
-        return "test";
+    @GetMapping("/**")
+    public String index(View view) {
+        return "404";
     }
+
 
     /**
      * 配置静态资源
      */
-//    @Bean
-//    public RouterFunction<ServerResponse> staticResourceLocator() {
-//        return RouterFunctions.resources("/static/**", new ClassPathResource("/static/"));
-//    }
+    @Bean
+    public RouterFunction<ServerResponse> staticResourceLocator() {
+        return RouterFunctions.resources("/static/**", new ClassPathResource("/static/"));
+    }
 
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
@@ -72,8 +83,9 @@ public class GatewayApplication implements Runnable {
         //@formatter:on
     }
 
+
     @Override
-    public void run() {
+    public void run(ApplicationArguments args) throws Exception {
         System.out.println(source);
     }
 }

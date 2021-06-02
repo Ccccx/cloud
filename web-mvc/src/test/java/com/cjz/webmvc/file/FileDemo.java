@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileCleaningTracker;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.StringBuilderWriter;
 import org.junit.Test;
@@ -96,6 +97,15 @@ public class FileDemo {
             log.info("文件输出路径: {}", out.getAbsolutePath());
         }
 
+    }
+
+    @Test
+    public void  clearFiles() {
+        final FileCleaningTracker fileCleaningTracker = new FileCleaningTracker();
+        fileCleaningTracker.track("E:\\IDEA\\cloud\\upload-dir\\upload-dir-tmp\\upload_d5b6992d_c49a_4d26_aee3_f9c77185f1b1_00000000.tmp", new Object());
+        fileCleaningTracker.track("E:\\IDEA\\cloud\\upload-dir\\upload-dir-tmp\\upload_d5b6992d_c49a_4d26_aee3_f9c77185f1b1_00000001.tmp", new Object());
+        fileCleaningTracker.track("E:\\IDEA\\cloud\\upload-dir\\upload-dir-tmp\\upload_d5b6992d_c49a_4d26_aee3_f9c77185f1b1_00000002.tmp", new Object());
+        System.gc();
     }
 
     public int split(long total, int split) {

@@ -4,13 +4,22 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.example.mybatis.rest.model.BaseModel;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 
-import java.util.ArrayList;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author chengjz
@@ -22,13 +31,13 @@ public class CodeGenerator {
     /**
      * 项目根路径
      */
-    public static final String PROJECT_PATH = "E:\\IDEA\\cloud\\web-mvc";
+    public static final String PROJECT_PATH = "E:\\tm\\tmp\\java";
     public static final String AUTH = "chengjz";
 
     /**
      * 父包全限定类名
      */
-    public static final String PARENT = "com.cjz.webmvc";
+    public static final String PARENT = "com.cjz.dy.mybatis";
 
     /**
      * 业务包名，会拼接上 {@link #PARENT}
@@ -43,7 +52,7 @@ public class CodeGenerator {
     /**
      * 要生成的表名
      */
-    public static final String TABLE_NAMES = "T_USERS";
+    public static final String TABLE_NAMES = "M1_ORGANIZATION";
 
     /**
      * 数据源配置
@@ -51,10 +60,16 @@ public class CodeGenerator {
     public static final DataSourceConfig DSC = new DataSourceConfig();
 
     static {
-        DSC.setUrl("jdbc:mysql://cx:13306/cloud?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8");
+//        DSC.setUrl("jdbc:mysql://cx:13306/cloud?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8");
+//        DSC.setDriverName("com.mysql.cj.jdbc.Driver");
+//        DSC.setUsername("root");
+//        DSC.setPassword("meiyoumima.0");
+
+        DSC.setUrl("jdbc:mysql://192.168.240.185:3306/demo-cjz?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8");
         DSC.setDriverName("com.mysql.cj.jdbc.Driver");
         DSC.setUsername("root");
-        DSC.setPassword("meiyoumima.0");
+        DSC.setPassword("tmkj@zgb123");
+
     }
 
     public static void main(String[] args) {
@@ -76,10 +91,7 @@ public class CodeGenerator {
         gc.setFileOverride(true);
 
         gc.setDateType(DateType.ONLY_DATE);
-
         mpg.setGlobalConfig(gc);
-
-
         mpg.setDataSource(DSC);
 
         // 包配置
@@ -104,7 +116,7 @@ public class CodeGenerator {
         //String templatePath = "/templates/mapper.xml.vm";
 
         // 自定义输出配置
-        List<FileOutConfig> focList = new ArrayList<>();
+/*        List<FileOutConfig> focList = new ArrayList<>();
         // 自定义配置会被优先输出
         focList.add(new FileOutConfig(templatePath) {
             @Override
@@ -113,9 +125,9 @@ public class CodeGenerator {
                 return PROJECT_PATH + "/src/main/resources/" + PARENT.replace(".", "/") + "/" + pc.getModuleName()
                         + "/persistence/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
-        });
+        });*/
 
-        cfg.setFileOutConfigList(focList);
+        // cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
 
         // 配置模板
@@ -127,6 +139,10 @@ public class CodeGenerator {
         // templateConfig.setService();
         // templateConfig.setController();
 
+        // 不配置对应模板,就不会生成对应类
+        templateConfig.setController(null);
+        templateConfig.setService(null);
+        templateConfig.setServiceImpl(null);
         templateConfig.setXml(null);
         mpg.setTemplate(templateConfig);
 
@@ -137,16 +153,68 @@ public class CodeGenerator {
         strategy.setEntitySerialVersionUID(false);
 
         strategy.setInclude(TABLE_NAMES.split(","));
-        strategy.setRestControllerStyle(true);
+        // 生成rest controller
+        //strategy.setRestControllerStyle(true);
         // 是否为链式模型（默认 false
         strategy.setChainModel(false);
+        strategy.setSuperEntityClass(BaseModel.class);
         strategy.setEntityLombokModel(true);
         strategy.setEntityTableFieldAnnotationEnable(true);
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(IGNORE_TABLE_PFX);
         mpg.setStrategy(strategy);
-        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+        final StringFreemarkerTemplateEngine freemarkerTemplateEngine = new StringFreemarkerTemplateEngine();
+        mpg.setTemplateEngine(freemarkerTemplateEngine);
         mpg.execute();
+        final List<TableInfo> tableInfoList = freemarkerTemplateEngine.getConfigBuilder().getTableInfoList();
+        for (TableInfo tableInfo : tableInfoList) {
+            System.out.println(tableInfo.getEntityName() + "\t" + freemarkerTemplateEngine.getSourceCode(tableInfo.getEntityName()));
+            System.out.println(tableInfo.getMapperName() + "\t" + freemarkerTemplateEngine.getSourceCode(tableInfo.getMapperName()));
+        }
+
+    }
+
+    public static class StringFreemarkerTemplateEngine extends AbstractTemplateEngine {
+
+        private Configuration configuration;
+
+        private Map<String, String> sourceMap;
+
+        @Override
+        public StringFreemarkerTemplateEngine init(ConfigBuilder configBuilder) {
+            super.init(configBuilder);
+            configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+            configuration.setDefaultEncoding(ConstVal.UTF8);
+            configuration.setClassForTemplateLoading(StringFreemarkerTemplateEngine.class, StringPool.SLASH);
+            sourceMap = new HashMap<>();
+            return this;
+        }
+
+
+        @Override
+        public void writer(Map<String, Object> objectMap, String templatePath, String outputFile) throws Exception {
+            Template template = configuration.getTemplate(templatePath);
+            StringWriter stringWriter = new StringWriter();
+            template.process(objectMap, stringWriter);
+            logger.debug("模板:" + templatePath + ";  文件:" + outputFile);
+            logger.debug("\n {}", stringWriter.toString() );
+            final String substring = outputFile.substring(outputFile.lastIndexOf("\\") + 1);
+            sourceMap.put(substring.substring(0, substring.indexOf(".")), stringWriter.toString());
+        }
+
+        @Override
+        public AbstractTemplateEngine mkdirs() {
+            return this;
+        }
+
+        @Override
+        public String templateFilePath(String filePath) {
+            return filePath + ".ftl";
+        }
+
+        public String getSourceCode(String javaName) {
+            return sourceMap.getOrDefault(javaName, "");
+        }
     }
 
 

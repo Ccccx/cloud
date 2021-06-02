@@ -120,12 +120,12 @@ public class FluxTest {
     @Test
     @SneakyThrows
     public void deleteHistory() {
-        InfluxDBClient client = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, "history");
+        // InfluxDBClient client = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, "history");
+        InfluxDBClient client = InfluxDBClientFactory.create("http://192.168.58.131:9999", "iOG0Psxeg9lh5y2O0A3MRGIH94_2WDp0azVEgEmd69DYALhwmtxI4CUWvQRmGJ8wiFqLk_SpHzQYYs5bnhnuQw==".toCharArray(), ORG, "history");
         DeletePredicateRequest request = new DeletePredicateRequest();
-        request.setPredicate("_measurement=replays");
-        request.setPredicate("id=1310115752375099393");
-        request.setStart(OffsetDateTime.of(LocalDateTime.of(2021, 1, 20, 0, 0), ZoneOffset.UTC));
-        request.setStop(OffsetDateTime.of(LocalDateTime.of(2021, 1, 30, 0, 0), ZoneOffset.UTC));
+        request.setPredicate("_measurement=boltdb_reads_total");
+        request.setStart(OffsetDateTime.of(LocalDateTime.of(2020, 11, 1, 0, 0), ZoneOffset.UTC));
+        request.setStop(OffsetDateTime.of(LocalDateTime.of(2021, 3, 30, 0, 0), ZoneOffset.UTC));
         final DeleteApi deleteApi = client.getDeleteApi();
         deleteApi.delete(request, "history", ORG);
         Thread.sleep(5 * 1000);
@@ -229,17 +229,16 @@ public class FluxTest {
     @Test
     @SneakyThrows
     public void delete() {
-        InfluxDBClient client = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, "history");
+        //InfluxDBClient client = InfluxDBClientFactory.create(URL, TOKEN.toCharArray(), ORG, "history");
+        InfluxDBClient client = InfluxDBClientFactory.create("http://192.168.58.131:9999", "iOG0Psxeg9lh5y2O0A3MRGIH94_2WDp0azVEgEmd69DYALhwmtxI4CUWvQRmGJ8wiFqLk_SpHzQYYs5bnhnuQw==".toCharArray(), ORG, "history");
         DeletePredicateRequest request = new DeletePredicateRequest();
-        request.setPredicate("_measurement=lineBus");
+        request.setPredicate("_measurement=boltdb_reads_total");
         // request.setPredicate("id=1310115752375099393");
-        request.setStart(OffsetDateTime.of(LocalDateTime.of(2021, 1, 26, 0, 0), ZoneOffset.UTC));
-        request.setStop(OffsetDateTime.of(LocalDateTime.of(2020, 1, 30, 0, 0), ZoneOffset.UTC));
+        request.setStart(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC));
+        request.setStop(OffsetDateTime.of(LocalDateTime.of(2021, 3, 26, 0, 0), ZoneOffset.UTC));
         final DeleteApi deleteApi = client.getDeleteApi();
         deleteApi.delete(request, "history", ORG);
         Thread.sleep(5 * 1000);
-
-
     }
 
     @Test

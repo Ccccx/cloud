@@ -11,15 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020-09-16 19:20
  */
 @RestController
-@RequestMapping("/config")
 @RefreshScope
 public class CloudController {
 
     @Value("${useLocalCache:false}")
     private boolean useLocalCache;
 
-    @RequestMapping("/get")
-    public boolean get() {
-        return useLocalCache;
+    @Value("${spring.datasource.driver-class-name:nothing}")
+    private String driverClassName;
+
+    @RequestMapping()
+    public String  get() {
+        return "useLocalCache: " + useLocalCache + "\t driverClassName: " + driverClassName;
     }
 }

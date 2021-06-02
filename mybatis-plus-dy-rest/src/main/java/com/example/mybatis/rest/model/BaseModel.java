@@ -1,17 +1,12 @@
 package com.example.mybatis.rest.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.Data;
 import lombok.Getter;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +31,7 @@ public class BaseModel {
      * 字表
      */
     @TableField(exist = false)
-    private List<BaseModel> subTable;
+    private List<? extends BaseModel> subTable;
 
     public Map<String, Object> toMap() {
         try {

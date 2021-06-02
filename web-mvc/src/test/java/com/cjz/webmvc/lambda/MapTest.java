@@ -1,6 +1,7 @@
 package com.cjz.webmvc.lambda;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cjz.webmvc.model.Par;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +62,25 @@ public class MapTest {
         bitSet.stream().asLongStream().forEach(System.out::println);
     }
 
+    @Test
+    void t3() {
+        final Par par = new Par();
+        par.setId("1");
+
+        final Par par1 = new Par();
+        par1.setId("2");
+        par1.setGroupId("2");
+
+        List<Par>  list = new ArrayList<>();
+        list.add(par);
+        list.add(par1);
+
+        final Map<String, Par> parMap = list.stream().collect(Collectors.toMap(Par::getGroupId, v -> v));
+        log.info("{}", parMap);
+        final Map<String, List<Par>> listMap = list.stream().collect(Collectors.groupingBy(Par::getGroupId));
+        log.info("{}", listMap);
+    }
+
     @Data
     public static class Point {
         String id;
@@ -70,4 +90,6 @@ public class MapTest {
         Instant instant;
         Date time;
     }
+
+
 }

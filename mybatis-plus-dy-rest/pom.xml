@@ -89,6 +89,7 @@
             <version>1.7.1</version>
         </dependency>
 
+        <!--swagger-->
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
@@ -130,7 +131,11 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.4.0</version>
+        </dependency>
         <!--easypoi-->
         <dependency>
             <groupId>cn.afterturn</groupId>
@@ -152,6 +157,24 @@
             <artifactId>easypoi-annotation</artifactId>
             <version>4.1.0</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
