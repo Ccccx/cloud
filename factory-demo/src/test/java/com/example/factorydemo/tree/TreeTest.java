@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
 
     @Test
     void t1() {
-        Collections.shuffle(foo);
+        //Collections.shuffle(foo);
         Map<String, FullKey> pKeys = new HashMap<>();
         foo.forEach(v -> {
             final FullKey pidKey = pKeys.getOrDefault(v.getPid(), new FullKey(v.getPid(), null));
@@ -61,7 +61,10 @@ import java.util.stream.Collectors;
             pKeys.put(v.getId(), key);
         });
         foo.forEach(v -> {
-            v.setPKey(pKeys.get(v.getId()).getKey());
+            // 构建当前节点全路径
+            // v.setPKey(pKeys.get(v.getId()).getKey());
+            // 构建当前节点服路径
+            v.setPKey(pKeys.get(v.getPid()).getKey());
             log.info("{}", v);
         });
         log.info("---------------");
@@ -73,9 +76,15 @@ import java.util.stream.Collectors;
         log.info("{}", result);
     }
 
+    @Test
+    void t3() {
+        log.info("{}", new Date());
+
+    }
+
     public <T> Set<T> filter(List<T> target, String queryStr, Function<T, String> idFc, Function<T, String> pFullKey) {
         // 查询参数映射
-        this.getClass().getCanonicalName()
+        this.getClass().getCanonicalName();
         Map<String, T> paramMap = new HashMap<>();
         // ID 映射
         Map<String, T> idMap = target.stream().collect(Collectors.toMap(idFc, v->v));
