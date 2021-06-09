@@ -17,11 +17,11 @@ public class CloudController {
     @Value("${useLocalCache:false}")
     private boolean useLocalCache;
 
-    @Value("${spring.datasource.driver-class-name:nothing}")
-    private String driverClassName;
+    @Value("${test.message:nothing}")
+    private String testCommonConfig;
 
     @RequestMapping()
     public String  get() {
-        return "useLocalCache: " + useLocalCache + "\t driverClassName: " + driverClassName;
+        return "useLocalCache: " + useLocalCache + "\t testCommonConfig: " + testCommonConfig;
     }
 }

@@ -1,0 +1,36 @@
+2021-06-08 13:53:27,048 WARN naming.distro config will be removed, please use core.protocol.distro replace.
+
+2021-06-08 13:53:27,048 WARN Using naming.distro config to replace core.distro config
+
+2021-06-08 13:53:27,162 INFO open empty service auto clean job, initialDelay : 50000 ms, period : 30000 ms
+
+2021-06-08 13:53:27,163 INFO listen for service meta change
+
+2021-06-08 14:01:13,699 WARN naming.distro config will be removed, please use core.protocol.distro replace.
+
+2021-06-08 14:01:13,699 WARN Using naming.distro config to replace core.distro config
+
+2021-06-08 14:01:13,798 INFO open empty service auto clean job, initialDelay : 50000 ms, period : 30000 ms
+
+2021-06-08 14:01:13,799 INFO listen for service meta change
+
+2021-06-08 14:20:59,622 INFO Client connection 192.168.32.220:8080#true connect
+
+2021-06-08 14:20:59,623 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=0}, 192.168.32.220:8080#true
+
+2021-06-08 14:37:56,443 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=1}, 192.168.32.220:8080#true
+
+2021-06-08 14:38:00,655 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=2}, 192.168.32.220:8080#true
+
+2021-06-08 14:43:18,734 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=3}, 192.168.32.220:8080#true
+
+2021-06-08 14:43:23,107 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=0}, 192.168.32.220:8080#true
+
+2021-06-08 14:44:45,476 WARN namespace : public, [DEFAULT_GROUP@@nacos-demo] services are automatically cleaned
+
+2021-06-08 15:35:47,649 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=1}, 192.168.32.220:8080#true
+
+2021-06-08 15:36:20,212 INFO Client connection 192.168.32.220:8080#true disconnect, remove instances and subscribers
+
+2021-06-08 15:37:45,497 WARN namespace : default, [DEFAULT_GROUP@@nacos-demo] services are automatically cleaned
+
