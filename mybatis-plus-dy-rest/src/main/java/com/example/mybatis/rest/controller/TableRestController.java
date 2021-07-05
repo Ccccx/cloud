@@ -2,7 +2,7 @@ package com.example.mybatis.rest.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.mybatis.rest.component.TableManagerComponent;
+import com.example.mybatis.rest.component.TableRestComponent;
 import com.example.mybatis.rest.model.BaseModel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,9 +27,9 @@ import java.util.Optional;
 @RequestMapping("/form/{tableName}")
 public class TableRestController {
 
-    TableManagerComponent component;
+    TableRestComponent component;
 
-    public TableRestController(TableManagerComponent component) {
+    public TableRestController(TableRestComponent component) {
         this.component = component;
     }
 

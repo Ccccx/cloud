@@ -1,0 +1,24 @@
+2021-06-15 17:31:29,148 WARN naming.distro config will be removed, please use core.protocol.distro replace.
+
+2021-06-15 17:31:29,149 WARN Using naming.distro config to replace core.distro config
+
+2021-06-15 17:31:29,255 INFO open empty service auto clean job, initialDelay : 50000 ms, period : 30000 ms
+
+2021-06-15 17:31:29,255 INFO listen for service meta change
+
+2021-06-15 17:35:08,326 INFO Client connection 192.168.32.220:8080#true connect
+
+2021-06-15 17:35:08,328 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=0}, 192.168.32.220:8080#true
+
+2021-06-15 18:20:22,526 INFO Client connection 192.168.32.220:25840#true connect
+
+2021-06-15 18:20:22,526 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=0}, 192.168.32.220:25840#true
+
+2021-06-15 19:04:06,309 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=1}, 192.168.32.220:25840#true
+
+2021-06-15 19:04:24,994 INFO Client connection 192.168.32.220:1410#true connect
+
+2021-06-15 19:04:24,994 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=2}, 192.168.32.220:1410#true
+
+2021-06-15 19:04:40,929 INFO Client connection 192.168.32.220:25840#true disconnect, remove instances and subscribers
+

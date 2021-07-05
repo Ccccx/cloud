@@ -5,6 +5,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
@@ -24,10 +25,8 @@ import org.springframework.web.reactive.result.view.View;
 /**
  * @author chengjz
  */
-@Controller
-@Async
-@EnableScheduling
 @SpringBootApplication
+@EnableDiscoveryClient
 public class GatewayApplication implements ApplicationRunner {
 
     @Value("${property.from.sample.custom.source:default}")
@@ -36,12 +35,6 @@ public class GatewayApplication implements ApplicationRunner {
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
     }
-
-    @GetMapping("/**")
-    public String index(View view) {
-        return "404";
-    }
-
 
     /**
      * 配置静态资源

@@ -1,0 +1,16 @@
+2021-06-08 13:53:28,876 ERROR [UPDATE-DOMAIN] Exception while taking item from LinkedBlockingDeque.
+
+2021-06-09 16:54:43,681 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:5080@DEFAULT@gateway, region: unknown, msg: client last beat: 1623228865332
+
+2021-06-09 16:54:45,224 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:1369@DEFAULT@web-mvc, region: unknown, msg: client last beat: 1623228867530
+
+2021-06-09 17:07:18,967 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:28280@DEFAULT@web-mvc, region: unknown, msg: client last beat: 1623229620109
+
+2021-06-09 17:25:02,496 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:1253@DEFAULT@web-mvc, region: unknown, msg: client last beat: 1623230685196
+
+2021-06-09 17:51:24,209 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:1243@DEFAULT@web-mvc, region: unknown, msg: client last beat: 1623232268356
+
+2021-06-09 18:29:38,652 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:5080@DEFAULT@gateway, region: unknown, msg: client last beat: 1623234561751
+
+2021-06-09 18:29:40,508 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:6860@DEFAULT@web-mvc, region: unknown, msg: client last beat: 1623234562849
+

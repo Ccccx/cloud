@@ -1,0 +1,4 @@
+POST http://localhost:8080/demo/add
+Content-Type: application/x-www-form-urlencoded
+
+name=cjz&email=123@cx.com

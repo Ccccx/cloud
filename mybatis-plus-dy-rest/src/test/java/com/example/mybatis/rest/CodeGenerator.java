@@ -31,28 +31,28 @@ public class CodeGenerator {
     /**
      * 项目根路径
      */
-    public static final String PROJECT_PATH = "E:\\tm\\tmp\\java";
+    public static final String PROJECT_PATH = "E:\\IDEA\\cloud\\mybatis-plus-dy-rest";
     public static final String AUTH = "chengjz";
 
     /**
      * 父包全限定类名
      */
-    public static final String PARENT = "com.cjz.dy.mybatis";
+    public static final String PARENT = "com.example.mybatis";
 
     /**
      * 业务包名，会拼接上 {@link #PARENT}
      */
-    public static final String MODEL_NAME = "user";
+    public static final String MODEL_NAME = "rest";
 
     /**
      * 忽略的表前缀
      */
-    public static final String[] IGNORE_TABLE_PFX = new String[]{"t_", "T_"};
+    public static final String[] IGNORE_TABLE_PFX = new String[]{"t_", "T_", "onl_"};
 
     /**
      * 要生成的表名
      */
-    public static final String TABLE_NAMES = "M1_ORGANIZATION";
+    public static final String TABLE_NAMES = "onl_table,onl_field,onl_table_ref";
 
     /**
      * 数据源配置
@@ -60,15 +60,15 @@ public class CodeGenerator {
     public static final DataSourceConfig DSC = new DataSourceConfig();
 
     static {
-//        DSC.setUrl("jdbc:mysql://cx:13306/cloud?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8");
-//        DSC.setDriverName("com.mysql.cj.jdbc.Driver");
-//        DSC.setUsername("root");
-//        DSC.setPassword("meiyoumima.0");
-
-        DSC.setUrl("jdbc:mysql://192.168.240.185:3306/demo-cjz?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8");
+        DSC.setUrl("jdbc:mysql://cx:13306/cloud?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8");
         DSC.setDriverName("com.mysql.cj.jdbc.Driver");
         DSC.setUsername("root");
-        DSC.setPassword("tmkj@zgb123");
+        DSC.setPassword("meiyoumima.0");
+
+//        DSC.setUrl("jdbc:mysql://192.168.240.185:3306/demo-cjz?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8");
+//        DSC.setDriverName("com.mysql.cj.jdbc.Driver");
+//        DSC.setUsername("root");
+//        DSC.setPassword("tmkj@zgb123");
 
     }
 
@@ -141,8 +141,8 @@ public class CodeGenerator {
 
         // 不配置对应模板,就不会生成对应类
         templateConfig.setController(null);
-        templateConfig.setService(null);
-        templateConfig.setServiceImpl(null);
+        // templateConfig.setService(null);
+        // templateConfig.setServiceImpl(null);
         templateConfig.setXml(null);
         mpg.setTemplate(templateConfig);
 
@@ -157,20 +157,25 @@ public class CodeGenerator {
         //strategy.setRestControllerStyle(true);
         // 是否为链式模型（默认 false
         strategy.setChainModel(false);
-        strategy.setSuperEntityClass(BaseModel.class);
         strategy.setEntityLombokModel(true);
         strategy.setEntityTableFieldAnnotationEnable(true);
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(IGNORE_TABLE_PFX);
         mpg.setStrategy(strategy);
-        final StringFreemarkerTemplateEngine freemarkerTemplateEngine = new StringFreemarkerTemplateEngine();
+        //  以文件方式输出
+        final AbstractTemplateEngine freemarkerTemplateEngine = new FreemarkerTemplateEngine();
         mpg.setTemplateEngine(freemarkerTemplateEngine);
         mpg.execute();
-        final List<TableInfo> tableInfoList = freemarkerTemplateEngine.getConfigBuilder().getTableInfoList();
-        for (TableInfo tableInfo : tableInfoList) {
-            System.out.println(tableInfo.getEntityName() + "\t" + freemarkerTemplateEngine.getSourceCode(tableInfo.getEntityName()));
-            System.out.println(tableInfo.getMapperName() + "\t" + freemarkerTemplateEngine.getSourceCode(tableInfo.getMapperName()));
-        }
+
+        // 以字符串方式输出
+//        final StringFreemarkerTemplateEngine freemarkerTemplateEngine = new StringFreemarkerTemplateEngine();
+//        mpg.setTemplateEngine(freemarkerTemplateEngine);
+//        mpg.execute();
+//        final List<TableInfo> tableInfoList = freemarkerTemplateEngine.getConfigBuilder().getTableInfoList();
+//        for (TableInfo tableInfo : tableInfoList) {
+//            System.out.println(tableInfo.getEntityName() + "\t" + freemarkerTemplateEngine.getSourceCode(tableInfo.getEntityName()));
+//            System.out.println(tableInfo.getMapperName() + "\t" + freemarkerTemplateEngine.getSourceCode(tableInfo.getMapperName()));
+//        }
 
     }
 

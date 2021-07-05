@@ -1,2 +1,16 @@
-2021-06-08 13:53:28,876 ERROR [UPDATE-DOMAIN] Exception while taking item from LinkedBlockingDeque.
+2021-06-16 08:26:37,441 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:1410@DEFAULT@web-mvc, region: unknown, msg: client last beat: 1623758579717
+
+2021-06-16 08:26:37,441 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:8080@DEFAULT@nacos-demo, region: unknown, msg: client last beat: 1623758579716
+
+2021-06-16 09:39:23,382 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:1410@DEFAULT@web-mvc, region: unknown, msg: client last beat: 1623807482207
+
+2021-06-16 09:39:23,382 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:8080@DEFAULT@nacos-demo, region: unknown, msg: client last beat: 1623807482207
+
+2021-06-16 12:52:47,392 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:8080@DEFAULT@nacos-demo, region: unknown, msg: client last beat: 1623809358098
+
+2021-06-16 12:52:47,392 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:1410@DEFAULT@web-mvc, region: unknown, msg: client last beat: 1623809358098
+
+2021-06-16 13:30:39,304 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:8080@DEFAULT@nacos-demo, region: unknown, msg: client last beat: 1623820992809
+
+2021-06-16 13:30:39,307 INFO {POS} {IP-DISABLED} valid: 192.168.32.220:1410@DEFAULT@web-mvc, region: unknown, msg: client last beat: 1623820992810
 

@@ -35,7 +35,10 @@ public class TableConfig {
      * 映射源码
      */
     private String mapperCode;
-
+    /**
+     * mapper实例
+     */
+    private Object instance;
     /**
      * java字段映射Map
      */

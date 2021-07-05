@@ -1,8 +1,10 @@
 package com.example.factorydemo.file;
 
+import javafx.application.Application;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
@@ -21,12 +23,11 @@ import org.springframework.util.FileCopyUtils;
 import java.io.*;
 import java.lang.reflect.Array;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.*;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -193,5 +194,25 @@ import java.util.jar.JarFile;
         for (FileObject object : fileObjects) {
             log.info("{} {}", object.getName(), object.getPath());
         }
+    }
+
+
+    @Test
+    @SneakyThrows
+    void  t7() {
+        final File file = new File("E:\\taxi-command-1.1.0-SNAPSHOT-executable.jar");
+        final JarFile jarFile = new JarFile(file);
+        final JarEntry jarEntry = jarFile.getJarEntry("BOOT-INF/classes/application.yml");
+        List<String> componentList = new ArrayList<>();
+        componentList.add("${spring.application.name}");
+        final InputStream inputStream = jarFile.getInputStream(jarEntry);
+        final String yml = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+        log.info("\n是否存在${spring.application.name}： {} \n{}", yml.contains("${spring.application.name}"), yml);
+
+//        final Enumeration<JarEntry> entries = jarFile.entries();
+//        while (entries.hasMoreElements()) {
+//            final JarEntry jarEntry = entries.nextElement();
+//            System.out.println(jarEntry.getName());
+//        }
     }
 }

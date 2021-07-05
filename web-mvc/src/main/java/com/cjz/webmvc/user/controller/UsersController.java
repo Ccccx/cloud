@@ -1,6 +1,7 @@
 package com.cjz.webmvc.user.controller;
 
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.cjz.webmvc.base.model.User;
 import com.cjz.webmvc.user.service.UserComponent;
 import io.swagger.annotations.Api;
@@ -52,6 +53,7 @@ public class UsersController {
     }
 
     @GetMapping("/request")
+    @SentinelResource("hello")
     @ApiOperation(value = "查询requestScope用户")
     public List<String> requestScope() {
         final String dateTime = DateFormatUtils.format(new Date(), "YYYY-MM-DD HH:mm:ss");

@@ -1,0 +1,146 @@
+2021-06-08 13:53:27,048 WARN naming.distro config will be removed, please use core.protocol.distro replace.
+
+2021-06-08 13:53:27,048 WARN Using naming.distro config to replace core.distro config
+
+2021-06-08 13:53:27,162 INFO open empty service auto clean job, initialDelay : 50000 ms, period : 30000 ms
+
+2021-06-08 13:53:27,163 INFO listen for service meta change
+
+2021-06-08 14:01:13,699 WARN naming.distro config will be removed, please use core.protocol.distro replace.
+
+2021-06-08 14:01:13,699 WARN Using naming.distro config to replace core.distro config
+
+2021-06-08 14:01:13,798 INFO open empty service auto clean job, initialDelay : 50000 ms, period : 30000 ms
+
+2021-06-08 14:01:13,799 INFO listen for service meta change
+
+2021-06-08 14:20:59,622 INFO Client connection 192.168.32.220:8080#true connect
+
+2021-06-08 14:20:59,623 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=0}, 192.168.32.220:8080#true
+
+2021-06-08 14:37:56,443 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=1}, 192.168.32.220:8080#true
+
+2021-06-08 14:38:00,655 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=2}, 192.168.32.220:8080#true
+
+2021-06-08 14:43:18,734 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=3}, 192.168.32.220:8080#true
+
+2021-06-08 14:43:23,107 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=0}, 192.168.32.220:8080#true
+
+2021-06-08 14:44:45,476 WARN namespace : public, [DEFAULT_GROUP@@nacos-demo] services are automatically cleaned
+
+2021-06-08 15:35:47,649 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=1}, 192.168.32.220:8080#true
+
+2021-06-08 15:36:20,212 INFO Client connection 192.168.32.220:8080#true disconnect, remove instances and subscribers
+
+2021-06-08 15:37:45,497 WARN namespace : default, [DEFAULT_GROUP@@nacos-demo] services are automatically cleaned
+
+2021-06-09 15:50:07,767 WARN naming.distro config will be removed, please use core.protocol.distro replace.
+
+2021-06-09 15:50:07,768 WARN Using naming.distro config to replace core.distro config
+
+2021-06-09 15:50:07,885 INFO open empty service auto clean job, initialDelay : 50000 ms, period : 30000 ms
+
+2021-06-09 15:50:07,886 INFO listen for service meta change
+
+2021-06-09 16:08:04,982 INFO Client connection 192.168.32.220:1369#true connect
+
+2021-06-09 16:08:04,983 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=0}, 192.168.32.220:1369#true
+
+2021-06-09 16:12:26,259 INFO Client connection 192.168.32.220:57132#true connect
+
+2021-06-09 16:12:26,259 INFO Client connection 192.168.32.220:57132#true connect
+
+2021-06-09 16:13:33,321 INFO Client connection 192.168.32.220:60571#true connect
+
+2021-06-09 16:13:33,322 INFO Client connection 192.168.32.220:60571#true connect
+
+2021-06-09 16:13:33,470 INFO Client connection 192.168.32.220:5080#true connect
+
+2021-06-09 16:13:33,470 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='gateway', ephemeral=true, revision=0}, 192.168.32.220:5080#true
+
+2021-06-09 16:13:59,484 INFO Client connection 192.168.32.220:57132#true disconnect, remove instances and subscribers
+
+2021-06-09 16:23:10,526 INFO Client connection 192.168.32.220:62835#true connect
+
+2021-06-09 16:23:10,526 INFO Client connection 192.168.32.220:62835#true connect
+
+2021-06-09 16:23:10,676 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='gateway', ephemeral=true, revision=1}, 192.168.32.220:5080#true
+
+2021-06-09 16:23:39,521 INFO Client connection 192.168.32.220:60571#true disconnect, remove instances and subscribers
+
+2021-06-09 16:54:54,628 INFO Client connection 192.168.32.220:62835#true disconnect, remove instances and subscribers
+
+2021-06-09 16:54:58,684 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='gateway', ephemeral=true, revision=2}, ip: {"ip":"192.168.32.220","port":5080,"healthy":false,"cluster":"DEFAULT","extendDatum":{"preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#5080#DEFAULT#DEFAULT_GROUP@@gateway"},"lastHeartBeatTime":1623228865332,"metadataId":"192.168.32.220:5080:DEFAULT"}
+
+2021-06-09 16:54:58,684 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='gateway', ephemeral=true, revision=2}, 192.168.32.220:5080#true
+
+2021-06-09 16:54:59,628 INFO Client connection 192.168.32.220:5080#true disconnect, remove instances and subscribers
+
+2021-06-09 16:55:00,226 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=1}, ip: {"ip":"192.168.32.220","port":1369,"healthy":false,"cluster":"DEFAULT","extendDatum":{"preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#1369#DEFAULT#DEFAULT_GROUP@@web-mvc"},"lastHeartBeatTime":1623228867530,"metadataId":"192.168.32.220:1369:DEFAULT"}
+
+2021-06-09 16:55:00,226 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=1}, 192.168.32.220:1369#true
+
+2021-06-09 16:55:04,628 INFO Client connection 192.168.32.220:1369#true disconnect, remove instances and subscribers
+
+2021-06-09 16:56:40,025 WARN namespace : default, [DEFAULT_GROUP@@gateway] services are automatically cleaned
+
+2021-06-09 16:56:40,025 WARN namespace : default, [DEFAULT_GROUP@@web-mvc] services are automatically cleaned
+
+2021-06-09 16:59:03,304 INFO Client connection 192.168.32.220:5080#true connect
+
+2021-06-09 16:59:03,304 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='gateway', ephemeral=true, revision=0}, 192.168.32.220:5080#true
+
+2021-06-09 16:59:03,325 INFO Client connection 192.168.32.220:59307#true connect
+
+2021-06-09 16:59:18,922 INFO Client connection 192.168.32.220:28280#true connect
+
+2021-06-09 16:59:18,922 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=0}, 192.168.32.220:28280#true
+
+2021-06-09 17:07:12,405 INFO Client connection 192.168.32.220:1253#true connect
+
+2021-06-09 17:07:12,405 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=1}, 192.168.32.220:1253#true
+
+2021-06-09 17:07:33,969 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=2}, ip: {"ip":"192.168.32.220","port":28280,"healthy":false,"cluster":"DEFAULT","extendDatum":{"preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#28280#DEFAULT#DEFAULT_GROUP@@web-mvc"},"lastHeartBeatTime":1623229620109,"metadataId":"192.168.32.220:28280:DEFAULT"}
+
+2021-06-09 17:07:33,969 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=2}, 192.168.32.220:28280#true
+
+2021-06-09 17:07:34,677 INFO Client connection 192.168.32.220:28280#true disconnect, remove instances and subscribers
+
+2021-06-09 17:25:04,073 INFO Client connection 192.168.32.220:1243#true connect
+
+2021-06-09 17:25:04,074 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=3}, 192.168.32.220:1243#true
+
+2021-06-09 17:25:17,497 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=4}, ip: {"ip":"192.168.32.220","port":1253,"healthy":false,"cluster":"DEFAULT","extendDatum":{"preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#1253#DEFAULT#DEFAULT_GROUP@@web-mvc"},"lastHeartBeatTime":1623230685196,"metadataId":"192.168.32.220:1253:DEFAULT"}
+
+2021-06-09 17:25:17,497 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=4}, 192.168.32.220:1253#true
+
+2021-06-09 17:25:19,750 INFO Client connection 192.168.32.220:1253#true disconnect, remove instances and subscribers
+
+2021-06-09 17:51:25,386 INFO Client connection 192.168.32.220:6860#true connect
+
+2021-06-09 17:51:25,386 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=5}, 192.168.32.220:6860#true
+
+2021-06-09 17:51:39,210 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=6}, ip: {"ip":"192.168.32.220","port":1243,"healthy":false,"cluster":"DEFAULT","extendDatum":{"preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#1243#DEFAULT#DEFAULT_GROUP@@web-mvc"},"lastHeartBeatTime":1623232268356,"metadataId":"192.168.32.220:1243:DEFAULT"}
+
+2021-06-09 17:51:39,210 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=6}, 192.168.32.220:1243#true
+
+2021-06-09 17:51:39,855 INFO Client connection 192.168.32.220:1243#true disconnect, remove instances and subscribers
+
+2021-06-09 18:29:53,654 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='gateway', ephemeral=true, revision=1}, ip: {"ip":"192.168.32.220","port":5080,"healthy":false,"cluster":"DEFAULT","extendDatum":{"preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#5080#DEFAULT#DEFAULT_GROUP@@gateway"},"lastHeartBeatTime":1623234561751,"metadataId":"192.168.32.220:5080:DEFAULT"}
+
+2021-06-09 18:29:53,654 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='gateway', ephemeral=true, revision=1}, 192.168.32.220:5080#true
+
+2021-06-09 18:29:54,937 INFO Client connection 192.168.32.220:59307#true disconnect, remove instances and subscribers
+
+2021-06-09 18:29:54,937 INFO Client connection 192.168.32.220:5080#true disconnect, remove instances and subscribers
+
+2021-06-09 18:29:55,510 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=7}, ip: {"ip":"192.168.32.220","port":6860,"healthy":false,"cluster":"DEFAULT","extendDatum":{"preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#6860#DEFAULT#DEFAULT_GROUP@@web-mvc"},"lastHeartBeatTime":1623234562849,"metadataId":"192.168.32.220:6860:DEFAULT"}
+
+2021-06-09 18:29:55,510 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=7}, 192.168.32.220:6860#true
+
+2021-06-09 18:29:59,937 INFO Client connection 192.168.32.220:6860#true disconnect, remove instances and subscribers
+
+2021-06-09 18:31:40,056 WARN namespace : default, [DEFAULT_GROUP@@gateway] services are automatically cleaned
+
+2021-06-09 18:31:40,056 WARN namespace : default, [DEFAULT_GROUP@@web-mvc] services are automatically cleaned
+

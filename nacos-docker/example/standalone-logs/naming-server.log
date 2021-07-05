@@ -1,36 +1,68 @@
-2021-06-08 13:53:27,048 WARN naming.distro config will be removed, please use core.protocol.distro replace.
+2021-06-16 08:26:37,445 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=1}, ip: {"ip":"192.168.32.220","port":8080,"healthy":false,"cluster":"DEFAULT","extendDatum":{"preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#8080#DEFAULT#DEFAULT_GROUP@@nacos-demo"},"lastHeartBeatTime":1623758579716,"metadataId":"192.168.32.220:8080:DEFAULT"}
 
-2021-06-08 13:53:27,048 WARN Using naming.distro config to replace core.distro config
+2021-06-16 08:26:37,445 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=3}, ip: {"ip":"192.168.32.220","port":1410,"healthy":false,"cluster":"DEFAULT","extendDatum":{"key1":"val1","key2":"val2","preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#1410#DEFAULT#DEFAULT_GROUP@@web-mvc"},"lastHeartBeatTime":1623758579717,"metadataId":"192.168.32.220:1410:DEFAULT"}
 
-2021-06-08 13:53:27,162 INFO open empty service auto clean job, initialDelay : 50000 ms, period : 30000 ms
+2021-06-16 08:26:37,445 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=3}, 192.168.32.220:1410#true
 
-2021-06-08 13:53:27,163 INFO listen for service meta change
+2021-06-16 08:26:37,445 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=1}, 192.168.32.220:8080#true
 
-2021-06-08 14:01:13,699 WARN naming.distro config will be removed, please use core.protocol.distro replace.
+2021-06-16 08:26:37,486 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=2}, 192.168.32.220:8080#true
 
-2021-06-08 14:01:13,699 WARN Using naming.distro config to replace core.distro config
+2021-06-16 08:26:37,486 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=4}, 192.168.32.220:1410#true
 
-2021-06-08 14:01:13,798 INFO open empty service auto clean job, initialDelay : 50000 ms, period : 30000 ms
+2021-06-16 09:39:23,382 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=5}, ip: {"ip":"192.168.32.220","port":1410,"healthy":false,"cluster":"DEFAULT","extendDatum":{"key1":"val1","key2":"val2","preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#1410#DEFAULT#DEFAULT_GROUP@@web-mvc"},"lastHeartBeatTime":1623807482207,"metadataId":"192.168.32.220:1410:DEFAULT"}
 
-2021-06-08 14:01:13,799 INFO listen for service meta change
+2021-06-16 09:39:23,382 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=3}, ip: {"ip":"192.168.32.220","port":8080,"healthy":false,"cluster":"DEFAULT","extendDatum":{"preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#8080#DEFAULT#DEFAULT_GROUP@@nacos-demo"},"lastHeartBeatTime":1623807482207,"metadataId":"192.168.32.220:8080:DEFAULT"}
 
-2021-06-08 14:20:59,622 INFO Client connection 192.168.32.220:8080#true connect
+2021-06-16 09:39:23,382 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=3}, 192.168.32.220:8080#true
 
-2021-06-08 14:20:59,623 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=0}, 192.168.32.220:8080#true
+2021-06-16 09:39:23,382 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=5}, 192.168.32.220:1410#true
 
-2021-06-08 14:37:56,443 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=1}, 192.168.32.220:8080#true
+2021-06-16 09:39:23,405 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=6}, 192.168.32.220:1410#true
 
-2021-06-08 14:38:00,655 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=2}, 192.168.32.220:8080#true
+2021-06-16 09:39:23,414 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=4}, 192.168.32.220:8080#true
 
-2021-06-08 14:43:18,734 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=3}, 192.168.32.220:8080#true
+2021-06-16 12:52:47,392 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=7}, ip: {"ip":"192.168.32.220","port":1410,"healthy":false,"cluster":"DEFAULT","extendDatum":{"key1":"val1","key2":"val2","preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#1410#DEFAULT#DEFAULT_GROUP@@web-mvc"},"lastHeartBeatTime":1623809358098,"metadataId":"192.168.32.220:1410:DEFAULT"}
 
-2021-06-08 14:43:23,107 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=0}, 192.168.32.220:8080#true
+2021-06-16 12:52:47,392 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=5}, ip: {"ip":"192.168.32.220","port":8080,"healthy":false,"cluster":"DEFAULT","extendDatum":{"preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#8080#DEFAULT#DEFAULT_GROUP@@nacos-demo"},"lastHeartBeatTime":1623809358098,"metadataId":"192.168.32.220:8080:DEFAULT"}
 
-2021-06-08 14:44:45,476 WARN namespace : public, [DEFAULT_GROUP@@nacos-demo] services are automatically cleaned
+2021-06-16 12:52:47,392 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=5}, 192.168.32.220:8080#true
 
-2021-06-08 15:35:47,649 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=1}, 192.168.32.220:8080#true
+2021-06-16 12:52:47,392 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=7}, 192.168.32.220:1410#true
 
-2021-06-08 15:36:20,212 INFO Client connection 192.168.32.220:8080#true disconnect, remove instances and subscribers
+2021-06-16 12:52:47,446 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=6}, 192.168.32.220:8080#true
 
-2021-06-08 15:37:45,497 WARN namespace : default, [DEFAULT_GROUP@@nacos-demo] services are automatically cleaned
+2021-06-16 12:52:47,446 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=8}, 192.168.32.220:1410#true
+
+2021-06-16 13:30:39,306 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=7}, ip: {"ip":"192.168.32.220","port":8080,"healthy":false,"cluster":"DEFAULT","extendDatum":{"preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#8080#DEFAULT#DEFAULT_GROUP@@nacos-demo"},"lastHeartBeatTime":1623820992809,"metadataId":"192.168.32.220:8080:DEFAULT"}
+
+2021-06-16 13:30:39,306 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=7}, 192.168.32.220:8080#true
+
+2021-06-16 13:30:39,307 INFO [AUTO-DELETE-IP] service: Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=9}, ip: {"ip":"192.168.32.220","port":1410,"healthy":false,"cluster":"DEFAULT","extendDatum":{"key1":"val1","key2":"val2","preserved.register.source":"SPRING_CLOUD","customInstanceId":"192.168.32.220#1410#DEFAULT#DEFAULT_GROUP@@web-mvc"},"lastHeartBeatTime":1623820992810,"metadataId":"192.168.32.220:1410:DEFAULT"}
+
+2021-06-16 13:30:39,308 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=9}, 192.168.32.220:1410#true
+
+2021-06-16 13:30:39,312 INFO Client connection 192.168.32.220:1410#true disconnect, remove instances and subscribers
+
+2021-06-16 13:30:39,312 INFO Client connection 192.168.32.220:8080#true disconnect, remove instances and subscribers
+
+2021-06-16 13:30:39,340 INFO Client connection 192.168.32.220:1410#true connect
+
+2021-06-16 13:30:39,340 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=10}, 192.168.32.220:1410#true
+
+2021-06-16 13:30:39,340 INFO Client connection 192.168.32.220:8080#true connect
+
+2021-06-16 13:30:39,340 INFO Client change for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=8}, 192.168.32.220:8080#true
+
+2021-06-16 13:56:35,995 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='nacos-demo', ephemeral=true, revision=9}, 192.168.32.220:8080#true
+
+2021-06-16 13:56:36,032 INFO Client remove for service Service{namespace='default', group='DEFAULT_GROUP', name='web-mvc', ephemeral=true, revision=11}, 192.168.32.220:1410#true
+
+2021-06-16 13:57:09,396 INFO Client connection 192.168.32.220:1410#true disconnect, remove instances and subscribers
+
+2021-06-16 13:57:09,396 INFO Client connection 192.168.32.220:8080#true disconnect, remove instances and subscribers
+
+2021-06-16 13:58:35,938 WARN namespace : default, [DEFAULT_GROUP@@nacos-demo] services are automatically cleaned
+
+2021-06-16 13:58:35,940 WARN namespace : default, [DEFAULT_GROUP@@web-mvc] services are automatically cleaned
 

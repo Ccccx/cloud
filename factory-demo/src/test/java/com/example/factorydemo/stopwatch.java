@@ -22,4 +22,12 @@ public class stopwatch {
         log.info(watch.prettyPrint());
 
     }
+
+    @Test
+    void t2() {
+        int a = 2;
+        System.out.println(a++);
+        System.out.println(a);
+        System.out.println(++a);
+    }
 }

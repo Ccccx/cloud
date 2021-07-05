@@ -43,6 +43,21 @@
         <springfox.version>2.9.2</springfox.version>
         <dynamic-datasource.version>2.5.6</dynamic-datasource.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
+
+        <!-- Build -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.source.version>1.8</java.source.version>
+        <java.target.version>1.8</java.target.version>
+        <java.encoding>UTF-8</java.encoding>
+        <maven.compiler.version>3.8.0</maven.compiler.version>
+        <maven.surefire.version>2.22.1</maven.surefire.version>
+        <maven.source.version>3.0.1</maven.source.version>
+        <maven.javadoc.version>3.0.1</maven.javadoc.version>
+        <maven.deploy.version>2.8.2</maven.deploy.version>
+        <maven.gpg.version>1.6</maven.gpg.version>
+        <maven.jacoco.version>0.8.3</maven.jacoco.version>
+        <maven.jar.version>3.1.0</maven.jar.version>
+        <maven.pmd.version>3.8</maven.pmd.version>
     </properties>
 
     <!-- 所有的子项目默认依赖 -->
@@ -228,13 +243,6 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>8.0.21</version>
-            </dependency>
-
-            <!---->
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>5.6.3</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

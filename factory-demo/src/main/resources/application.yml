@@ -1,6 +1,8 @@
 spring:
   application:
     name: factoryDemo
+  profiles:
+    active:
 logging:
   level:
     com.example.factory: debug

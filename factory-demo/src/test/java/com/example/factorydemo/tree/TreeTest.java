@@ -1,15 +1,19 @@
 package com.example.factorydemo.tree;
 
-import liquibase.pro.packaged.F;
+import com.alibaba.fastjson.JSONObject;
+import com.example.factorydemo.bean.Org;
+import com.google.common.collect.Maps;
+import com.tiamaes.cloud.m1.core.tree.TreeFactory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -22,7 +26,7 @@ import java.util.stream.Collectors;
  class TreeTest {
 
     public static   List<Foo> foo = new ArrayList<>();
-
+    public static   List<Org> orgs = new ArrayList<>();
     static {
         final Foo a = new Foo("A", null, null);
         final Foo b = new Foo("B", null, null);
@@ -35,6 +39,15 @@ import java.util.stream.Collectors;
         final Foo b1 = new Foo("B1", "B", "B");
         final Foo b2 = new Foo("B2", "B1", "B-B1");
         final Foo b3 = new Foo("B3", "B2", "B-B1-B2");
+
+        orgs.add(new Org("1111", "1111", null, 1, null));
+        orgs.add(new Org("YgW06azM", "天迈科技", null, 1, null));
+        orgs.add(new Org("JsQdTpIA", "研发中心", "YgW06azM", 2, "YgW06azM"));
+        orgs.add(new Org("tlouU3k4", "软件部", "JsQdTpIA", 3, "YgW06azM-JsQdTpIA"));
+        orgs.add(new Org("45NSxb6g", "VE前端组", "tlouU3k4", 4, "YgW06azM-JsQdTpIA-tlouU3k4"));
+        orgs.add(new Org("49nt9ifh", "M1平台组", "tlouU3k4", 4, "YgW06azM-JsQdTpIA-tlouU3k4"));
+        orgs.add(new Org("1405081704241737730", "测试部", "JsQdTpIA", 3, "YgW06azM-JsQdTpIA"));
+        orgs.add(new Org("1405081763050074113", "测试1", "1405081704241737730", 4, "YgW06azM-JsQdTpIA-1405081704241737730"));
 
         foo.add(a);
         foo.add(b);
@@ -49,81 +62,109 @@ import java.util.stream.Collectors;
         foo.add(b3);
     }
 
-    @Test
-    void t1() {
-        //Collections.shuffle(foo);
-        Map<String, FullKey> pKeys = new HashMap<>();
-        foo.forEach(v -> {
-            final FullKey pidKey = pKeys.getOrDefault(v.getPid(), new FullKey(v.getPid(), null));
-            pKeys.put(v.getPid(), pidKey);
-            final FullKey key = pKeys.getOrDefault(v.getId(), new FullKey(v.getId(), null));
-            key.setParentKey(pidKey);
-            pKeys.put(v.getId(), key);
-        });
-        foo.forEach(v -> {
-            // 构建当前节点全路径
-            // v.setPKey(pKeys.get(v.getId()).getKey());
-            // 构建当前节点服路径
-            v.setPKey(pKeys.get(v.getPid()).getKey());
-            log.info("{}", v);
-        });
-        log.info("---------------");
-    }
 
     @Test
     void t2() {
-        final Set<Foo> result = filter(foo, "B2", Foo::getId, Foo::getPKey);
+        final List<Foo> result = filter(foo, "A22",  Foo::getId, Foo::getId, Foo::getPKey, ArrayList::new);
         log.info("{}", result);
     }
 
     @Test
     void t3() {
-        log.info("{}", new Date());
-
+        for (Org org : orgs) {
+            org.setKeys(null);
+        }
+        List<Org> result = buildTreeFullKeys(orgs, Org::getId, Org::getPId, Org::setKeys);
+        log.info("{}", JSONObject.toJSON(result));
+        List<Org> filterList = filter(result, "天迈科技", Org::getOrg, Org::getId, Org::getKeys, (form) -> form.stream().sorted(Comparator.comparing(Org::getId).thenComparing(Org::getPId)).collect(Collectors.toList()));
+        log.info("{}", JSONObject.toJSON(TreeFactory.build(filterList, Org::getId, Org::getPId, Org::setChildren)));
     }
 
-    public <T> Set<T> filter(List<T> target, String queryStr, Function<T, String> idFc, Function<T, String> pFullKey) {
-        // 查询参数映射
-        this.getClass().getCanonicalName();
-        Map<String, T> paramMap = new HashMap<>();
-        // ID 映射
-        Map<String, T> idMap = target.stream().collect(Collectors.toMap(idFc, v->v));
-        // 完整key映射
-        final MultiValueMap<String, T> fullKeyMap =  new LinkedMultiValueMap<>();
-        for (T f : target) {
-            fullKeyMap.add(pFullKey.apply(f), f);
-        }
-
+    public <T> List<T> filter(List<T> target, String queryStr, Function<T, String> queryFc, Function<T, String> idFc, Function<T, String> pFullKey, Function<Collection<T>, List<T>> sort) {
         // 结果集
         Set<T> result = new HashSet<>();
-        // 过滤包含请求参数的对象
-        for (T f : target) {
-            if (idFc.apply(f).contains(queryStr)) {
-                paramMap.put(idFc.apply(f), f);
-            }
+        if (StringUtils.isEmpty(queryStr)) {
+            return target;
         }
-
-
-        // 对查到的数据进行字父级数据查询
-        for (T f : paramMap.values()) {
-            // 获取到完整父Key
-            final String pKey = pFullKey.apply(f);
-            final StringTokenizer tokenizer = new StringTokenizer(pKey, "-");
-            while (tokenizer.hasMoreTokens()) {
-                final String token = tokenizer.nextToken();
-                result.add(idMap.get(token));
+        try {
+            // 查询参数映射
+            Map<String, T> paramMap = new HashMap<>(8);
+            // ID 映射
+            Map<String, T> idMap = target.stream().collect(Collectors.toMap(idFc, v->v));
+            // 完整key映射
+            final MultiValueMap<String, T> fullKeyMap =  new LinkedMultiValueMap<>();
+            for (T f : target) {
+                fullKeyMap.add(pFullKey.apply(f), f);
             }
-            // 放入当前层级
-            result.add(f);
-            // 查询子级
-            for (String key : fullKeyMap.keySet()) {
-                if (Objects.nonNull(key) && key.startsWith(pFullKey.apply(f))) {
-                    final List<T> foos = fullKeyMap.get(key);
-                    result.addAll(foos);
+            // 过滤包含请求参数的对象
+            for (T f : target) {
+                if (queryFc.apply(f).contains(queryStr)) {
+                    paramMap.put(queryFc.apply(f), f);
                 }
             }
+            // 对查到的数据进行字父级数据查询
+            for (T f : paramMap.values()) {
+                // 对完整路径拆分出父级
+                final String pKey = pFullKey.apply(f);
+                boolean isTop = true;
+                if (StringUtils.isNotEmpty(pKey)) {
+                    isTop = false;
+                    final StringTokenizer tokenizer = new StringTokenizer(pKey, "-");
+                    while (tokenizer.hasMoreTokens()) {
+                        final String token = tokenizer.nextToken();
+                        result.add(idMap.get(token));
+                    }
+                }
+                // 放入当前层级
+                result.add(f);
+                // 放入子级
+                String fixKey = isTop ? idFc.apply(f) : pFullKey.apply(f) + "-" + idFc.apply(f);
+                if (StringUtils.isNotEmpty(fixKey)) {
+                    for (String key : fullKeyMap.keySet()) {
+                        if (Objects.nonNull(key)  && key.startsWith(fixKey)) {
+                            result.addAll(fullKeyMap.get(key));
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            log.info("过滤数据发生异常， 过滤参数： {}", queryStr, e);
         }
-        return result;
+        return sort.apply(new ArrayList<>(result));
+    }
+
+
+    /**
+     *
+     * @param target 平铺数据
+     * @param idFc id字段
+     * @param pIdFc  父ID字段
+     * @param fullParentKeys     存储父KEY完整路径
+     * @param <T>  结构数据
+     * @return ig
+     */
+    public static <T>List<T> buildTreeFullKeys(List<T> target, Function<T, Object> idFc, Function<T, Object> pIdFc, BiConsumer<T, String> fullParentKeys) {
+        Map<Object, FullKey> pKeys =  Maps.newHashMapWithExpectedSize(target.size());
+        // 构建父级Key
+        target.forEach(v -> {
+            final Object pId = pIdFc.apply(v);
+            final FullKey pidKey = pKeys.getOrDefault(pId, new FullKey(pId, null));
+            pKeys.put(pId, pidKey);
+            final Object id = idFc.apply(v);
+            final FullKey key = pKeys.getOrDefault(id, new FullKey(id, null));
+            key.setParentKey(pidKey);
+            pKeys.put(id, key);
+        });
+
+        target.forEach(v -> {
+            final Object pId = pIdFc.apply(v);
+            if (Objects.nonNull(pId)) {
+                final FullKey fullKey = pKeys.get(pId);
+                fullParentKeys.accept(v, fullKey.getKey());
+            }
+        });
+        return target;
     }
 
     @Data
@@ -134,15 +175,22 @@ import java.util.stream.Collectors;
         private String pKey;
     }
 
+
+
+
     @Data
     @AllArgsConstructor
     public static class FullKey {
-        private String key;
+        private Object key;
         private FullKey parentKey;
 
-        public String getKey() {
-            if (Objects.isNull(parentKey) || StringUtils.isEmpty(parentKey.getKey())) {
-                return key;
+        public String  getKey() {
+            if (Objects.isNull(parentKey) || Objects.isNull(parentKey.getKey())) {
+                if (Objects.isNull(key)) {
+                    return null;
+                } else {
+                    return key.toString();
+                }
             }
             return parentKey.getKey() +"-" + key;
         }

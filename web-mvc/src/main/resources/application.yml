@@ -1,4 +1,11 @@
+server:
+  port: 0
 spring:
+#  sentinel 使用
+#  cloud:
+#    sentinel:
+#      transport:
+#        dashboard: 127.0.0.1:8080
   datasource:
     url: jdbc:mysql://cx:13306/cloud?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
     username: root

@@ -5,8 +5,11 @@ import com.example.factorydemo.bean.Foo;
 import com.example.factorydemo.conditional.ConditionalTest.ConditionalDemo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.system.JavaVersion;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
@@ -30,7 +33,6 @@ class ConditionalTest {
         environment.setActiveProfiles("prd");
         context.refresh();
         final MutablePropertySources propertySources = environment.getPropertySources();
-
         log.info("{}", environment.getActiveProfiles());
 
     }
@@ -43,13 +45,62 @@ class ConditionalTest {
     @ConditionalOnClass(value = Foo.class)
     @ConditionalOnBean(name = "foo")
     public Bar bar() {
+        log.warn("Bar init ...");
         return new Bar();
     }
 
     @Bean
+    @ConditionalOnExpression("${spring.profiles.active:default}.equals('prd')")
     public Foo foo() {
+        log.warn("Foo init ...");
         return new Foo();
     }
+
+    /**
+     * 合并条件操作
+     * 使用 OR 或 AND 逻辑运算符对条件注释进行分组。
+     * OR 需要实现 AnyNestedCondition
+     * AND 直接写就行：
+     * <pre>
+     *     {@code
+     *@Service
+     * @Conditional({IsWindowsCondition.class, Java8Condition.class})
+     * @ConditionalOnJava(JavaVersion.EIGHT)
+     * public class LoggingService {
+     *     // ...
+     * }
+     *     }
+     * </pre>
+     */
+    public static class Java8OrJava9 extends AnyNestedCondition {
+
+        Java8OrJava9() {
+            super(ConfigurationPhase.REGISTER_BEAN);
+        }
+
+        @Conditional(Java8Condition.class)
+        static class Java8 { }
+
+        @Conditional(Java9Condition.class)
+        static class Java9 { }
+
+    }
+
+    public static class Java8Condition implements Condition {
+        @Override
+        public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+            return JavaVersion.getJavaVersion().equals(JavaVersion.EIGHT);
+        }
+    }
+
+    public static class Java9Condition implements Condition {
+        @Override
+        public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+            return JavaVersion.getJavaVersion().equals(JavaVersion.NINE);
+        }
+    }
+
+
 
     public static class ConditionalDemo implements Condition {
 

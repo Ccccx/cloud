@@ -27,4 +27,11 @@ public interface ITableConfigManager {
      * @return  配置信息
      */
     TableConfig updateTableConfig(String tableName);
+
+    /**
+     * 注册为bean
+     * @param tableConfig 表配置信息
+     * @return 实例化信息
+     */
+    TableConfig registerBeanDefinition(TableConfig tableConfig);
 }

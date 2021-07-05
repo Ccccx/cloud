@@ -1,20 +1,8 @@
-2021-06-08 14:15:07,048 INFO [dump-task] add task. groupKey=common+DEFAULT_GROUP+b34a69b7-f1d4-47d9-a67b-1f04e8e28d6b, taskKey=common+DEFAULT_GROUP+b34a69b7-f1d4-47d9-a67b-1f04e8e28d6b+false+null
+2021-06-15 17:31:29,738 INFO [dump-all-ok] common-config.yml+DEFAULT_GROUP, 1623133019000, length=28, md5=0de100d0368414127efc463aa1f95e6d
 
-2021-06-08 14:15:32,910 INFO [dump-task] add task. groupKey=common+DEFAULT_GROUP+b34a69b7-f1d4-47d9-a67b-1f04e8e28d6b, taskKey=common+DEFAULT_GROUP+b34a69b7-f1d4-47d9-a67b-1f04e8e28d6b+false+null
+2021-06-15 17:31:29,743 INFO [dump-all-ok] nacos-demo.yml+DEFAULT_GROUP, 1623134213000, length=19, md5=00b77727c9b4a661b8ae12cd7de1395f
 
-2021-06-08 14:16:58,715 INFO [dump-task] add task. groupKey=common-config.yml+DEFAULT_GROUP+b34a69b7-f1d4-47d9-a67b-1f04e8e28d6b, taskKey=common-config.yml+DEFAULT_GROUP+b34a69b7-f1d4-47d9-a67b-1f04e8e28d6b+false+null
+2021-06-15 17:31:29,744 INFO [dump-all-ok] common-config.yml+DEFAULT_GROUP, 1623134546000, length=28, md5=0de100d0368414127efc463aa1f95e6d
 
-2021-06-08 14:36:53,258 INFO [dump-task] add task. groupKey=nacos-demo.yml+DEFAULT_GROUP+b34a69b7-f1d4-47d9-a67b-1f04e8e28d6b, taskKey=nacos-demo.yml+DEFAULT_GROUP+b34a69b7-f1d4-47d9-a67b-1f04e8e28d6b+false+null
-
-2021-06-08 14:39:47,751 INFO [dump-task] add task. groupKey=common-config.yml+DEFAULT_GROUP, taskKey=common-config.yml+DEFAULT_GROUP++false+null
-
-2021-06-08 14:39:47,751 INFO [dump-task] add task. groupKey=nacos-demo.yml+DEFAULT_GROUP, taskKey=nacos-demo.yml+DEFAULT_GROUP++false+null
-
-2021-06-08 14:42:26,168 INFO [dump-task] add task. groupKey=common-config.yml+DEFAULT_GROUP+default, taskKey=common-config.yml+DEFAULT_GROUP+default+false+null
-
-2021-06-08 14:42:26,169 INFO [dump-task] add task. groupKey=nacos-demo.yml+DEFAULT_GROUP+default, taskKey=nacos-demo.yml+DEFAULT_GROUP+default+false+null
-
-2021-06-08 14:42:37,016 INFO [dump-task] add task. groupKey=common-config.yml+DEFAULT_GROUP, taskKey=common-config.yml+DEFAULT_GROUP++false+null
-
-2021-06-08 14:42:37,016 INFO [dump-task] add task. groupKey=nacos-demo.yml+DEFAULT_GROUP, taskKey=nacos-demo.yml+DEFAULT_GROUP++false+null
+2021-06-15 17:31:29,745 INFO [dump-all-ok] nacos-demo.yml+DEFAULT_GROUP, 1623134546000, length=19, md5=00b77727c9b4a661b8ae12cd7de1395f
 

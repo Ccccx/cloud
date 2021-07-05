@@ -1,10 +1,15 @@
 package com.example.factorydemo.jsonformat;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -98,11 +103,38 @@ class JsonDemo {
         }
     }
 
+    @Test
+    @SneakyThrows
+    void t6() {
+        final ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
+        String json = " {\"mysql_user\":\"tmkj\",\"mysql_user_password\":\"Tmkj@zGb1/23\"}";
+        final Mysql mysql = objectMapper.readValue(json, Mysql.class);
+        log.info("{}", mysql);
+        log.info("{}", objectMapper.writeValueAsString(mysql));
+
+        final Gson gson = new Gson();
+        final String toJson = gson.toJson(mysql);
+        log.info("{}", toJson);
+    }
+
     @Data
     public static class DateTest {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd  HH:mm:ss", timezone = "GMT")
         private Date date;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd  HH:mm:ss", timezone = "GMT+8")
         private Date date2;
+    }
+
+    @Data
+    public static class Mysql {
+        @JsonProperty("mysql_user")
+        @SerializedName("mysql_user")
+        private String user;
+        @JsonProperty("mysql_user_password")
+        @SerializedName("mysql_user_password")
+        private String password;
+
+        @Expose(serialize = false, deserialize = false)
+        private String test = "123";
     }
 }

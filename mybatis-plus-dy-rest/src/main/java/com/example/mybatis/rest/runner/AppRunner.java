@@ -33,15 +33,15 @@ public class AppRunner implements ApplicationRunner {
 //        liquibase.setChangeLog("file:/E:/IDEA/cloud/mybatis-plus-dy-rest/src/main/resources/db/m1-onlineform-changelog.xml");
 //        liquibase.afterPropertiesSet();
         log.info("AppRunner end ...");
-          DyRest dyRest = new DyRest();
-        dyRest.setId("t1");
-
-        DyRest dyRest1 = new DyRest();
-        dyRest1.setId("t2");
-
-        List<DyRest> list = new ArrayList<>();
-        list.add(dyRest);
-        list.add(dyRest1);
-        restMapper.insertAll(list);
+//          DyRest dyRest = new DyRest();
+//        dyRest.setId("t1");
+//
+//        DyRest dyRest1 = new DyRest();
+//        dyRest1.setId("t2");
+//
+//        List<DyRest> list = new ArrayList<>();
+//        list.add(dyRest);
+//        list.add(dyRest1);
+//        restMapper.insertAll(list);
     }
 }

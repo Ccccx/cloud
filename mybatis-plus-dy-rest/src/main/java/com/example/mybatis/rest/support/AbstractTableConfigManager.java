@@ -4,6 +4,7 @@ import com.example.mybatis.rest.config.DyMybatisConfiguration;
 import com.example.mybatis.rest.model.TableConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.mapper.MapperFactoryBean;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
@@ -56,7 +57,16 @@ public abstract class AbstractTableConfigManager implements ITableConfigManager{
         }
         final TableConfig tableConfig = load(tableName);
         TABLE_CONFIG_CACHE.put(tableName, tableConfig);
+        return tableConfig;
+    }
 
+    @Override
+    public TableConfig updateTableConfig(String tableName) {
+        return null;
+    }
+
+    @Override
+    public TableConfig registerBeanDefinition(TableConfig tableConfig) {
         // 添加到Spring 容器
         final GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
         beanDefinition.setScope(ConfigurableBeanFactory.SCOPE_SINGLETON);
@@ -65,17 +75,13 @@ public abstract class AbstractTableConfigManager implements ITableConfigManager{
         beanDefinition.setBeanClass(MapperFactoryBean.class);
         beanDefinition.getPropertyValues().add("addToConfig", true);
         beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
-        beanDefinition.setLazyInit(false);
+        beanDefinition.setLazyInit(true);
+        beanDefinition.setScope(BeanDefinition.SCOPE_PROTOTYPE);
 
         BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(beanDefinition, tableConfig.getMapperClass().getName());
         BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, beanFactory);
 
         return tableConfig;
-    }
-
-    @Override
-    public TableConfig updateTableConfig(String tableName) {
-        return null;
     }
 
     /**

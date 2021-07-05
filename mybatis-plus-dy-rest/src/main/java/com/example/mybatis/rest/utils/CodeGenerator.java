@@ -147,6 +147,16 @@ public class CodeGenerator {
             sourceMap.put(javaName.substring(0, javaName.indexOf(".")), stringWriter.toString());
         }
 
+        /**
+         * 构建模板引擎参数
+         * @param tableInfo 表信息
+         * @return  配置参数
+         */
+        @Override
+        public Map<String, Object> getObjectMap(TableInfo tableInfo) {
+            return super.getObjectMap(tableInfo);
+        }
+
         @Override
         public AbstractTemplateEngine mkdirs() {
             return this;

@@ -1,26 +1,38 @@
 spring:
   cloud:
     gateway:
+      httpclient:
+        connect-timeout: 1000
+        response-timeout: 5s
+      discovery:
+        locator:
+          enabled: true
       loadbalancer:
         use404: true
       routes:
-        - id: rlzy
-          uri: http://192.168.242.221:17101
-          predicates:
-            - Path=/rlzy/**
-            - Path=/template/rlzy/**
-          filters:
-            - PreserveHostHeader
-        - id: m1
-          uri: http://192.168.32.225:20002
-          predicates:
-            - Path=/demo/**
-        - id: default
-          uri: http://127.0.0.1:3080
+        - id: web-mvc
+          uri: lb://web-mvc
           predicates:
             - Path=/**
           filters:
             - PreserveHostHeader
+#        - id: rlzy
+#          uri: http://192.168.242.221:17101
+#          predicates:
+#            - Path=/rlzy/**
+#            - Path=/template/rlzy/**
+#          filters:
+#            - PreserveHostHeader
+#        - id: m1
+#          uri: http://192.168.32.225:20002
+#          predicates:
+#            - Path=/demo/**
+#        - id: default
+#          uri: http://127.0.0.1:3080
+#          predicates:
+#            - Path=/**
+#          filters:
+#            - PreserveHostHeader
           # - RewritePath=/lark-*/*/(?<segment>.*), /lark-*/$\{segment}
 logging:
   level:
