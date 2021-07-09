@@ -6,12 +6,17 @@ import com.example.factorydemo.bean.SpringContextUtils;
 import lombok.Data;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.*;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.support.*;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -90,12 +95,13 @@ class BeanInitDemo implements BeanDefinitionRegistryPostProcessor {
     }
 
 
-
     @Test
     void t2() {
         BeanWrapper wrapper = new BeanWrapperImpl(new Foo());
         wrapper.setPropertyValue("name", "cx");
-        wrapper.setPropertyValue(new PropertyValue("flag", true));
+        wrapper.setPropertyValue(new PropertyValue("flag", "true"));
+        wrapper.setPropertyValue(new PropertyValue("age", "10"));
+        wrapper.setPropertyValue(new PropertyValue("test", "10"));
         final Foo foo = (Foo) wrapper.getWrappedInstance();
         Assertions.assertEquals("cx", foo.getName());
     }

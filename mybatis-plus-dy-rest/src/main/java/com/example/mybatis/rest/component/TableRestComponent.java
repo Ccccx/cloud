@@ -5,12 +5,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.mybatis.rest.config.DyMybatisConfiguration;
 import com.example.mybatis.rest.model.BaseModel;
 import com.example.mybatis.rest.model.TableConfig;
-import com.example.mybatis.rest.support.HotCompileTableConfigManager;
-import com.example.mybatis.rest.support.ByteBuddyTableConfigManager;
+import com.example.mybatis.rest.service.IOperationService;
 import com.example.mybatis.rest.support.ITableConfigManager;
+import com.example.mybatis.rest.support.StringMap;
 import com.example.mybatis.rest.support.wrapper.QueryWrapperBuilder;
 import com.example.mybatis.rest.utils.FileWithExcelUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,8 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author chengjz
@@ -32,6 +32,7 @@ import java.util.Map;
  */
 @Slf4j
 @Component
+@SuppressWarnings("all")
 public class TableRestComponent {
 
     @Resource
@@ -50,36 +51,20 @@ public class TableRestComponent {
         return getMapperByTableName(tableName).selectList(Wrappers.lambdaQuery());
     }
 
-    public void clear(String  tableName) {
-        tableConfigManager.clearByTableName(tableName);
-    }
 
     public IPage<BaseModel> pageQuery(String  tableName, Page<BaseModel> page, HttpServletRequest request) {
         final TableConfig tableConfig = getConfigByTableName(tableName);
         final QueryWrapper<BaseModel> wrapper = builder.buildQueryWrapper(tableConfig, request.getParameterMap());
         try {
             final BaseModel baseModel = (BaseModel) tableConfig.getModelClass().newInstance();
-            return baseModel.selectPage(page, wrapper);
+            // return  baseModel.selectPage(page, wrapper);
+            return null;
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
         return getMapper(tableConfig).selectPage(page, wrapper);
-    }
-
-    public IPage<BaseModel> pageQuery(String tableName, String id, String subTableName, String subId, Page<BaseModel> page, HttpServletRequest request) {
-        final IPage<BaseModel> list = pageQuery(tableName, page, request);
-        final List<BaseModel> records = list.getRecords();
-        final TableConfig subTableConfig = getConfigByTableName(subTableName);
-        for (BaseModel record : records) {
-            final Map<String, Object> objectMap = record.toMap();
-            final Object idVal = objectMap.get(id);
-            final QueryWrapper<BaseModel> wrapper = builder.buildQueryWrapper(subTableConfig, subId, idVal.toString());
-            List<BaseModel>  subTable = getMapperByTableName(subTableName).selectList(wrapper);
-            record.setSubTable(subTable);
-        }
-        return list;
     }
 
     public BaseModel save(String  tableName, BaseModel model) {
@@ -94,25 +79,16 @@ public class TableRestComponent {
         }
     }
 
-    public BaseModel update(String  tableName, BaseModel model) {
-        final TableConfig dyRest = getConfigByTableName(tableName);
-        try {
-            final BaseModel o =(BaseModel)objectMapper.convertValue(model.getParamMap(), dyRest.getModelClass());
-            getMapper(dyRest).updateById(o);
-            return o;
-        } catch (Exception e) {
-            log.info("更新 发生异常",  e);
-            return null;
-        }
+    public List<BaseModel> save(String  tableName, ArrayList<StringMap> req) {
+        return getOperationService(tableName).batchSave(req);
     }
 
-    public void delete(String  tableName, String  pk) {
-        final TableConfig dyRest = getConfigByTableName(tableName);
-        try {
-            getMapper(dyRest).deleteById(pk);
-        } catch (Exception e) {
-            log.info("删除 发生异常",  e);
-        }
+    public List<BaseModel> update(String  tableName, ArrayList<StringMap> req) {
+        return getOperationService(tableName).batchUpdate(req);
+    }
+
+    public void delete(String  tableName, ArrayList<String> pks) {
+        getOperationService(tableName).batchDelete(pks);
     }
 
     public void exportExcel(String tableName, HttpServletResponse response) {
@@ -150,5 +126,24 @@ public class TableRestComponent {
     }
 
 
+    public IPage<BaseModel> pageQueryV2(String tableName, HttpServletRequest request) {
+        final IOperationService operationService = getOperationService(tableName);
+        StringMap reqMap = request2map(request);
+        return operationService.pageQuery(reqMap);
+    }
 
+    public IOperationService getOperationService(String tableName) {
+        final TableConfig tableConfig = getConfigByTableName(tableName);
+        return tableConfig.getServiceImplInstance();
+    }
+
+    protected StringMap request2map(HttpServletRequest request) {
+        final Enumeration<String> parameterNames = request.getParameterNames();
+        StringMap reqMap = new StringMap();
+        while (parameterNames.hasMoreElements()) {
+            final String element = parameterNames.nextElement();
+            reqMap.put(element, request.getParameter(element));
+        }
+        return reqMap;
+    }
 }

@@ -1,9 +1,9 @@
 package com.example.mybatis.rest.persistence.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.mybatis.rest.model.BaseModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -15,13 +15,13 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author chengjz
- * @since 2021-07-05
+ * @since 2021-07-07
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @TableName("onl_table_ref")
 @ApiModel(value="TableRef对象", description="表字段关系")
-public class TableRef implements Serializable {
+public class TableRef extends BaseModel {
 
 
     @ApiModelProperty(value = "id")

@@ -1,14 +1,15 @@
 package com.example.mybatis.rest.persistence.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.mybatis.rest.model.BaseModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.Date;
 
 /**
  * <p>
@@ -16,13 +17,13 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author chengjz
- * @since 2021-07-05
+ * @since 2021-07-07
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @TableName("onl_table")
 @ApiModel(value="Table对象", description="表元信息")
-public class Table implements Serializable {
+public class Table extends BaseModel {
 
 
     @ApiModelProperty(value = "id")
@@ -53,6 +54,10 @@ public class Table implements Serializable {
     @TableField("database_conf")
     private String databaseConf;
 
+    @ApiModelProperty(value = "配置项是否同步 0 未同步 1已同步")
+    @TableField("table_sync")
+    private Boolean tableSync;
+
     @ApiModelProperty(value = "描述")
     @TableField("remark")
     private String remark;
@@ -76,6 +81,14 @@ public class Table implements Serializable {
     @ApiModelProperty(value = "Mapper源码")
     @TableField("mapper_code")
     private String mapperCode;
+
+    @ApiModelProperty(value = "erviceImpl全类名")
+    @TableField("service_impl_class")
+    private String serviceImplClass;
+
+    @ApiModelProperty(value = "ServiceImpl源码")
+    @TableField("service_impl_code")
+    private String serviceImplCode;
 
     @ApiModelProperty(value = "创建时间")
     @TableField("create_time")

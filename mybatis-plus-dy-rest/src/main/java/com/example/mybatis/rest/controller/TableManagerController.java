@@ -1,8 +1,6 @@
 package com.example.mybatis.rest.controller;
 
 import com.example.mybatis.rest.component.TableManagerComponent;
-import com.example.mybatis.rest.component.TableRestComponent;
-import com.example.mybatis.rest.model.TableConfig;
 import com.example.mybatis.rest.model.TableConfigVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,5 +33,11 @@ public class TableManagerController {
     @PutMapping("/config")
     public TableConfigVo save(@RequestBody TableConfigVo req) {
         return managerComponent.save(req);
+    }
+
+    @ApiOperation("同步表结构")
+    @GetMapping("/{tableName}/sync")
+    public void clear(@PathVariable String tableName) {
+        managerComponent.sync(tableName);
     }
 }

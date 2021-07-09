@@ -7,7 +7,6 @@ import com.example.mybatis.rest.model.TableConfigVo;
 import com.example.mybatis.rest.persistence.model.Field;
 import com.example.mybatis.rest.persistence.model.Table;
 import com.example.mybatis.rest.service.IFieldService;
-import com.example.mybatis.rest.service.ITableService;
 import com.example.mybatis.rest.support.ITableConfigManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -28,8 +27,8 @@ public class TableManagerComponent {
     @Resource
     private ITableConfigManager tableConfigManager;
 
-    @Resource
-    private ITableService tableService;
+//    @Resource
+//    private ITableService tableService;
 
     @Resource
     private IFieldService fieldService;
@@ -55,7 +54,8 @@ public class TableManagerComponent {
         table.setModelCode(tableConfig.getModelCode());
         table.setMapperClass(tableConfig.getMapperClass().getCanonicalName());
         table.setMapperCode(tableConfig.getMapperCode());
-
+        table.setServiceImplClass(tableConfig.getServiceImplClass().getCanonicalName());
+        table.setServiceImplCode(tableConfig.getServiceImplCode());
         final List<TableField> fields = tableInfo.getFields();
         final List<Field> fieldList = fields.stream().map(v -> {
             final Field field = new Field();
@@ -76,5 +76,11 @@ public class TableManagerComponent {
 
     public TableConfigVo save(TableConfigVo req) {
         return null;
+    }
+
+
+    public void sync(String  tableName) {
+        tableConfigManager.clearByTableName(tableName);
+        tableConfigManager.loadTableConfig(tableName);
     }
 }

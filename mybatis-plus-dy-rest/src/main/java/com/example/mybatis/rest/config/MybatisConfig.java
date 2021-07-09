@@ -5,17 +5,14 @@ import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
-import com.example.mybatis.rest.extend.InsertBatchInterceptor;
 import com.example.mybatis.rest.extend.MyLogicSqlInjector;
 import com.example.mybatis.rest.model.DynamicCaptchaWrapper;
 import com.example.mybatis.rest.support.HotCompileTableConfigManager;
 import com.example.mybatis.rest.support.ITableConfigManager;
-import org.apache.ibatis.type.JdbcType;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.annotation.Order;
 import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.Properties;
@@ -65,11 +62,11 @@ public class MybatisConfig {
         return interceptor;
     }
 
-    @Bean
-    @Order(30)
-    public InsertBatchInterceptor insertBatchInterceptor(){
-        return new InsertBatchInterceptor();
-    }
+//    @Bean
+//    @Order(30)
+//    public InsertBatchInterceptor insertBatchInterceptor(){
+//        return new InsertBatchInterceptor();
+//    }
 
     @Bean
     @Primary

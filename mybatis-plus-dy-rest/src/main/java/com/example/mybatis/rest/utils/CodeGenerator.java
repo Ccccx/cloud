@@ -2,13 +2,16 @@ package com.example.mybatis.rest.utils;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
+import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
+import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine;
 import com.example.mybatis.rest.model.BaseModel;
+import com.example.mybatis.rest.support.CustomInjectionConfig;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.Data;
@@ -40,23 +43,41 @@ public class CodeGenerator {
     /**
      * Entity包名
      */
-    private static final  String ENTITY = "entity";
-
+    private static final String ENTITY = "model";
     /**
      * Mapper包名
      */
-    private static final  String MAPPER = "mapper";
-
-    /**
-     * 规范的实体包名
-     */
-    public static final String ENTITY_CANONICAL_NAME = PARENT + "." + MODULE_NAME + "." + ENTITY;
-
-
+    private static final String MAPPER = "dao";
     /**
      * 规范的mapper包名
      */
-    public static final String MAPPER_CANONICAL_NAME = PARENT + "." + MODULE_NAME  + "." + MAPPER;
+    public static final String MAPPER_CANONICAL_NAME = PARENT + "." + MODULE_NAME + "." + MAPPER;
+    /**
+     * 规范的实体包名
+     */
+    public static final String ENTITY_CANONICAL_NAME = MAPPER_CANONICAL_NAME + "." + ENTITY;
+    /**
+     * service包名
+     */
+    private static final String SERVICE = "service";
+    /**
+     * 规范的service包名
+     */
+    public static final String SERVICE_CANONICAL_NAME = PARENT + "." + MODULE_NAME + "." + SERVICE;
+    /**
+     * serviceImpl包名
+     */
+    private static final String SERVICE_IMPL = "impl";
+    /**
+     * 规范的serviceImpl包名
+     */
+    public static final String SERVICE_IMPL_CANONICAL_NAME = SERVICE_CANONICAL_NAME + "." + SERVICE_IMPL;
+
+    public static final String TEMPLATE_DIR = "/dy";
+
+    public static final String  TEMPLATE_ENTITY_JAVA = TEMPLATE_DIR +  "/entity.java";
+    public static final String  TEMPLATE_MAPPER = TEMPLATE_DIR + "/mapper.java";
+    public static final String  TEMPLATE_SERVICE_IMPL = TEMPLATE_DIR + "/serviceImpl.java";
 
     public static CodeResult run(String tableName, DataSourceConfig dsc) {
         // 代码生成器
@@ -66,6 +87,11 @@ public class CodeGenerator {
 
         gc.setAuthor(AUTH);
         gc.setOpen(false);
+        // gc.setActiveRecord(true);
+        long time =  System.currentTimeMillis();
+        gc.setEntityName("%s" +time);
+        gc.setMapperName("%sMapper" + time);
+        gc.setServiceImplName("%sServiceImpl" + time);
         //实体属性 Swagger2 注解
         gc.setSwagger2(true);
 
@@ -77,9 +103,13 @@ public class CodeGenerator {
         PackageConfig pc = new PackageConfig();
         pc.setParent(PARENT);
         pc.setModuleName(MODULE_NAME);
-        pc.setEntity(ENTITY);
+        pc.setEntity(MAPPER + "." + ENTITY);
         pc.setMapper(MAPPER);
         mpg.setPackageInfo(pc);
+
+        // 自定义配置
+        InjectionConfig cfg = new CustomInjectionConfig();
+        mpg.setCfg(cfg);
 
         // 配置模板
         TemplateConfig templateConfig = new TemplateConfig();
@@ -87,8 +117,11 @@ public class CodeGenerator {
         // 不配置对应模板,就不会生成对应类
         templateConfig.setController(null);
         templateConfig.setService(null);
-        templateConfig.setServiceImpl(null);
+        templateConfig.setEntity(TEMPLATE_ENTITY_JAVA);
+        templateConfig.setMapper(TEMPLATE_MAPPER);
+        templateConfig.setServiceImpl(TEMPLATE_SERVICE_IMPL);
         templateConfig.setXml(null);
+
         mpg.setTemplate(templateConfig);
 
         // 策略配置
@@ -96,11 +129,10 @@ public class CodeGenerator {
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntitySerialVersionUID(false);
-
+        strategy.setSuperEntityClass(BaseModel.class);
         strategy.setInclude(tableName.split(","));
         // 是否为链式模型（默认 false
         strategy.setChainModel(false);
-        strategy.setSuperEntityClass(BaseModel.class);
         strategy.setEntityTableFieldAnnotationEnable(true);
         strategy.setControllerMappingHyphenStyle(true);
         mpg.setStrategy(strategy);
@@ -116,6 +148,8 @@ public class CodeGenerator {
         codeResult.setEntityCode(freemarkerTemplateEngine.getSourceCode(tableInfo.getEntityName()));
         codeResult.setMapperName(tableInfo.getMapperName());
         codeResult.setMapperCode(freemarkerTemplateEngine.getSourceCode(tableInfo.getMapperName()));
+        codeResult.setServiceImplName(tableInfo.getServiceImplName());
+        codeResult.setServiceImplCode(freemarkerTemplateEngine.getSourceCode(tableInfo.getServiceImplName()));
         return codeResult;
     }
 
@@ -142,15 +176,16 @@ public class CodeGenerator {
             Template template = configuration.getTemplate(templatePath);
             StringWriter stringWriter = new StringWriter();
             template.process(objectMap, stringWriter);
-            logger.debug("\n {}", stringWriter );
+            logger.debug("\n {}", stringWriter);
             final String javaName = outputFile.substring(outputFile.replace("\\", "/").lastIndexOf("/") + 1);
             sourceMap.put(javaName.substring(0, javaName.indexOf(".")), stringWriter.toString());
         }
 
         /**
          * 构建模板引擎参数
+         *
          * @param tableInfo 表信息
-         * @return  配置参数
+         * @return 配置参数
          */
         @Override
         public Map<String, Object> getObjectMap(TableInfo tableInfo) {
@@ -178,9 +213,10 @@ public class CodeGenerator {
         private String entityCode;
         private String mapperName;
         private String mapperCode;
+        private String serviceImplName;
+        private String serviceImplCode;
         private TableInfo tableInfo;
     }
-
 
 
 }

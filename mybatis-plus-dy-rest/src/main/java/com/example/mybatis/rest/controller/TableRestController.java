@@ -1,9 +1,9 @@
 package com.example.mybatis.rest.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.mybatis.rest.component.TableRestComponent;
 import com.example.mybatis.rest.model.BaseModel;
+import com.example.mybatis.rest.support.StringMap;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author chengjz
@@ -38,52 +38,28 @@ public class TableRestController {
         return component.selectList(tableName);
     }
 
+
     @ApiOperation("单表分页查询")
-    @GetMapping(value = {"/page/{number:\\d+}", "/page/{number:\\d+}/size/{size:\\d+}"})
-    public  IPage<BaseModel> pageQuery(
-                                    @PathVariable @ApiParam("表名") String  tableName,
-                                    @PathVariable  @ApiParam("页码") Integer number,
-                                   @PathVariable(required = false) @ApiParam("每页条数") Integer size,
-                                   HttpServletRequest request) {
-        Page<BaseModel> page = new Page<>(Optional.ofNullable(number).orElse(1), Optional.ofNullable(size).orElse(10));
-        return component.pageQuery(tableName, page, request);
+    @GetMapping("/page")
+    public  IPage<BaseModel> pageQueryV2( @PathVariable @ApiParam("表名") String  tableName, HttpServletRequest request) {
+        return component.pageQueryV2(tableName, request);
     }
 
-    @GetMapping(value = {"/{id}/{subTableName}/{subId}/page/{number:\\d+}", "/{id}/{subTableName}/{subId}/page/{number:\\d+}/size/{size:\\d+}"})
-    public IPage<BaseModel> multiTablePageQuery(
-            @PathVariable String  tableName,
-            @PathVariable String  id,
-            @PathVariable String  subTableName,
-            @PathVariable String  subId,
-            @PathVariable Integer number,
-            @PathVariable(required = false) Integer size,
-            HttpServletRequest request) {
-        Page<BaseModel> page = new Page<>(Optional.ofNullable(number).orElse(1), Optional.ofNullable(size).orElse(10));
-        return component.pageQuery(tableName, id, subTableName, subId, page, request);
-    }
 
-    @GetMapping("/clear")
-    public void clear(@PathVariable String tableName) {
-         component.clear(tableName);
-    }
 
     @PostMapping
-    public BaseModel save(@PathVariable String tableName, @RequestBody BaseModel model) {
-        BaseModel save =   component.save(tableName, model);
-        log.info("Save: {}", save.toMap());
-        return save;
+    public List<BaseModel> save(@PathVariable String tableName, @RequestBody ArrayList<StringMap> req) {
+        return  component.save(tableName, req);
     }
 
     @PutMapping
-    public BaseModel update(@PathVariable String tableName, @RequestBody BaseModel model) {
-        final BaseModel update = component.update(tableName, model);
-        log.info("Update: {}", update.toMap());
-        return update;
+    public List<BaseModel> update(@PathVariable String tableName, @RequestBody  ArrayList<StringMap> req) {
+        return component.update(tableName, req);
     }
 
-    @DeleteMapping("/{pk}")
-    public void delete(@PathVariable String tableName, @PathVariable String pk) {
-          component.delete(tableName, pk);
+    @DeleteMapping
+    public void delete(@PathVariable String tableName, @RequestBody ArrayList<String> pks) {
+          component.delete(tableName, pks);
     }
 
     /**

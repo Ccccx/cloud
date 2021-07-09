@@ -1,7 +1,7 @@
 package com.example.mybatis.rest.persistence;
 
-import com.example.mybatis.rest.persistence.model.Field;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.mybatis.rest.persistence.model.Field;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
  * </p>
  *
  * @author chengjz
- * @since 2021-07-05
+ * @since 2021-07-07
  */
 @Mapper
 public interface FieldMapper extends BaseMapper<Field> {

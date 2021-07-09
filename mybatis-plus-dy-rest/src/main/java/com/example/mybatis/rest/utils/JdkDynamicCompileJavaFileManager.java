@@ -22,10 +22,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class JdkDynamicCompileJavaFileManager extends ForwardingJavaFileManager<JavaFileManager> {
     private final JdkDynamicCompileClassLoader classLoader;
     private final Map<URI, JavaFileObject> javaFileObjectMap = new ConcurrentHashMap<>();
-
-    public JdkDynamicCompileJavaFileManager(JavaFileManager fileManager, JdkDynamicCompileClassLoader classLoader) {
+    private final SpringClassFinder finder;
+    public JdkDynamicCompileJavaFileManager(JavaFileManager fileManager, JdkDynamicCompileClassLoader classLoader, SpringClassFinder finder) {
         super(fileManager);
         this.classLoader = classLoader;
+        this.finder = finder;
     }
 
     private static URI fromLocation(Location location, String packageName, String relativeName) {
@@ -68,13 +69,16 @@ public class JdkDynamicCompileJavaFileManager extends ForwardingJavaFileManager<
         if (file instanceof CharSequenceJavaFileObject) {
             return file.getName();
         }
+        if (file instanceof SpringJavaFileObject) {
+            return ((SpringJavaFileObject) file).binaryName();
+        }
         return super.inferBinaryName(location, file);
     }
 
     @Override
     public Iterable<JavaFileObject> list(Location location, String packageName, Set<JavaFileObject.Kind> kinds, boolean recurse) throws IOException {
          Iterable<JavaFileObject> superResult = super.list(location, packageName, kinds, recurse);
-        List<JavaFileObject> result = Lists.newArrayList();
+         List<JavaFileObject> result = Lists.newArrayList();
         // 这里要区分编译的Location以及编译的Kind
         if (location == StandardLocation.CLASS_PATH && kinds.contains(JavaFileObject.Kind.CLASS)) {
             // .class文件以及classPath下
@@ -96,6 +100,8 @@ public class JdkDynamicCompileJavaFileManager extends ForwardingJavaFileManager<
         for (JavaFileObject javaFileObject : superResult) {
             result.add(javaFileObject);
         }
+        final List<JavaFileObject> javaFileObjects = finder.find(packageName);
+        result.addAll(javaFileObjects);
         return result;
     }
 

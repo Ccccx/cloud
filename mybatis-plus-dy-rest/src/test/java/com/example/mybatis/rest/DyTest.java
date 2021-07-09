@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.example.mybatis.rest.model.BaseModel;
 import com.example.mybatis.rest.model.TableColumns;
 import com.example.mybatis.rest.model.TableMetadata;
+import com.example.mybatis.rest.service.IOperationService;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.annotation.AnnotationDescription;
@@ -227,6 +228,7 @@ import static org.mockito.Mockito.mock;
 
     @Test
     void t6() throws Exception{
+        log.info("{}", IOperationService.class.getName());
     }
 
 

@@ -3,7 +3,6 @@ package com.example.mybatis.rest.utils;
 import javax.tools.SimpleJavaFileObject;
 import java.io.*;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * 内置的JavaFileObject标准实现SimpleJavaFileObject是面向类源码文件，由于动态编译时候输入的是类源码文件的内容字符串，需要自行实现JavaFileObject。
@@ -32,11 +31,7 @@ public class CharSequenceJavaFileObject extends SimpleJavaFileObject {
     }
 
     private static URI fromClassName(String className) {
-        try {
-            return new URI(className);
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException(className, e);
-        }
+        return URI.create(className);
     }
 
     @Override
@@ -62,4 +57,5 @@ public class CharSequenceJavaFileObject extends SimpleJavaFileObject {
     public byte[] getByteCode() {
         return byteCode.toByteArray();
     }
+
 }

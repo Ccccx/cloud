@@ -1,5 +1,9 @@
 package com.example.factorydemo.file;
 
+import com.example.factorydemo.classload.MemoryClassLoader;
+import com.example.factorydemo.classload.MemorySpringBootInfoJavaClassObject;
+import com.sun.tools.javac.file.BaseFileObject;
+import com.sun.tools.javac.file.JavacFileManager;
 import javafx.application.Application;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +24,9 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.util.FileCopyUtils;
 
+import javax.tools.JavaFileObject;
+import javax.tools.JavaFileObject.Kind;
+import javax.tools.SimpleJavaFileObject;
 import java.io.*;
 import java.lang.reflect.Array;
 import java.net.*;
@@ -31,6 +38,7 @@ import java.util.*;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 /**
  * @author chengjz
@@ -215,4 +223,15 @@ import java.util.jar.JarFile;
 //            System.out.println(jarEntry.getName());
 //        }
     }
+
+    @Test
+    @SneakyThrows
+    void t8() {
+        String jarName = "jar:file:/E:/IDEA/cloud/mybatis-plus-dy-rest/target/mybatis-plus-dy-rest-0.0.1-SNAPSHOT.jar!/BOOT-INF/lib/mybatis-plus-annotation-3.4.2.jar!/com/baomidou/mybatisplus/annotation/DbType.class";
+        URL url = new URL(new URL( jarName), "", new Handler());
+        JarURLConnection connection = (JarURLConnection) url.openConnection();
+        final FileOutputStream outputStream = new FileOutputStream(new File("E:\\IDEA\\cloud\\mybatis-plus-dy-rest\\target\\DbType.class"));
+        IOUtils.copy(connection.getInputStream(), outputStream);
+    }
+
 }

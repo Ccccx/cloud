@@ -6,9 +6,7 @@ import org.springframework.lang.Nullable;
 import javax.tools.JavaFileObject;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -24,8 +22,10 @@ public class JdkDynamicCompileClassLoader extends ClassLoader {
 
     private final Map<String, JavaFileObject> javaFileObjectMap = new ConcurrentHashMap<>();
 
+    private final ClassLoader parentClassLoader;
     public JdkDynamicCompileClassLoader(ClassLoader parentClassLoader) {
         super(parentClassLoader);
+        this.parentClassLoader = parentClassLoader;
     }
 
     @Override
@@ -38,6 +38,8 @@ public class JdkDynamicCompileClassLoader extends ClassLoader {
         }
         return super.findClass(name);
     }
+
+
 
     @Nullable
     @Override
@@ -60,6 +62,7 @@ public class JdkDynamicCompileClassLoader extends ClassLoader {
     }
 
     Collection<JavaFileObject> listJavaFileObject() {
-        return Collections.unmodifiableCollection(javaFileObjectMap.values());
+        final List<JavaFileObject> values = new ArrayList<>(javaFileObjectMap.values());
+        return Collections.unmodifiableCollection(values);
     }
 }

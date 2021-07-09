@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 @Data
 public class DynamicCaptchaWrapper {
     @Value("${test.str:default}")
-    private  String  str;
+    private String str;
 
     @PostConstruct
     public void init() {

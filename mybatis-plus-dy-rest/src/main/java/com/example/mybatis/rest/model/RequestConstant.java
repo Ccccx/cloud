@@ -1,8 +1,5 @@
 package com.example.mybatis.rest.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author chengjz
  * @version 1.0
@@ -18,7 +15,7 @@ public interface RequestConstant {
     /**
      * 升序
      */
-    String ORDER_ASC ="asc";
+    String ORDER_ASC = "asc";
 
     /**
      * 排序

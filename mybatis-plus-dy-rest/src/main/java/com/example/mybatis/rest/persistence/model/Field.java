@@ -1,13 +1,14 @@
 package com.example.mybatis.rest.persistence.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.mybatis.rest.model.BaseModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.Date;
 
 /**
  * <p>
@@ -15,13 +16,13 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author chengjz
- * @since 2021-07-05
+ * @since 2021-07-07
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @TableName("onl_field")
 @ApiModel(value="Field对象", description="字段信息")
-public class Field implements Serializable {
+public class Field extends BaseModel {
 
 
     @ApiModelProperty(value = "id")
@@ -64,9 +65,13 @@ public class Field implements Serializable {
     @TableField("db_is_pk")
     private Boolean dbIsPk;
 
-    @ApiModelProperty(value = "是否允许为空")
-    @TableField("db_is_null")
-    private Boolean dbIsNull;
+    @ApiModelProperty(value = "新增能否为空")
+    @TableField("save_nullable")
+    private Boolean saveNullable;
+
+    @ApiModelProperty(value = "更新能否为空")
+    @TableField("update_nullable")
+    private Boolean updateNullable;
 
     @ApiModelProperty(value = "是否查询条件")
     @TableField("is_query")

@@ -1,25 +1,45 @@
 package com.example.mybatis.rest;
 
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.enums.SqlMethod;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.*;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
+import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.example.mybatis.rest.model.BaseModel;
+import com.example.mybatis.rest.service.IOperationService;
+import com.example.mybatis.rest.support.StringMap;
+import com.google.common.collect.Sets;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.binding.MapperMethod;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.util.Assert;
 
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author chengjz
@@ -52,8 +72,8 @@ public class CodeGenerator {
     /**
      * 要生成的表名
      */
-    public static final String TABLE_NAMES = "onl_table,onl_field,onl_table_ref";
-
+    // public static final String TABLE_NAMES = "sys_menu";
+    public static final String TABLE_NAMES = "onl_table,onl_table_ref,onl_field";
     /**
      * 数据源配置
      */
@@ -86,7 +106,7 @@ public class CodeGenerator {
         //实体属性 Swagger2 注解
         gc.setSwagger2(true);
         // 开启AR
-        gc.setActiveRecord(true);
+        gc.setActiveRecord(false);
         // 是否覆盖文件
         gc.setFileOverride(true);
 
@@ -103,15 +123,10 @@ public class CodeGenerator {
         mpg.setPackageInfo(pc);
 
         // 自定义配置
-        InjectionConfig cfg = new InjectionConfig() {
-            @Override
-            public void initMap() {
-                // to do nothing
-            }
-        };
+        InjectionConfig cfg = new CustomInjectionConfig();
 
         // 如果模板引擎是 freemarker
-        String templatePath = "/templates/mapper.xml.ftl";
+        String templatePath = "/templates/entity.java.ftl";
         // 如果模板引擎是 velocity
         //String templatePath = "/templates/mapper.xml.vm";
 
@@ -141,9 +156,10 @@ public class CodeGenerator {
 
         // 不配置对应模板,就不会生成对应类
         templateConfig.setController(null);
-        // templateConfig.setService(null);
-        // templateConfig.setServiceImpl(null);
+        templateConfig.setService(null);
+        templateConfig.setServiceImpl(null);
         templateConfig.setXml(null);
+        //templateConfig.setMapper(null);
         mpg.setTemplate(templateConfig);
 
         // 策略配置
@@ -151,12 +167,13 @@ public class CodeGenerator {
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntitySerialVersionUID(false);
-
         strategy.setInclude(TABLE_NAMES.split(","));
+        strategy.setSuperEntityClass(BaseModel.class);
         // 生成rest controller
         //strategy.setRestControllerStyle(true);
         // 是否为链式模型（默认 false
         strategy.setChainModel(false);
+        // 启用lombok
         strategy.setEntityLombokModel(true);
         strategy.setEntityTableFieldAnnotationEnable(true);
         strategy.setControllerMappingHyphenStyle(true);
@@ -222,5 +239,80 @@ public class CodeGenerator {
         }
     }
 
+    public static class CustomInjectionConfig extends InjectionConfig {
 
+
+        @Override
+        public void initMap() {
+
+        }
+
+        @Override
+        public Map<String, Object> prepareObjectMap(Map<String, Object> objectMap) {
+            final String entity = (String) objectMap.get("entity");
+
+            final TableInfo tableInfo = (TableInfo) objectMap.get("table");
+            final Set<String> importPackages = new HashSet<>();
+            importPackages.add(Constants.class.getName());
+            importPackages.add(SFunction.class.getName());
+            importPackages.add(LambdaQueryWrapper.class.getName());
+            importPackages.add(IPage.class.getName());
+            importPackages.add(Wrappers.class.getName());
+            importPackages.add(SqlMethod.class.getName());
+            importPackages.add(SqlHelper.class.getName());
+            importPackages.add(BeanWrapper.class.getName());
+            importPackages.add(BeanWrapperImpl.class.getName());
+            importPackages.add(Page.class.getName());
+            importPackages.add(MapUtils.class.getName());
+            importPackages.add(MapperMethod.class.getName());
+            importPackages.add(Log.class.getName());
+            importPackages.add(LogFactory.class.getName());
+            importPackages.add(Assert.class.getName());
+            importPackages.add(StringMap.class.getName());
+            importPackages.add(SqlSession.class.getName());
+            importPackages.add("java.util.*");
+            importPackages.add(CollectionUtils.class.getName());
+            importPackages.add(StringUtils.class.getName());
+            importPackages.add(Sets.class.getName());
+            importPackages.add(IOperationService.class.getName());
+
+            importPackages.removeAll(tableInfo.getImportPackages());
+            objectMap.put("modelPackages", importPackages);
+
+            if (Objects.equals(entity, "SysMenu")) {
+                List<com.example.mybatis.rest.support.QueryCriteria> list = new ArrayList<>();
+                list.add(new com.example.mybatis.rest.support.QueryCriteria("eq", "menuId"));
+                list.add(new com.example.mybatis.rest.support.QueryCriteria("ge", "orderNum"));
+                list.add(new com.example.mybatis.rest.support.QueryCriteria("like", "name"));
+                objectMap.put("criteriaList", list);
+
+                objectMap.put("saveNonnull", Arrays.asList("type", "url", "name"));
+
+                objectMap.put("updateNonnull", Arrays.asList("id"));
+            }
+            return objectMap;
+        }
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class QueryCriteria {
+        private String criteria;
+        private String field;
+
+        public String getCapitalName() {
+            if (field.length() <= 1) {
+                return field.toUpperCase();
+            }
+            String setGetName = field;
+            // 第一个字母 小写、 第二个字母 大写 ，特殊处理
+            String firstChar = setGetName.substring(0, 1);
+            if (Character.isLowerCase(firstChar.toCharArray()[0])
+                    && Character.isUpperCase(setGetName.substring(1, 2).toCharArray()[0])) {
+                return firstChar.toLowerCase() + setGetName.substring(1);
+            }
+            return firstChar.toUpperCase() + setGetName.substring(1);
+        }
+
+    }
 }

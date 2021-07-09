@@ -174,7 +174,25 @@
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
 
+        <!--spring boot 加载器 解决加载lib包中关于 读jar包 jar包启动 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-loader</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javatools</groupId>
+            <artifactId>javatools</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>D:/software/jdk8/lib/tools.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>

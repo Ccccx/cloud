@@ -1,7 +1,6 @@
 package com.example.mybatis.rest.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -20,12 +19,12 @@ import static com.example.mybatis.rest.model.ObjectConstant.MAPPER;
  * @since 2021-02-02 11:03
  */
 @Data
-public class BaseModel extends Model<BaseModel> {
+public class BaseModel {
 
     @TableField(exist = false)
     @JsonIgnore
     @JsonAnySetter
-    @Getter(onMethod_=@JsonIgnore)
+    @Getter(onMethod_ = @JsonIgnore)
     private Map<String, Object> paramMap = new HashMap<>();
 
     /**
@@ -38,7 +37,7 @@ public class BaseModel extends Model<BaseModel> {
         try {
             final String jsonStr = MAPPER.writeValueAsString(this);
             final BaseModel baseModel = MAPPER.readValue(jsonStr, BaseModel.class);
-            return  baseModel.paramMap;
+            return baseModel.paramMap;
         } catch (IOException e) {
             e.printStackTrace();
             return new HashMap<>(1);

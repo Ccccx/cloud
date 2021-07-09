@@ -3,6 +3,7 @@ package com.example.mybatis.rest.model;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.example.mybatis.rest.service.IOperationService;
 import lombok.Data;
 
 import java.util.Map;
@@ -20,6 +21,14 @@ public class TableConfig {
      */
     private final TableInfo tableInfo;
     /**
+     * java字段映射Map
+     */
+    private final Map<String, TableField> fieldMap;
+    /**
+     * 数据库字段映射Map
+     */
+    private final Map<String, TableField> columnMap;
+    /**
      * 实体类
      */
     private Class<?> modelClass;
@@ -36,17 +45,21 @@ public class TableConfig {
      */
     private String mapperCode;
     /**
-     * mapper实例
+     * serviceImpl接口
      */
-    private Object instance;
+    private Class<IOperationService> serviceImplClass;
     /**
-     * java字段映射Map
+     * serviceImpl源码
      */
-    private final Map<String, TableField> fieldMap;
+    private String serviceImplCode;
     /**
-     * 数据库字段映射Map
+     * mapper实例化对象
      */
-    private final Map<String, TableField> columnMap;
+    private BaseMapper<?> mapperInstance;
+    /**
+     * serviceImpl实例化对象
+     */
+    private IOperationService<BaseModel> serviceImplInstance;
 
     public TableConfig(TableInfo tableInfo) {
         this.tableInfo = tableInfo;
